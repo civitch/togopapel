@@ -1,0 +1,28 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Mes notifications {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="form_annonce">
+        <div class="container">
+            <div class="all_list_notifications">
+                {% for notif in notifications %}
+                    <a href="{{ path('notification_user_show', {id: notif.id}) }}" class="notifications_liste_link">
+                        <span class="title_liste_link">{{ notif.notification.title }}</span>
+                        <div class="tnh_lidte_link">
+                            <span class="content_liste_link">{{ notif.notification.message }}</span>
+                            <span class="date_liste_link">{{ notif.createdAt|date('d-m-Y H:i:s') }}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="navigation">{{ knp_pagination_render(notifications) }}</div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

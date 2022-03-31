@@ -1,0 +1,96 @@
+<div class="col-lg-4 col-md-12">
+    <span class="title_foote">Nos applications</span>
+    <div class="dwnld_ste_mobile">
+        {% for opt in options %}
+            {% if opt.label == 'mobileapp' %}
+                {% if opt.title == 'playstore' and opt.status %}
+                    <a href="{{ opt.link }}" class="dwnld_app">
+                        <img src="{{ asset('build/gplay.png') }}" alt="{{ opt.content }}"/>
+                    </a>
+                {% endif %}
+                {% if opt.title == 'appstore' and opt.status %}
+                    <a href="{{ opt.link }}" class="dwnld_app">
+                        <img src="{{ asset('build/app_store.png') }}" alt="{{ opt.content }}"/>
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <span class="title_foote">Retrouvez-nous</span>
+    <div class="social_network">
+        {% for opt in options %}
+            {% if opt.label == 'socialnetwork' %}
+                {% if opt.title == 'facebook' and opt.status  %}
+                    <a href="{{ opt.link }}" class="social_icon" title="{{ opt.content|capitalize }}">
+                        <i class="fa fa-facebook-f"></i>
+                    </a>
+                {% endif %}
+                {% if opt.title == 'twitter' and opt.status  %}
+                    <a href="{{ opt.link }}" class="social_icon" title="{{ opt.content|capitalize }}">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                {% endif %}
+                {% if opt.title == 'instagram' and opt.status  %}
+                    <a href="{{ opt.link }}" class="social_icon" title="{{ opt.content|capitalize }}">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<div class="col-lg-4 col-md-12">
+    <span class="title_foote">Nos pays</span>
+    <div class="sup_block_country">
+        <div class="block_country_gdo">
+            {% for opt in options %}
+                {% if opt.label == 'country' and opt.title == 'ci' and opt.status  %}
+                    <a href="{{ opt.link }}" class="country_gdo">
+                        <span class="flag_pays_gdo"><img src="{{ asset('build/ci.svg') }}" alt="{{ opt.content}}"></span>
+                        <span class="name_pays_gdo">{{ opt.content}}</span>
+                    </a>
+                {% endif %}
+                {% if opt.label == 'country' and opt.title == 'togo' and opt.status  %}
+                    <a href="{{ opt.link }}" class="country_gdo">
+                        <span class="flag_pays_gdo"><img src="{{ asset('build/togo.svg') }}" alt="{{ opt.content}}"></span>
+                        <span class="name_pays_gdo">Togo</span>
+                    </a>
+                {% endif %}
+                {% if opt.label == 'country' and opt.title == 'benin' and opt.status  %}
+                    <a href="#" class="country_gdo">
+                        <span class="flag_pays_gdo"><img src="{{ asset('build/benin.svg') }}" alt="{{ opt.content}}"></span>
+                        <span class="name_pays_gdo">{{ opt.content}}</span>
+                    </a>
+                {% endif %}
+                {% if opt.label == 'country' and opt.title == 'cameroun' and opt.status  %}
+                    <a href="#" class="country_gdo">
+                        <span class="flag_pays_gdo"><img src="{{ asset('build/cameroon.svg') }}" alt="{{ opt.content}}"></span>
+                        <span class="name_pays_gdo">{{ opt.content}}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="block_country_gdo">
+            {% for opt in options %}
+                {% if opt.label == 'country' and opt.title == 'guinea' and opt.status  %}
+                    <a href="#" class="country_gdo">
+                        <span class="flag_pays_gdo"><img src="{{ asset('build/guinea.svg') }}" alt="{{ opt.content}}"></span>
+                        <span class="name_pays_gdo">{{ opt.content}}</span>
+                    </a>
+                {% endif %}
+                {% if opt.label == 'country' and opt.title == 'mali' and opt.status  %}
+                    <a href="#" class="country_gdo">
+                        <span class="flag_pays_gdo"><img src="{{ asset('build/mali.svg') }}" alt="{{ opt.content}}"></span>
+                        <span class="name_pays_gdo">{{ opt.content}}</span>
+                    </a>
+                {% endif %}
+                {% if opt.label == 'country' and opt.title == 'senegal' and opt.status  %}
+                    <a href="{{ opt.link }}" class="country_gdo">
+                        <span class="flag_pays_gdo"><img src="{{ asset('build/senegal.svg') }}" alt="{{ opt.content}}"></span>
+                        <span class="name_pays_gdo">{{ opt.content}}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

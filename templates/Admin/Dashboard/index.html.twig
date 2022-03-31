@@ -1,0 +1,72 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Tableau de bord {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="main_dashboard">
+        <div class="container">
+            <div class="jumbotron">
+                <h3 class="welcm_info">
+                    Bienvenue {% if app.user.name %}{{ app.user.name }}{% endif %} {% if app.user.firstname %}{{ app.user.firstname }}{% endif %}
+                </h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title title_icon_dash">
+                                <i class="fa fa-tags"></i>
+                            </h5>
+                            <a href="{{ path('announce_list_user') }}" class="link_card_dash">
+                                Mes annonces
+                            </a>
+                            <a href="{{ path('announce_list_user') }}" class="texte_card_dash">
+                                {% if annonces|length <= 1 %}
+                                    {{ annonces|length }} publiée
+                                {% else %}
+                                    {{ annonces|length }} publiées
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title title_icon_dash">
+                                <i class="fa fa-user"></i>
+                            </h5>
+                            <a href="{{ path('account_profile') }}" class="link_card_dash">
+                                Profil
+                            </a>
+                            <a href="{{ path('account_profile') }}" class="texte_card_dash">
+                                Espace pour vos informations
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title title_icon_dash">
+                                <i class="fa fa fa-gift"></i>
+                            </h5>
+                            <a href="{{ path('pack_admin_liste') }}" class="link_card_dash">
+                                Nos packs
+                            </a>
+                            <a href="{{ path('pack_admin_liste') }}" class="texte_card_dash">
+                                Booster vos annonces
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

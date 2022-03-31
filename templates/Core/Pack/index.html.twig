@@ -1,0 +1,68 @@
+{% extends 'Core/layout.html.twig' %}
+{% block title %} Gestion des packs {% endblock %}
+{% block content %}
+
+    <div class="m-portlet m-portlet--tab">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon m--hide">
+													<i class="la la-gear"></i>
+												</span>
+                    <h3 class="m-portlet__head-text">
+                        Base Form Controls
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <!--begin::Form-->
+        {{ form_start(form, {"attr" : {"class" : "m-form m-form--fit m-form--label-align-right"}})}}
+            <div class="m-portlet__body">
+                <div class="form-group m-form__group m--margin-top-10">
+                    <div class="alert m-alert m-alert--default" role="alert">
+                        The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap with additional classes.
+                    </div>
+                </div>
+                <div class="form-group m-form__group col-md-6 offset-md-2">
+                    {{ form_label(form.title) }}
+                    {{ form_errors(form.title) }}
+                    {{ form_widget(form.title) }}
+                </div>
+                <div class="form-group m-form__group col-md-6 offset-md-2">
+                    {{ form_label(form.price) }}
+                    {{ form_errors(form.price) }}
+                    {{ form_widget(form.price) }}
+                </div>
+                <div class="form-group m-form__group col-md-6 offset-md-2">
+                    {{ form_label(form.duration) }}
+                    {{ form_erros(form.duration) }}
+                    {{ form_widget(form.duration) }}
+                </div>
+                <div class="form-group m-form__group col-md-6 offset-md-2">
+                    {{ form_label(form.role) }}
+                    {{ form_errors(form.role) }}
+                    {{ form_widget(form.role) }}
+                </div>
+                <div class="form-group m-form__group col-md-6 offset-md-2">
+                    {{ form_label(form.description) }}
+                    {{ form_errors(form.description) }}
+                    {{ form_widget(form.description) }}
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-12">
+                            {{form_widget(form.save)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_rest(form) }}
+        {{ form_end(form)}}
+
+        <!--end::Form-->
+    </div>
+
+{% endblock %}

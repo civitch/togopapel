@@ -1,0 +1,486 @@
+.content-messages{
+    display: none;
+}
+
+.content-messages-mobile{
+    display: block;
+}
+
+.title_messagerie_mobile {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.img_ms_conv_oc_mbs_ img {
+    width: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.img_ms_conv_oc_mbs_ {
+    display: block;
+    width: 65px;
+    height: 65px;
+    position: relative;
+    background: #000;
+}
+
+.info_ms_convmbs {
+    display: flex;
+}
+
+.names_conv_mbs_ {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: .9rem;
+    color: #fff;
+    display: block;
+}
+
+.message_annonce_title_mbs {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: .9rem;
+    color: #fff;
+    display: block;
+}
+
+
+.hour_conv_mbs{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: .7rem;
+    color: #fff;
+    display: block;
+    text-align: right;
+    padding-right: 1em;
+}
+
+.message_annonce_user_mbs_ {
+    width: calc(100% - 60px);
+    padding-left: 10px;
+    background: #ef233c;
+}
+
+.liste_mbs_{
+    margin: 2em 0 3em;
+}
+
+.box_ms_conv_mbs_{
+    display: none;
+    height: 450px;
+    position: relative;
+}
+
+.send_ms_conversation_mbs_ {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+
+#content_sd_mbs_ {
+    width: 100%;
+    font-size: .8rem;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    color: #222;
+    padding: .3em 1em;
+    border-radius: 50px;
+    outline: 0;
+    display: block;
+    border: none;
+    box-shadow: 0 0 3px #86868678;
+    background: #eaeaea1f;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.txt_area_conv_mbs {
+    width: calc(100% - 50px);
+}
+
+.btn_submit__mbs_ {
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    background: transparent;
+    line-height: 40px;
+    padding-right: 7px;
+}
+
+.btn_submit__mbs_:focus{
+    outline: 0 !important;
+}
+
+.btn_submit_ms_blk_mbs_ {
+    background: #ef233c;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    position: relative;
+    bottom: -6px;
+}
+
+.mss_conv_dtl_mbs_ {
+    height: calc(100% - 50px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background: #f7f7f77a;
+}
+
+#list_ms_conv_mbs {
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.back_mbs{
+    text-align: center;
+    color: #ef233c;
+    margin-top: 5px;
+    display: none;
+}
+
+.back_mbs a:hover{
+    text-decoration: none;
+    color: #ef233c;
+}
+
+#list_ms_conv_mbs::-webkit-scrollbar-track,
+#content_sd_mbs_::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 0  #fff;
+    background-color: #fff;
+}
+.mss_conv_dtl_mbs_::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 0 transparent;
+    background-color: #f7f7f77a;
+}
+
+#list_ms_conv_mbs::-webkit-scrollbar,
+#content_sd_mbs_::-webkit-scrollbar{
+    width: 2px;
+    background-color: #fff;
+}
+.mss_conv_dtl_mbs_::-webkit-scrollbar
+{
+    width: 2px;
+    background-color: transparent;
+}
+
+#list_ms_conv_mbs::-webkit-scrollbar-thumb,
+#content_sd_mbs_::-webkit-scrollbar-thumb,
+.mss_conv_dtl_mbs_::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+
+.mss_conv_dtl_mbs_ .date_message_infos {
+    display: block;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: .7rem;
+    text-align: right;
+}
+
+
+.sender_message {
+    color: #fff;
+    background: #ff4d4deb;
+    font-size: .8em;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    padding: .5em 1em;
+    border-radius: 4px;
+    margin-bottom: .5em;
+    width: 70%;
+    display: inline-block;
+    float: right;
+    word-break: break-word;
+    position: relative;
+}
+
+.receiver_message {
+    color: #fffdfd;
+    background: #7595a0b8;
+    font-size: .8em;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    padding: .5em 1em;
+    border-radius: 4px;
+    margin-bottom: .5em;
+    width: 70%;
+    display: inline-block;
+    word-break: break-word;
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .sender_message::after{
+        width: 0;
+        height: 0;
+        content: "";
+        position: absolute;
+        border-style: solid;
+        border-width: 15px 9px 0 15px;
+        border-color: #ff5b5b transparent transparent transparent;
+        bottom: -9px;
+        right: -9px;
+    }
+
+
+
+    .receiver_message::before {
+        width: 0;
+        height: 0;
+        content: "";
+        position: absolute;
+        border-style: solid;
+        border-width: 13px 15px 0 9px;
+        border-color: #9bb3ba transparent transparent transparent;
+        bottom: -9px;
+        left: -9px;
+    }
+
+    .content-messages{
+        display: block;
+    }
+
+    .content-messages-mobile{
+        display: none;
+    }
+    .content_messagerie_conver {
+        box-shadow: 0 0 5px #00000029;
+        border-radius: 4px;
+        height: 500px;
+    }
+    .box_ms_conv_dtl {
+        position: relative;
+        height: 100%;
+    }
+
+    .send_ms_conversation{
+        display: block;
+        clear: both;
+        padding: .8rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+
+    #content_ms_sd {
+        display: block;
+        width: 100%;
+        height: 100px;
+        border: none;
+        outline: 0;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-size: .9rem;
+        color: #6f6e6e;
+        box-shadow: 0 0 3px #a5a2a291;
+        padding: .5em;
+    }
+
+    .btn_submit_ms {
+        border: 0;
+        padding: .5em .7em;
+        color: #fff;
+        background: #ef233c;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        font-size: .8rem;
+        border-radius: 50%;
+    }
+
+    .btn_submit_ms_blk {
+        width: 50px;
+        text-align: right;
+        display: inline-block;
+        vertical-align: bottom;
+        transform: translateY(-5px);
+    }
+
+    .txt_area_conv {
+        width: calc(100% - 60px);
+        display: inline-block;
+    }
+
+    #brd_ms_conv {
+        border: 1px solid #eee;
+        height: 100%;
+        background: #f3f3f31c;
+    }
+
+
+    #list_ms_cv_cnv{
+        padding: 0;
+        height: 100%;
+    }
+
+    .names_conv {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        font-size: .8rem;
+        word-break: break-word;
+    }
+
+    .message_annonce_title {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-size: .9rem;
+        display: block;
+        margin-top: .1em;
+        word-break: break-word;
+    }
+
+    .hour_conv {
+        display: block;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        font-size: .7rem;
+        margin-top: .5em;
+        word-break: break-word;
+    }
+
+    .message_annonce_user {
+        width: 100%;
+        padding-left: 12px;
+        color: #f7f7f7;
+    }
+
+
+    .img_ms_conv_oc {
+        width: 60px;
+        height: 60px;
+        display: block;
+        flex: none;
+        background: #000;
+        position: relative;
+    }
+
+    .info_ms_conv {
+        display: flex;
+        color: #fff;
+        background: #ef233ce6;
+        padding: 1em;
+        border-bottom: 1px solid #fff6;
+        justify-content: space-between;
+    }
+
+    .img_ms_conv_oc img {
+        width: 100%;
+        position: absolute;
+        top:0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .info_ms_conv:hover{
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #list_ms_conv {
+        height: 100%;
+        overflow-x: hidden;
+        background: #f7f7f7;
+    }
+
+
+    #list_ms_conv::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+
+    #list_ms_conv::-webkit-scrollbar
+    {
+        width: 2px;
+        background-color: #F5F5F5;
+    }
+
+    #list_ms_conv::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        background-color: #414548;
+    }
+
+
+    .mss_conv_dtl {
+        display: inline-block;
+        height: calc(100% - 150px);
+        padding: 1em 0;
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .mss_conv_dtl::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px transparent;
+        background-color: transparent;
+    }
+
+    .mss_conv_dtl::-webkit-scrollbar
+    {
+        width: 2px;
+        background-color: transparent;
+    }
+
+    .mss_conv_dtl::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        background-color: transparent;
+    }
+
+    .date_message_infos {
+        font-size: 11px;
+        font-weight: 300;
+        font-family: 'Open Sans', sans-serif;
+        text-align: right;
+        display: block;
+        font-style: italic;
+        margin-top: 2px;
+    }
+
+    .btn_submit_ms:focus {
+        outline: none;
+    }
+
+    .nginum_ms {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        font-size: 1.5rem;
+        display: block;
+        text-align: center;
+        margin: 1em;
+        box-shadow: 0 0 3px #cecece;
+        padding: 5em;
+        border-radius: 3px;
+        color: #777272;
+    }
+
+
+}

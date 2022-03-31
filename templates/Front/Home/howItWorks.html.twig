@@ -1,0 +1,66 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %}Comment ça marche {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_homepage">
+        <div class="container">
+            <h1 class="title_h_big">
+                Togopapel, Rapide, simple et gratuit !
+                Postez une annonce et trouvez ce que vous êtes venu chercher.
+            </h1>
+            <div class="process_how_it">
+                <div class="ctn_tim_hwit">
+                    <div class="ctn_tim_hw">
+                        <span class="title_tim_hw">Poster une annonce</span>
+                        <div class="ctn_tim_hw_img">
+                            <img src="{{ asset('build/post_annonce.png') }}" alt="poster une annonce"/>
+                        </div>
+                    </div>
+                    <div class="ctn_tim_hw">
+                        <span class="title_tim_hw">Rechercher un produit</span>
+                        <div class="ctn_tim_hw_img">
+                            <img src="{{ asset('build/step-buyer.png') }}" alt="Recherchez un produit"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="ctn_tim_hwit">
+                    <div class="ctn_tim_hw">
+                        <span class="title_tim_hw">Attendre les acheteurs</span>
+                        <div class="ctn_tim_hw_img">
+                            <img src="{{ asset('build/attendre_buyer.png') }}" alt="Attendez les acheteurs"/>
+                        </div>
+                    </div>
+                    <div class="ctn_tim_hw">
+                        <span class="title_tim_hw">Contacter le vendeur</span>
+                        <div class="ctn_tim_hw_img">
+                            <img src="{{ asset('build/contacter_vendeur.png') }}" alt="Contacter le vendeur"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="ctn_tim_hwit_congrat">
+                    <span class="title_tim_hw_congrat">Finaliser la transaction</span>
+                    <div class="ctn_tim_hwit_congrat_img">
+                        <img src="{{ asset('build/congrat.png') }}" alt="Contacter le vendeur"/>
+                    </div>
+                </div>
+            </div>
+            <div class="dep_annonce_hiw_vdq">
+                Qu'avez-vous à vendre?
+            </div>
+            <div class="dep_annonce_hiw_text">
+                Vendez tout ce que vous voulez gratuitement sur togopapel.com
+            </div>
+            <div class="dep_annonce_hiw_vd">
+                <a href="{{ path('announce_new') }}" title="déposer votre annonce" class="dep_annonce_hiw">
+                    <i class="far fa-plus-square"></i> Déposer votre annonce gratuitement
+                </a>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

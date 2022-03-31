@@ -1,0 +1,18 @@
+{% if notifications|length != 0 %}
+    <ul class="drpdwmob_notifications">
+        {% for notif in notifications %}
+            <li>
+                <a href="{{ path('notification_user_show', {id: notif.id}) }}" {% if notif.readAt %}class="link_drpdwmobx_ntf"{% else %}class="link_drpdwmobx_ntfr"{% endif %}>
+                    <div class="ctn_drpdwmobx_ntf">
+                        <span class="ms_drpdwmob_ntf">{{ notif.notification.message }}</span>
+                        <span class="date_drpdwmob_ntf">{{ notif.createdAt|date('d-m-Y') }}</span>
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <ul class="mobs_ntf_content">
+        <li class="ningun_ntf_mob">Vous n'avez aucune notification</li>
+    </ul>
+{% endif %}

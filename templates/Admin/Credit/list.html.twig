@@ -1,0 +1,36 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Forfait {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="forfait">
+        <div class="container">
+            <h1 class="titile-forfait">Grâce à l'achat de crédits, vous pré-chargez votre compte personnel du montant de votre choix </h1>
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div class="row">
+                {% for credit in credits %}
+                    <div class="col-lg-3 col-md-12">
+                        <div class="block-forfait">
+                            <span class="gdc-forfait">{{ credit.gdc }}</span>
+                            <span class="inf-forfait">crédits</span>
+                            <span class="amount-forfait">{{ credit.montant|number_format(0, ',', ' ') }} F CFA</span>
+                            <a href="#" data-id="{{ credit.id }}" data-role="credit-ask" class="btn-forfait">
+                                Acheter
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+    {% include('Admin/Credit/credit_modal.html.twig') %}
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

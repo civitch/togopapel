@@ -1,0 +1,42 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Réinitialisation mot de passe {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_forget_password">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 class="forget_title">Mot de passe oublié !</h1>
+                    <p class="text_forget_password">Entrez votre e-mail pour recevoir un lien de réinitialisation</p>
+                    <div class="box_forget_password">
+                        {{ form_start(form)}}
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                {{ form_label(form.email, 'Email:') }}
+                                {{ form_widget(form.email) }}
+                                {{ form_errors(form.email) }}
+                                {% if error is not empty %}
+                                    <p class="error_forget_email">{{ error.email }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_widget(form.save) }}
+                            </div>
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

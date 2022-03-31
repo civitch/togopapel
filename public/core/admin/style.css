@@ -1,0 +1,16 @@
+.m-brand__logo-wrapper{
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    text-align: center;
+}
+.message-error{
+    color: #ff0000;
+}
+
+.alert-ajx-jy{
+    visibility: hidden;
+}

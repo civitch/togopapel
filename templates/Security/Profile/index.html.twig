@@ -1,0 +1,116 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Mon profil {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content-main bg-profile">
+        <div class="overlay_profile"></div>
+        <div class="container dlm_profile">
+            <div class="box-profile">
+                <div class="box-profile-info">
+                   <div class="dtl-profile-info">
+                       <div class="credentiels_profile">
+                           <div class="name_tdl_profile">
+                               <span class="dtl_name_profil">{% if app.user.name %}{{ app.user.name }}{% endif %} {% if app.user.firstname %}{{ app.user.firstname }}{% endif %}</span>
+                               <span class="dtl_account_profil">{% if app.user.department.role == 'ROLE_PARTICULAR' %} Compte particulier {% elseif app.user.department.role == 'ROLE_PROFESSIONNEL' %} Compte professionel {% endif %}</span>
+                           </div>
+                           <div class="email_tel_profile_info">
+                               <span>{{ app.user.email }}</span>
+                               <span>{% if app.user.tel %}{{ app.user.indicatifpays.code }} {{  app.user.tel }}{% endif %}</span>
+                           </div>
+                       </div>
+                       <div class="member_def_profile">
+                           {% if app.user.ville %}
+                               <span class="dtl_ville_profile"><i class="fa fa-map-marker"></i>{{ app.user.ville.title }}</span>
+                           {% endif %}
+                           {% if app.user.adresse %}
+                               <span class="dtl_ville_profile"><i class="fa fa-map-marker"></i> {{ app.user.adresse }}</span>
+                           {% endif %}
+                           <span class="dtl_member_profil"> <i class="fa fa-clock"></i> Membre depuis le {{ app.user.createdAt|date('d-m-Y') }}</span>
+                       </div>
+                   </div>
+                </div>
+            </div>
+
+            <div class="content_profile">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#info_profile">Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#ann_profile">Annonces</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div id="info_profile" class="container tab-pane active"><br>
+                        {% if app.user.description %}
+                            <div class="row">
+                                <div class="col-md-12 col-lg-8">
+                                    <div class="description_profile">
+                                        {{ app.user.description }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-4 bvt_scr">
+                                    <div class="details_profile_dt">
+                                        {% if app.user.society %}
+                                            <div class="if_prfl_clx">
+                                                <span class="if_prfl_dt_title">Société</span>
+                                                <span class="if_prfl_dt_ctn">{{ app.user.society }}</span>
+                                            </div>
+                                        {% endif %}
+                                        {% if app.user.siren %}
+                                            <div class="if_prfl_clx">
+                                                <span class="if_prfl_dt_title">Siren ou n° de société</span>
+                                                <span class="if_prfl_dt_ctn">{{ app.user.siren }}</span>
+                                            </div>
+                                        {% endif %}
+                                        {% if app.user.rubrique %}
+                                            <div class="if_prfl_clx">
+                                                <span class="if_prfl_dt_title">Catégorie</span>
+                                                <span class="if_prfl_dt_ctn">{{ app.user.rubrique.title }}</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div id="ann_profile" class="container tab-pane fade"><br>
+                        <div class="box_annonces_list_profile">
+                            {% for annonce in annonces %}
+                                <div class="block_annonce">
+                                    <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="blk_ann_img">
+                                        {% if annonce.picture %}
+                                            <img src="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}" alt="{{ annonce.title }}"/>
+                                        {% else %}
+                                            <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ annonce.title }}">
+                                        {% endif %}
+                                    </a>
+                                    <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="content_blk_ann">
+                                        <span class="title_blk_ann">{{ annonce.title|capitalize|slice(0, 60) }}</span>
+                                        {% if annonce.price %}
+                                            <span class="price_blk_ann">{{ annonce.priceFormat }}</span>
+                                        {% endif %}
+                                        <div class="infos_annonce_frt">
+                                            <p class="adresse_blk_ann"><i class="fa fa-map-marker"></i> {{ annonce.adresse }}</p>
+                                            <p class="date_blk_ann"><i class="fa fa-clock"></i> {{ annonce.createdAt|date('d-m-Y') }}</p>
+                                            <p class="cat_blk_ann">{{ annonce.categorie.title }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                            <div class="navigation">
+                                {{ knp_pagination_render(annonces) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+

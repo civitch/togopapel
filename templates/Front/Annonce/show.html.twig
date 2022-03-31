@@ -1,0 +1,308 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %}{{ annonce.title }}{% endblock %}
+{% block meta %}
+    <meta property="og:title" content="{{ annonce.title }}">
+    <meta property="og:description" content="{{ annonce.description }}">
+    <meta name="description" content="{{ annonce.description }}" />
+    <meta name="theme-color" content="#aeb3c512">
+    <link href="https://togopapel.com/annonce/{{annonce.slug}}" rel="canonical" />
+    {% if annonce.picture %}
+        <meta property="og:image" content="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}"/>
+    {% else %}
+        <meta property="og:image" content="{{ asset('/images/empty/empty.jpg') }}"/>
+    {% endif %}
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://togopapel.com/annonce/{{annonce.slug}}">
+{% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <header class="flotting-header">
+        <div class="container">
+            <div class="floatting-box">
+                <div class="floatting-title-bx">
+                    <span class="floatting-title">
+                        {{ annonce.title }}
+                    </span>
+                </div>
+                <div class="floatting-content">
+                    {% if app.user != annonce.user %}
+                        <a href="{{ path('new_conversation_admin', {slug: annonce.slug}) }}" class="floatting-send-message">
+                            <i class="fa fa-envelope"></i>
+                            Envoyer un message
+                        </a>
+                    {% endif %}
+                    {% if annonce.hideTel %}
+                        <span class="floatting-send-message">
+                        <span id="btn_jjso_number">{{ annonce.user.indicatifPays.code }} {{ annonce.user.tel }}</span>
+                        <span class="ydh_jjso"><i class="fa fa-phone-alt"></i> Voir le numéro</span>
+                    </span>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="single-annonce-main">
+        <div class="container">
+            <div class="breacrumb-annonce" >
+                <a class="breadcrumb_link" href="{{ path('home_project') }}">Accueil</a>
+                <a class="breadcrumb_link" href="{{ path('liste_annonce_ville_front', {slug: annonce.ville.slug}) }}">{{ annonce.ville.title }}</a>
+                <a class="breadcrumb_link" href="{{ path('liste_annonce_categorie_front', {slug: annonce.categorie.slug}) }}">{{ annonce.categorie.title }}</a>
+                <span class="breadcrumb_link">{{ annonce.title }}</span>
+            </div>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="box-carousel-anno_show">
+                        {% if annonce.pictures is not empty %}
+                            <ul class="imgs_lightslider">
+                                {% for picture in annonce.pictures %}
+                                    <li data-thumb="{{ vich_uploader_asset(picture, 'imageFile') }}" >
+                                        <img src="{{ vich_uploader_asset(picture, 'imageFile') }}"  alt="{{ annonce.title }}"/>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="bx_show_enmpty">
+                                <img src="{{ '/images/empty/empty.jpg' }}" class="show_empty_img" alt="{{ annonce.title }}">
+                            </div>
+                        {% endif %}
+                        <div class="content_lightslider">
+                            <span class="title_lightslider">
+                                {{ annonce.title }}
+                            </span>
+                            {% if annonce.price %}
+                                <span class="price_lightslider">
+                                {{ annonce.priceFormat }}
+                            </span>
+                            {% endif %}
+                            <span class="date_lightslider">
+                                {{ annonce.createdAt|date('d/m/Y')}}
+                            </span>
+                            <span class="element_lightslider">
+                                {{ annonce.state }}
+                            </span>
+                            <span class="element_lightslider">
+                                <i class="fa fa-eye"> {{ annonce.nbrVue+200 }} Vue(s)</i>
+                            </span>
+                            <div class="fav_shown_ann">
+                                {% if app.user %}
+                                    {% if annonce in app.user.favoris %}
+                                        <a href="#" data-role="delete-favoris"  data-id="{{ annonce.id }}" class="favoris-shown-like"><i class="fa fa-heart"></i></a>
+                                    {% else %}
+                                        <a href="#" data-role="add-favoris"  data-id="{{ annonce.id }}" class="favoris-shown-like"><i class="fa fa-heart-o"></i></a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{ path('admin_auth')}}" class="favoris-shown-like"><i class="fa fa-heart-o"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-annonce-show">
+                        {% if annonce.description %}
+                            <span class="title-element-annonce">
+                                Description
+                            </span>
+                            <p class="description-annonce-show">
+                                {{ annonce.description }}
+                            </p>
+                        {% endif %}
+                        <span class="title-element-annonce">
+                            <i class="fa fa-map-marker-alt"></i> {{ annonce.adresse }}
+                        </span>
+                        <div class="signl_ann">
+                            <a href="{{ path('contact_project') }}">
+                                <i class="fa fa-flag"></i>
+                                Signaler l'annonce
+                            </a>
+                        </div>
+
+                        <div id="adresse-map-annonce" data-lat="{{ annonce.lat }}" data-lng="{{ annonce.lng }}"></div>
+                        <div class="sm_ann_ctgy"></div>
+                        <br>
+                        <div class="col-xs-8 col-sm-8 d-lg-none ">
+                            <div class="owner_ann_shw_info">
+                                <img width="60"  src="{{ asset('/build/icon-of-user.d738eee4.png') }}" alt=""> <strong>Le Vendeur/Annonceur</strong>
+                                <div class="info_owner_annonce_show">
+                                    <div class="nmd_ann_sh_owner">
+                                        <a href="{{ path('profile_gdo_user', {slug: annonce.slug}) }}" class="name_owner_show_annonce">
+                                            {% if annonce.user.name is not null and annonce.user.firstname is not null %}
+                                                {% if annonce.user.name %}
+                                                    {{ annonce.user.name }}
+                                                {% endif %}
+                                                {% if annonce.user.firstname %}
+                                                    {{ annonce.user.firstname }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ annonce.user.email|lower }}
+                                            {% endif %}
+                                        </a>
+                                        <a href="{{ path('profile_gdo_user', {slug: annonce.slug}) }}" class="inde_sh_ann">
+                                            {% if annoncesOwner|length == 1 %}
+                                                {{ annoncesOwner|length }} annonce en ligne
+                                            {% else %}
+                                                {{ annoncesOwner|length }} annonces en ligne
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="lkdif_jjjso">
+                                    <span class="ast_avis_jjso"></span>
+                                    {% if app.user != annonce.user %}
+                                        <a href="{{ path('new_conversation_admin', {slug: annonce.slug}) }}" class="send_msg_jjso">
+                                            <i class="fa fa-envelope"></i>
+                                            Envoyer un message
+                                        </a>
+                                    {% endif %}
+                                    {% if annonce.hideTel %}
+                                        <div class="btn_jjso">
+                                            <span id="btn_jjso_number"><a href="tel:+6494461709">{{ annonce.user.indicatifpays.code }} {{ annonce.user.tel }}</a></span>
+                                            <span class="ydh_jjso"><i class="fa fa-phone-alt"></i> Voir le numéro</span>
+                                        </div>
+                                    {% endif %}
+                                    {% if app.user != annonce.user %}
+                                        <a href="https://wa.me/{{ annonce.user.indicatifPays.code }}{{ annonce.user.tel }}" class="share_whatsapp" id="{{ annonce.user.indicatifpays.code }} {{ annonce.user.tel }}" >
+                                            <span class="d-none">{{annonce.slug}}</span>
+                                            <i class="fa fa-whatsapp-square"></i>
+                                            Contacter via whatsApp
+                                        </a>
+                                    {% endif %}
+                                    <div >
+                                        <div class="share_social_sh_page">
+                                        </div>
+                                        <!--a href="whatsapp://send?text=J'ai vu votre annonce sur Togopapel https://togopapel.com/annonce/{{annonce.slug}} S'il vous plaît, envoyez-moi plus d'informations à ce sujet"
+                                           data-action="share/whatsapp/share"
+                                           target="_blank" class="btn" title="contacter via Whattsapp"><i class="fa fa-2x fa-whatsapp"></i></a-->
+                                    </div>
+                                </div>
+                            </div>
+                            {% if annonce.user.role('ROLE_PROFESSIONNEL') %}
+                                <div class="mbnh">
+                                    <span class="bnd_vip"><i class="fa fa-star"></i> Professionnel</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if cats|length is not null %}
+                            <span class="retlated_annonces_title">Ces annonces peuvent vous intéresser</span>
+                            <div class="related_annonces">
+                                {% for anny in cats %}
+                                    <a href="{{ path('annonce_info', {slug: anny.slug}) }}" class="carousel_ann_swhn">
+                                        <div  class="img__ann_lst">
+                                            {% if anny.picture %}
+                                                <img src="{{ vich_uploader_asset(anny.picture, 'imageFile') }}" alt="{{ anny.title }}"/>
+                                            {% else %}
+                                                <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ anny.title }}" />
+                                            {% endif %}
+                                        </div>
+                                        <div   class="blik_lin__ann_lst">
+                                            <span class="title_ann_lst">{{ anny.title|capitalize|slice(0, 10) }}</span>
+                                            <span class="eng_ann_list">
+                                                {% if anny.price %}
+                                                    <span class="price_ann_lst">{{ anny.priceFormat }}</span>
+                                                {% endif %}
+                                                <span class="cat__ann_lst">{{ anny.categorie.title }}</span>
+                                                <span class="date__ann_lst"><i class="far fa-clock"></i> {{ anny.createdAt|date('d-m-Y') }}</span>
+                                            </span>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <span class="title_js_social">{{ annonce.title }}</span>
+                    <span class="url_js_social">{{ absolute_url(path('annonce_info', {slug: annonce.slug})) }}</span>
+                </div>
+                <div class="col-lg-4 col-md-6 d-none d-lg-block">
+                    <div class="owner_ann_shw_info">
+                        <center><img width="60"  src="{{ asset('/build/icon-of-user.d738eee4.png') }}" alt=""> <strong>Le Vendeur/Annonceur</strong></center>
+                        <div class="info_owner_annonce_show">
+                            {#<div class="avatar_annonce_show">
+                                <img src="https://via.placeholder.com/150x150" />
+                            </div>#}
+                            <div class="nmd_ann_sh_owner">
+                                <a href="{{ path('profile_gdo_user', {slug: annonce.slug}) }}" class="name_owner_show_annonce">
+                                    {% if annonce.user.name is not null and annonce.user.firstname is not null %}
+                                        {% if annonce.user.name %}
+                                            {{ annonce.user.name }}
+                                        {% endif %}
+                                        {% if annonce.user.firstname %}
+                                            {{ annonce.user.firstname }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ annonce.user.email|lower }}
+                                    {% endif %}
+                                </a>
+                                <a href="{{ path('profile_gdo_user', {slug: annonce.slug}) }}" class="inde_sh_ann">
+                                    {% if annoncesOwner|length == 1 %}
+                                        {{ annoncesOwner|length }} annonce en ligne
+                                    {% else %}
+                                        {{ annoncesOwner|length }} annonces en ligne
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="lkdif_jjjso">
+                            <span class="ast_avis_jjso"></span>
+                            {% if app.user != annonce.user %}
+                                <a href="{{ path('new_conversation_admin', {slug: annonce.slug}) }}" class="send_msg_jjso">
+                                    <i class="fa fa-envelope"></i>
+                                    Envoyer un message
+                                </a>
+                            {% endif %}
+                            {% if annonce.hideTel %}
+                                <div class="btn_jjso">
+                                    <span id="btn_jjso_number"><a href="tel:+6494461709">{{ annonce.user.indicatifPays.code }} </a></span>
+                                    <span class="ydh_jjso"><i class="fa fa-phone-alt"></i> Voir le numéro</span>
+                                </div>
+                            {% endif %}
+                            {% if app.user != annonce.user %}
+                                <a href="https://wa.me/{{ annonce.user.indicatifPays.code }}{{ annonce.user.tel }}" class="share_whatsapp" id="{{ annonce.user.tel }}" >
+                                    <span class="d-none">{{annonce.slug}}</span>
+                                    <i class="fa fa-whatsapp-square"></i>
+                                        Contacter via whatsApp
+                                </a>
+                            {% endif %}
+                            <div >
+                                <div class="share_social_sh_page">
+                                </div>
+                                <!--a href="whatsapp://send?text=J'ai vu votre annonce sur Togopapel https://togopapel.com/annonce/{{annonce.slug}} S'il vous plaît, envoyez-moi plus d'informations à ce sujet"
+                                   data-action="share/whatsapp/share"
+                                   target="_blank" class="btn" title="contacter via Whattsapp"><i class="fa fa-2x fa-whatsapp"></i></a-->
+                            </div>
+                        </div>
+                    </div>
+                    {% if annonce.user.role('ROLE_PROFESSIONNEL') %}
+                        <div class="mbnh">
+                            <span class="bnd_vip"><i class="fa fa-star"></i> Professionnel</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- taille automatique -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4186752908441352"
+             data-ad-slot="3533353770"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </section>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}
+
+

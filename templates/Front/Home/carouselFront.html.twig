@@ -1,0 +1,23 @@
+<div class="front_carousel owl-carousel">
+    {% for annonce in annonces %}
+        <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="carousel_ann_lst">
+                <div  class="img__ann_lst">
+                        {% if annonce.picture %}
+                                <img src="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}" alt="{{ annonce.title }}"/>
+                        {% else %}
+                                <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ annonce.title }}" />
+                        {% endif %}
+                </div>
+            <div   class="blik_lin__ann_lst">
+                <span class="title_ann_lst">{{ annonce.title|capitalize|slice(0, 10) }}</span>
+                <span class="eng_ann_list">
+                    {% if annonce.price %}
+                        <span class="price_ann_lst">{{ annonce.priceFormat }}</span>
+                    {% endif %}
+                    <span class="cat__ann_lst">{{ annonce.categorie.title }}</span>
+                    <span class="date__ann_lst"><i class="far fa-clock"></i> {{ annonce.createdAt|date('d-m-Y') }}</span>
+                </span>
+            </div>
+        </a>
+    {% endfor %}
+</div>

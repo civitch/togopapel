@@ -1,0 +1,52 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Contact {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="contact">
+        <div class="container">
+            <h1 class="title_h_big">Contactez - nous</h1>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form_contact">
+                        {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form_row(form.nom) }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form_row(form.email) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form_row(form.tel) }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form_row(form.option) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                {{ form_row(form.message) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form_widget(form.save) }}
+                            </div>
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}
+

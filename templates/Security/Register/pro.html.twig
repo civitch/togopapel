@@ -1,0 +1,106 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Création compte professionnel {% endblock %}
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="register_form_info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <h1 class="register-title-welcome">Créer votre compte professionnel</h1>
+                    <div class="box_register_pro">
+                        {{ form_start(form) }}
+                        <div class="civility">
+                            {{ form_widget(form.civility) }}
+                            {{ form_errors(form.civility) }}
+                        </div>
+                        <div class="box_form_eqt">
+                            <div class="field_eqt">
+                                {{ form_label(form.name, 'Nom:') }}
+                                {{ form_widget(form.name) }}
+                                {{ form_errors(form.name) }}
+                            </div>
+                            <div class="field_eqt">
+                                {{ form_label(form.firstname, 'Prénom:') }}
+                                {{ form_widget(form.firstname) }}
+                                {{ form_errors(form.firstname) }}
+                            </div>
+                        </div>
+                        <div class="box_form_eqt">
+                            <div class="field_eqt">
+                                {{ form_label(form.rubrique, 'Rubrique:') }}
+                                {{ form_widget(form.rubrique) }}
+                                {{ form_errors(form.rubrique) }}
+                            </div>
+                            <div class="field_eqt">
+                                {{ form_label(form.society, 'Nom de la Société:') }}
+                                {{ form_widget(form.society) }}
+                                {{ form_errors(form.society) }}
+                            </div>
+                        </div>
+                        <div class="box_form_eqt">
+                            <div class="field_eqt">
+                                {{ form_label(form.siren, 'Numéro de société:') }}
+                                {{ form_widget(form.siren) }}
+                                {{ form_errors(form.siren) }}
+                            </div>
+                            <div class="field_eqt">
+                                {{ form_label(form.adresse, 'Adresse:') }}
+                                {{ form_widget(form.adresse) }}
+                                {{ form_errors(form.adresse) }}
+                            </div>
+                        </div>
+                        <div class="box_form_eqt">
+                            <div class="field_eqt">
+                                {{ form_label(form.ville, 'Ville:') }}
+                                {{ form_widget(form.ville) }}
+                                {{ form_errors(form.ville) }}
+                            </div>
+                            <div class="field_eqt">
+                                <div class="box_email_form">
+                                    {{ form_label(form.email, 'Email:') }}
+                                    {{ form_widget(form.email) }}
+                                    {{ form_errors(form.email) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_form_eqt">
+                            <div class="field_eqt">
+                                {{ form_label(form.indicatifPays) }}
+                                {{ form_widget(form.indicatifPays) }}
+                                {{ form_errors(form.indicatifPays) }}
+                            </div>
+                            <div class="field_eqt">
+                                {{ form_label(form.tel, 'Numéro de téléphone:') }}
+                                {{ form_widget(form.tel) }}
+                                {{ form_errors(form.tel) }}
+                            </div>
+                        </div>
+                        <div class="box_form_eqt">
+                            <div class="field_eqt">
+                                {{ form_label(form.password.first, 'Mot de passe:') }}
+                                {{ form_widget(form.password.first) }}
+                                {{ form_errors(form.password.first) }}
+                            </div>
+                            <div class="field_eqt">
+                                {{ form_label(form.password.second, 'Confirmer votre mot de passe:') }}
+                                {{ form_widget(form.password.second) }}
+                                {{ form_errors(form.password.second) }}
+                            </div>
+                        </div>
+                        <div class="checkbx">
+                            {{ form_widget(form.condition) }}
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include 'Front/Includes/footer-main_inc.html.twig' %}
+    {% include 'Front/Includes/footer-copyright_inc.html.twig' %}
+{% endblock %}

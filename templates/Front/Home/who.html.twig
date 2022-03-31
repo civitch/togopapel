@@ -1,0 +1,20 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %}Qui somme-nous {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_homepage">
+        <div class="container">
+            <h1 class="title_h_big">Qui somme-nous ?</h1>
+            <div class="page_scenar">
+                {{ content.content }}
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% for message in messages %}
+    {% if message.sender == app.user %}
+        <div class="sender_message">
+            {{ message.content }}
+            <span class="date_message_infos">{{ message.createdAt|date('d-m-Y H:i:s') }}</span>
+        </div>
+    {% endif %}
+    {% if message.receiver == app.user %}
+        <div class="receiver_message">
+            {{ message.content }}
+            <span class="date_message_infos">{{ message.createdAt|date('d-m-Y H:i:s') }}</span>
+        </div>
+    {% endif %}
+{% endfor %}

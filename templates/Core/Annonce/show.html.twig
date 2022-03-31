@@ -1,0 +1,52 @@
+{% extends 'Core/layout.html.twig' %}
+{% block title %} Core {% endblock %}
+{% block content %}
+
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Annonce {{ annonce.title }}
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            <div id="m_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>Titre: {{ annonce.title }}</p>
+                        <p>Catégorie: {{ annonce.categorie.title }}</p>
+                        <p>Ville: {{ annonce.ville.title }}</p>
+                        <p>Type: {% if annonce.type %}Offre{% else %}Demande{% endif %}</p>
+                        {% if annonce.description %}
+                        <div class="text-justify">
+                            {{ annonce.description }}
+                        </div>
+                        {% endif %}
+                        {% if annonce.price %}
+                            <p>
+                                {{ annonce.priceFormat }}
+                            </p>
+                        {% endif %}
+                        <p>Ajouté le : {{ annonce.createdAt|date('d/m/Y')}}</p>
+                        <p>Etat: {{ annonce.state }}</p>
+                        <p>
+                            {% if annonce.picture %}
+                                <img src="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}" alt="{{ annonce.title }}"/>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

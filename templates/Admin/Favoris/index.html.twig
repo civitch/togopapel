@@ -1,0 +1,57 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Mes favoris {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="favoris_liste">
+        <div class="container">
+            {% if favoris is empty %}
+            <span class="nginum_ms">Aucun favoris</span>
+            {% else %}
+                {% for fav in favoris %}
+                    <div class="block_annonce">
+                        <a href="{{ path('annonce_info', {slug: fav.slug}) }}" class="blk_ann_img">
+                            {% if fav.picture %}
+                                <img src="{{ vich_uploader_asset(fav.picture, 'imageFile') }}" alt="{{ fav.title }}"/>
+                            {% else %}
+                                <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ fav.title }}">
+                            {% endif %}
+                        </a>
+                        <a href="{{ path('annonce_info', {slug: fav.slug}) }}" class="content_blk_ann">
+                            <span class="title_blk_ann">{{ fav.title|capitalize|slice(0, 60) }}</span>
+                            {% if fav.price %}
+                                <span class="price_blk_ann">{{ fav.priceFormat }}</span>
+                            {% endif %}
+                            <div class="infos_annonce_frt">
+                                <p class="adresse_blk_ann"><i class="fa fa-map-marker"></i> {{ fav.adresse|slice(0, 60) }}</p>
+                                <p class="date_blk_ann"><i class="fa fa-clock"></i> {{ fav.createdAt|date('d-m-Y') }}</p>
+                                <p class="cat_blk_ann">{{ fav.categorie.title }}</p>
+                            </div>
+                        </a>
+                        <div class="button_actions_fv">
+                            <a href="#" data-id="{{ fav.id }}" data-role="delete-favoris" class="btn btn-outline-info">
+                                <i class="fa fa-trash"></i> Supprimer l'annonce
+                            </a>
+                            <a href="{{ path('new_conversation_admin', {slug: fav.slug}) }}" class="btn btn-outline-secondary">
+                                <i class="fa fa-enveloppe"></i> Envoyer un message
+                            </a>
+                        </div>
+                        <div class="button_actions_fv_mobile">
+                            <a href="#" data-id="{{ fav.id }}" data-role="delete-favoris" class="btn btn-sm btn-outline-info">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            <a href="{{ path('new_conversation_admin', {slug: fav.slug}) }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="fa fa-enveloppe"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

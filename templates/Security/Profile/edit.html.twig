@@ -1,0 +1,115 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Modification profil {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 men_menus">
+                    {{ render(controller('App\\Controller\\Security\\SecurityController::menuProfile')) }}
+                </div>
+                <div class="col-lg-8 col-md-12">
+                    <div class="bcfg_de">
+                        <h1 class="register-title-welcome">Modification profil</h1>
+                        <div class="box_profile">
+                            {{ form_start(form) }}
+                            {% if errorsString is defined %}
+                                <div class="alert alert-danger">
+                                    {{ errorsString }}
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.civility) }}
+                                    {{ form_widget(form.civility) }}
+                                    {{ form_errors(form.civility) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.name) }}
+                                    {{ form_widget(form.name) }}
+                                    {{ form_errors(form.name) }}
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.firstname) }}
+                                    {{ form_widget(form.firstname) }}
+                                    {{ form_errors(form.firstname) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.adresse) }}
+                                    {{ form_widget(form.adresse) }}
+                                    {{ form_errors(form.adresse) }}
+                                </div>
+                                <div class="col-md-6 form-group yyh_uio">
+                                    {{ form_label(form.ville) }}
+                                    {{ form_widget(form.ville) }}
+                                    {{ form_errors(form.ville) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.telIndicatif) }}
+                                    {{ form_widget(form.telIndicatif) }}
+                                    {{ form_errors(form.telIndicatif) }}
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.tel) }}
+                                    {{ form_widget(form.tel) }}
+                                    {{ form_errors(form.tel) }}
+                                </div>
+                            </div>
+                            {% if is_granted('ROLE_PROFESSIONNEL') %}
+                                <div class="row">
+                                    <div class="col-md-4 form-grubriqueroup">
+                                        {{ form_label(form.rubrique) }}
+                                        {{ form_widget(form.rubrique) }}
+                                        {{ form_errors(form.rubrique) }}
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        {{ form_label(form.society, 'Nom de société:') }}
+                                        {{ form_widget(form.society) }}
+                                        {{ form_errors(form.society) }}
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        {{ form_label(form.siren,'Siren ou n° de société:') }}
+                                        {{ form_widget(form.siren) }}
+                                        {{ form_errors(form.siren) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.email) }}
+                                    {{ form_widget(form.email) }}
+                                    {{ form_errors(form.email) }}
+                                    {% if errors is not empty %}
+                                        <p class="error_forget_email">{{ errors.email }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    {{ form_label(form.password) }}
+                                    {{ form_widget(form.password) }}
+                                    {{ form_errors(form.password) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ form_row(form.description) }}
+                                </div>
+                            </div>
+                            {{ form_rest(form) }}
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+

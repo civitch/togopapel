@@ -1,0 +1,74 @@
+{% extends 'Core/layout.html.twig' %}
+{% block title %} Gestion des crédits {% endblock %}
+{% block content %}
+
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Gestion des crédits
+                    </h3>
+                </div>
+            </div>
+            {% if is_granted('ROLE_MAINTENANCE') %}
+                <div class="m-portlet__head-tools">
+                    <ul class="m-portlet__nav">
+                        <li class="m-portlet__nav-item">
+                            <a data-toggle="modal" data-target="#addCreditModal" href="#" class="btn btn-accent m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
+												<span>
+													<i class="la la-plus"></i>
+													<span>Ajout</span>
+												</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <div class="m-portlet__body">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div id="m_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped- table-bordered table-hover table-checkable" id="categories_liste_admin">
+                            <thead>
+                            <tr>
+                                <th>Montant</th>
+                                <th>GDC</th>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for credit in credits %}
+                                <tr>
+                                    <td>{{ credit.montant }}</td>
+                                    <td>{{ credit.gdc }}</td>
+                                    <td>
+                                        <a href="{{ path('credit_edit_corporate', {id: credit.id}) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="Modifier">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        {% if credit.demandeCredits|length == 0 %}
+                                        <form style="display: inline-block" action="{{ path('credit_delete_corporate', {id: credit.id}) }}" method="post">
+                                            <input type="hidden" value="{{ csrf_token('delete-credit' ~ credit.id) }}" name="token">
+                                            <button class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"> <i class="la la-trash"></i></button>
+                                        </form>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include ('Core/Credit/add_modal.html.twig') %}
+{% endblock %}

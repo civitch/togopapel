@@ -1,0 +1,47 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Création compte personnel {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="register_form_info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 contain-form">
+                    <h1 class="register-title-welcome register-title-particular">Créer votre compte</h1>
+                    <div class="box-form-auth-perso">
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_label(form.email)}}
+                            {{ form_widget(form.email) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.password.first)}}
+                            {{ form_widget(form.password.first) }}
+                            {{ form_errors(form.password.first) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.password.second)}}
+                            {{ form_widget(form.password.second) }}
+                            {{ form_errors(form.password.second) }}
+                        </div>
+                        <div class="checkbx">
+                            {{ form_widget(form.condition) }}
+                        </div>
+                        {{ form_widget(form.save) }}
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include 'Front/Includes/footer-main_inc.html.twig' %}
+    {% include 'Front/Includes/footer-copyright_inc.html.twig' %}
+{% endblock %}

@@ -1,0 +1,46 @@
+<div class="container rubrit_desk">
+    {% set startRow = true %}
+    {% set postCounter = 0 %}
+    {% for rubrique in rubriques %}
+        {% if startRow %}
+            <div class="row line-crl">
+            {% set startRow = false %}
+        {% endif %}
+        {% set postCounter = postCounter + 1 %}
+        <div class="col-md-3">
+            <a href="{{ path('liste_annonce_rubrique_front', {slug: rubrique.slug}) }}" class="rubrique-title"> {{ rubrique.title }}</a>
+            {% for categorie in rubrique.categories %}
+                <a href="{{ path('liste_annonce_categorie_front', {slug: categorie.slug}) }}" class="categorie-liste">{{ categorie.title }}</a>
+            {% endfor %}
+        </div>
+        {% if postCounter == 4 %}
+            </div>
+            {% set startRow = true %}
+            {% set postCounter = 0 %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+<div class="container rubrit_mob">
+    {% set startRow = true %}
+    {% set postCounter = 0 %}
+    {% for rubrique in rubriques %}
+        {% if startRow %}
+            <div class="head_up_drp">
+            {% set startRow = false %}
+        {% endif %}
+        {% set postCounter = postCounter + 1 %}
+        <div class="head_up_drp_fx">
+            <a href="{{ path('liste_annonce_rubrique_front', {slug: rubrique.slug}) }}" class="rubrique-title"> {{ rubrique.title }}</a>
+            {% for categorie in rubrique.categories %}
+                <a href="{{ path('liste_annonce_categorie_front', {slug: categorie.slug}) }}" class="categorie-liste">{{ categorie.title }}</a>
+            {% endfor %}
+        </div>
+        {% if postCounter == 2 %}
+            </div>
+            {% set startRow = true %}
+            {% set postCounter = 0 %}
+        {% endif %}
+    {% endfor %}
+</div>

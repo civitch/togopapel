@@ -1,0 +1,24 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Ajout pack {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content-pack">
+        <div class="container">
+            <div class="content-packsuccess-ms">
+                Félicitations! Vous venez d'activer d'activer avec succès le pack {{ pack.title }}.
+                <div class="dep_pcksuc">
+                    <a href="{{ path('announce_new') }}">
+                        <i class="far fa-plus-square"></i>
+                        Déposer une annonce
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

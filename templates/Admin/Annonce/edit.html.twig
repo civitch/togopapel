@@ -1,0 +1,180 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Modification annonce {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="form_annonce">
+        <div class="container">
+            <h1 class="add_annonce">Modifier votre annonce</h1>
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="box_form_annonce">
+                        {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form_errors(form) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form_label(form.title) }}
+                                {{ form_widget(form.title) }}
+                                {{ form_errors(form.title) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                {{ form_label(form.categorie, 'Catégorie') }}
+                                {{ form_widget(form.categorie) }}
+                                {{ form_errors(form.categorie) }}
+                            </div>
+                            <div class="block_form_blk">
+                                {{ form_label(form.type, 'Type') }}
+                                {{ form_widget(form.type) }}
+                                {{ form_errors(form.type) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group block_form_state col-md-6">
+                                {{ form_label(form.state, 'Etat') }}
+                                {{ form_widget(form.state) }}
+                                {{ form_errors(form.state) }}
+                            </div>
+                            <div class="form-group block_form_price col-md-6">
+                                {{ form_label(form.price, 'Prix') }}
+                                {{ form_widget(form.price) }}
+                                {{ form_help(form.price) }}
+                                {{ form_errors(form.price) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                {{ form_label(form.ville) }}
+                                {{ form_widget(form.ville) }}
+                                {{ form_errors(form.ville) }}
+                            </div>
+                        </div>
+                        <div id="map-adresse-annonce"></div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                {{ form_label(form.adresse) }}
+                                {{ form_widget(form.adresse) }}
+                                {{ form_errors(form.adresse) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                {{ form_label(form.description) }}
+                                {{ form_widget(form.description) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                        </div>
+                        <div class="row flex justify-content-start flex-wrap">
+                            {#{% for picture in annonce.pictures %}
+                                {% if picture.id is not null %}
+                                <div class="col" style="width: 100px; flex: none; margin: 5px;">
+                                    <img src="{{ vich_uploader_asset(picture, 'imageFile') }}" width="100" alt="">
+                                    <a href="{{ path('admin.picture.delete') }}" data-delete data-id="{{ picture.id }}" data-token="{{ csrf_token('delete' ~ picture.id) }}">Supprimer</a>
+                                </div>
+                                {% endif %}
+                            {% endfor %}#}
+                        </div>
+                        <div class="col-md-12 blkx_img">
+                            <div class="form-group picture_gdo_upload_one">
+                                <span class="rmv_file_one"></span>
+                                <div class="sdh_iblk_img_one">
+                                    <img src="" alt="Image preview" id="img_preview_fil_one"/>
+                                </div>
+                                {{ form_label(form.pictureFileOne ) }}
+                                {{ form_widget(form.pictureFileOne) }}
+                                {{ form_errors(form.pictureFileOne) }}
+                            </div>
+                            <div class="form-group picture_gdo_upload_two">
+                                <span class="rmv_file_two"></span>
+                                <div class="sdh_iblk_img_two">
+                                    <img src="" alt="Image preview" id="img_preview_fil_two"/>
+                                </div>
+                                {{ form_label(form.pictureFileTwo ) }}
+                                {{ form_widget(form.pictureFileTwo) }}
+                                {{ form_errors(form.pictureFileTwo) }}
+                            </div>
+                            <div class="form-group picture_gdo_upload_three">
+                                <span class="rmv_file_three"></span>
+                                <div class="sdh_iblk_img_three">
+                                    <img src="" alt="Image preview" id="img_preview_fil_three"/>
+                                </div>
+                                {{ form_label(form.pictureFileThree ) }}
+                                {{ form_widget(form.pictureFileThree) }}
+                                {{ form_errors(form.pictureFileThree) }}
+                            </div>
+                            <div class="form-group picture_gdo_upload_four">
+                                <span class="rmv_file_four"></span>
+                                <div class="sdh_iblk_img_four">
+                                    <img src="" alt="Image preview" id="img_preview_fil_four"/>
+                                </div>
+                                {{ form_label(form.pictureFileFour ) }}
+                                {{ form_widget(form.pictureFileFour) }}
+                                {{ form_errors(form.pictureFileFour) }}
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            {% if form.packStar is defined %}
+                                <div class="col-md-12 form-group">
+                                    {{ form_widget(form.packStar) }}
+                                </div>
+                            {% endif %}
+                            {% if form.packVip is defined %}
+                                <div class="col-md-12 form-group">
+                                    {{ form_widget(form.packVip) }}
+                                </div>
+                            {% endif %}
+                            {% if form.packPremium is defined %}
+                                <div class="col-md-12 form-group">
+                                    {{ form_widget(form.packPremium) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form_label(form.name, 'Nom') }}
+                                {{ form_widget(form.name) }}
+                                {{ form_errors(form.name) }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form_label(form.firstname, 'Prénom') }}
+                                {{ form_widget(form.firstname) }}
+                                {{ form_errors(form.firstname) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form_label(form.indicatifPays) }}
+                                {{ form_widget(form.indicatifPays) }}
+                                {{ form_errors(form.indicatifPays) }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form_label(form.tel, 'Numéro de tél') }}
+                                {{ form_widget(form.tel) }}
+                                {{ form_errors(form.tel) }}
+                            </div>
+                        </div>
+                        {{ form_widget(form.hideTel) }}
+                        <div class="submit_annonce">
+                            {{ form_widget(form.save, {"label" : "Modifier"}) }}
+                        </div>
+                            {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

@@ -1,0 +1,28 @@
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="big_title_advtgs">Bienvenue sur la plateforme</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="text_title_advtgs">Créer un compte pour profiter de tous les avantages gratuitement</span>
+                <span class="spl_advtgs">En quelques secondes c'est fait.</span>
+                <div class="slt_butnn_info">
+                    <div>
+                        <a href="{{ path('register_account_particular') }}" class="btn_butnn">Pour vous-même</a>
+                    </div>
+                    <div>
+                        <a href="{{ path('register_account_pro') }}" class="btn_butnn">Pour votre entreprise</a>
+                    </div>
+                </div>
+                <div class="ardy_ccount">
+                    <span class="ardy_ccount_title">Vous avez déjà un compte ?</span>
+                    <a href="{{ path('admin_auth') }}" class="ardy_ccount_btn" data-dismiss="modal">Connectez - vous ici !</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

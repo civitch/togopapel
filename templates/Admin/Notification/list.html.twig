@@ -1,0 +1,17 @@
+{% if notifications|length != 0 %}
+    <div class="dropdown-item ntf_drp" href="#">
+        {% for notif in notifications %}
+            <a href="{{ path('notification_user_show', {id: notif.id}) }}" {% if notif.readAt %}class="blk_ntf_rdat"{% else %} class="blk_ntf" {% endif %}>
+                <div class="font_ntf"><i class="fa fa-flag"></i></div>
+                <div class="info_drp__notif">
+                    <span class="title_notif_drp">{{ notif.notification.title }}</span>
+                    <span class="content_notif_drp">{{ notif.notification.message }}</span>
+                    <span class="date_notif_drp">{{ notif.createdAt|date('d-m-Y H:i:s') }}</span>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <a href="{{ path('notification_all_liste') }}" class="all_notifications" title="Toutes mes notifications">Toutes mes notifications</a>
+{% else %}
+    <div class="list_ntf_ftr">Vous n'avez aucune notification</div>
+{% endif %}

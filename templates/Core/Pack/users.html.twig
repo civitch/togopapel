@@ -1,0 +1,51 @@
+{% extends 'Core/layout.html.twig' %}
+{% block title %} Gestion des Pack {% endblock %}
+{% block content %}
+
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Gestion des packs activés pour les comptes utilisateurs
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            <div id="m_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped- table-bordered table-hover table-checkable">
+                            <thead>
+                            <tr>
+                                <th>Compte</th>
+                                <th>Pack</th>
+                                <th>Début</th>
+                                <th>Fin</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for pack in userPacks %}
+                                <tr>
+                                    <td>{{ pack.user.email }}</td>
+                                    <td>{{ pack.pack.title }}</td>
+                                    <td>{{ pack.createdAt|date('d-m-Y')}}</td>
+                                    <td>{{ pack.endAt|date('d-m-Y') }}</td>
+                                    <td>
+                                        <a href="{{ path('pack_delete_corporate', {id: pack.id}) }}" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="Annuler">
+                                            <i class="la la-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

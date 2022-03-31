@@ -1,0 +1,25 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Confirmation du compte {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_register">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 class="register_success_title">Votre compte est confirmé avec succès.</h1>
+                    <p class="text_register_success">Bienvenue sur Togopapel, profitez des fonctionnalités et opportunités gratuitement maintenant</p>
+                    <a href="{{path('admin_auth')}}" class="link_register_page">
+                        Connectez - vous ?
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

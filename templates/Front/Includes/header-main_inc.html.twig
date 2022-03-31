@@ -1,0 +1,141 @@
+<header class="main-header">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light {% if app.request.attributes.get('_route') == 'announce_new' or app.request.attributes.get('_route') == 'annonce_info' or app.request.attributes.get('_route') == 'annonce_show' or app.request.attributes.get('_route') == 'annonce_edit' %} bh_ann_du {% endif %}">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('home_project') }}">TogoPapel</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="btn-annonce">
+                        <a class="nav-link" href="{{ path('announce_new') }}">
+                            <img src="{{ asset('build/plus.svg') }}" alt="déposer une annonce"/>
+                            Déposer une annonce
+                        </a>
+                    </li>
+                    <li class="search-link">
+                        <a class="nav-link" href="{{ path('liste_annonce_front') }}">
+                            <img src="{{ asset('build/search.svg') }}" alt="Toutes les recherches"/>
+                            Toutes les recherches
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <div class="dropdown vyuj">
+                            <a class="nav-link connectedDropdown btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="icon-rgt" src="{{ asset('build/bell.svg') }}" alt="utilisateur"/>
+                                Notifications
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="notificationFront">
+                                {{ render(controller('App\\Controller\\Admin\\NotificationController::liste')) }}
+                            </div>
+                            {{ render(controller('App\\Controller\\Admin\\NotificationController::count')) }}
+                        </div>
+                    {% endif %}
+                    <li class="nav-item">
+                        {% if app.user %}
+                            <a class="nav-link" href="{{ path('favoris_owner_liste') }}">
+                                <img class="icon-rgt" src="{{ asset('build/favoris.svg') }}" alt="Favoris"/>
+                                Favoris
+                            </a>
+                        {% else %}
+                            <a class="nav-link" href="{{ path('admin_auth') }}">
+                                <img class="icon-rgt" src="{{ asset('build/favoris.svg') }}" alt="Favoris"/>
+                                Favoris
+                            </a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a class="nav-link" href="{{ path('liste_conversation_admin') }}">
+                                <img class="icon-rgt" src="{{ asset('build/message.svg') }}" alt="messages"/>
+                                Messages
+                            </a>
+                        {% else %}
+                            <a class="nav-link" href="{{ path('admin_auth') }}">
+                                <img class="icon-rgt" src="{{ asset('build/message.svg') }}" alt="messages"/>
+                                Messages
+                            </a>
+                        {% endif %}
+                    </li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <div class="dropdown">
+                            <a class="nav-link connectedDropdown btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="icon-rgt" src="{{ asset('build/user.svg') }}" alt="utilisateur"/>
+                                {% if app.user.name is null and app.user.firstname is null %}
+                                    {{ app.user.email }}
+                                {% else %}
+                                    {% if app.user.name %}
+                                        {{ app.user.name }}
+                                    {% endif %}
+                                    {% if app.user.firstname %}
+                                        {{ app.user.firstname }}
+                                    {% endif %}
+                                {% endif %}
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="connectedUser">
+                                <a class="dropdown-item" href="{{ path('main_dashboard') }}">Tableau de bord</a>
+                                <a class="dropdown-item" href="{{ path('announce_list_user') }}">Annonces</a>
+                                <a class="dropdown-item" href="{{ path('edit_profile') }}">Modifier profil</a>
+                                <a class="dropdown-item" href="{{ path('pack_admin_liste') }}">Les packs</a>
+                                <a class="dropdown-item" href="{{ path('credit_list_admin') }}">Nos Forfaits</a>
+                                <a class="dropdown-item" href="{{ path('admin_wallet_user') }}">Portefeuille</a>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('admin_auth') }}">
+                                <img class="icon-rgt" src="{{ asset('build/user.svg') }}" alt="se connecter"/>
+                                Se connecter
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<header id="mobile" {% if app.request.attributes.get('_route') == 'announce_new' or app.request.attributes.get('_route') == 'annonce_info' or app.request.attributes.get('_route') == 'annonce_show' or app.request.attributes.get('_route') == 'annonce_edit' %} class="bh_ann_du" {% endif %}>
+    <div class="icon_responsive">
+        <img src="{{ asset('build/burger.png') }}" alt="icone mobile">
+    </div>
+    <a class="lg_text_mbs" href="{{ path('home_project') }}">TogoPapel</a>
+</header>
+<div class="comble_negocybat {% if app.request.attributes.get('_route') == 'announce_new' or app.request.attributes.get('_route') == 'annonce_info' or app.request.attributes.get('_route') == 'annonce_show' or app.request.attributes.get('_route') == 'annonce_edit' %} bh_ann_sui{% endif %}">
+</div>
+<section class="menu_responsive_nego {% if app.request.attributes.get('_route') == 'announce_new' or app.request.attributes.get('_route') == 'annonce_info' or app.request.attributes.get('_route') == 'annonce_show' or app.request.attributes.get('_route') == 'annonce_edit' %} bh_ann_sui{% endif %}">
+    <a href="{{ path('home_project') }}" title="Accueil" id="logo_bx_mobile">
+        <img src="{{ asset('build/logogdo.png') }}" alt="logo mobile">
+    </a>
+    <nav id="nav_mobile_gdo">
+        <ul class="list_menu_mob_gdo">
+            <li class="item_mob_gdo"><a href="{{ path('home_project') }}" title="Accueil"><i class="fa fa-home"></i> Accueil</a></li>
+            <li class="item_mob_gdo"><a href="{{ path('announce_new') }}" title="Déposer une annonce"><i class="fa fa-plus-square"></i> Déposer une annonce</a></li>
+            <li class="item_mob_gdo scrh_mlink_gd"><a href="{{ path('liste_annonce_front') }}" title="Rechercher"><i class="fa fa-search"></i> Toutes les recherches</a></li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="item_mob_gdonoti">
+                    <a href="#" title="Notifications" class="dcdwn_dec"><i class="fa fa-bell"></i> Notifications</a>
+                    {{ render(controller('App\\Controller\\Admin\\NotificationController::listeMobile')) }}
+                </li>
+                <li class="item_mob_gdo"><a href="{{ path('favoris_owner_liste') }}" title="Favoris"><i class="fa fa-heart"></i> Favoris</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('liste_conversation_admin') }}" title="Messages"><i class="fa fa-comments"></i> Messages</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('liste_conversation_admin') }}" title="Tableau de bord"><i class="fa fa-tachometer-alt"></i> Tableau de bord</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('announce_list_user') }}" title="Annonces"><i class="fa fa-comments"></i> Annonces</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('pack_admin_liste') }}" title="Les packs"><i class="fa fa-comments"></i> Les packs</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('credit_list_admin') }}" title="Nos forfaits"><i class="fa fa-comments"></i> Nos Forfaits</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('admin_wallet_user') }}" title="Portefeuille"><i class="fa fa-money-bill-wave"></i> Portefeuille</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('account_profile') }}" title="Mon profil"><i class="fa fa-user"></i> Mon Profil</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('edit_profile') }}" title="Editer profil"><i class="fa fa-user"></i> Editer profil</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('edit_profile_password') }}" title="Réinitialiser mot de passe"><i class="fa fa-key"></i> Modifier mot de passe</a></li>
+            {% else %}
+                <li class="item_mob_gdo"><a href="{{ path('admin_auth') }}" title="Messages"><i class="fa fa-comments"></i> Messages</a></li>
+                <li class="item_mob_gdo"><a href="{{ path('admin_auth') }}" title="Favoris"><i class="fa fa-heart"></i> Favoris</a></li>
+                <li class="item_mob_gdo auth_mlink_gd"><a href="{{ path('admin_auth') }}" title="Se connecter"><i class="fa fa-user"></i> Se connecter</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+</section>

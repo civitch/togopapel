@@ -1,0 +1,324 @@
+{% extends 'Front/layout.html.twig' %}
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block title %}Messagerie{% endblock %}
+{% block body %}
+    <main class="content-messages">
+        <div class="container">
+            {% if conversations is empty %}
+                <span class="nginum_ms">Aucune conversation</span>
+            {% else %}
+                <h1 class="title_messagerie">Liste des conversations</h1>
+                <div class="row content_messagerie_conver">
+                    <div class="col-md-4" id="list_ms_cv_cnv">
+                        <div id="list_ms_conv">
+                            {% for conversation in conversations %}
+                                <a data-role="conv" class="info_ms_conv" data-id="{{ conversation.id }}">
+                                <span class="img_ms_conv_oc">
+                                    {% if conversation.annonce.picture %}
+                                        <img src="{{ vich_uploader_asset(conversation.annonce.picture, 'imageFile') }}" alt="{{ conversation.annonce.title }}" />
+                                    {% else %}
+                                        <img src="{{ '/images/empty/empty.jpg' }}"  alt="{{ conversation.annonce.title }}">
+                                    {% endif %}
+                                </span>
+                                    <div class="message_annonce_user">
+                                    <span class="names_conv">
+                                        {% set deliveryUser = '' %}
+                                        {% set deliveryUser2 = '' %}
+                                        {% for ms in conversation.messages %}
+                                            {% set deliveryUser = ms.sender %}
+                                            {% set deliveryUser2 = ms.receiver %}
+                                        {% endfor %}
+                                        {% if deliveryUser != app.user and deliveryUser2 == app.user %}
+                                            {% if deliveryUser.name or deliveryUser.firstname %}
+                                                {% if deliveryUser.name %}
+                                                    {{ deliveryUser.name }}
+                                                {% endif %}
+                                                {% if deliveryUser.firstname %}
+                                                    {{ deliveryUser.firstname }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ deliveryUser.email }}
+                                            {% endif %}
+                                        {% else %}
+                                            {% if deliveryUser2.name or deliveryUser2.firstname %}
+                                                {% if deliveryUser2.name %}
+                                                    {{ deliveryUser2.name }}
+                                                {% endif %}
+                                                {% if deliveryUser2.firstname %}
+                                                    {{ deliveryUser2.firstname }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ deliveryUser2.email }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
+                                        <span class="message_annonce_title">{{ conversation.annonce.title }}</span>
+                                        <span class="hour_conv">
+                                        {% if conversation.updatedAt %}
+                                            {{ conversation.updatedAt|date('d-m-Y H:i:s') }}
+                                        {% else %}
+                                            {{ conversation.createdAt|date('d-m-Y H:i:s') }}
+                                        {% endif %}
+                                    </span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-8" id="brd_ms_conv">
+                        <div class="box_ms_conv_dtl">
+                            <div class="mss_conv_dtl"></div>
+                            <form class="send_ms_conversation" method="post" action="{{ path('message_tchat_admin') }}">
+                                <div class="txt_area_conv">
+                                    <textarea class="text_area_blk_ms" id="content_ms_sd" name="content" disabled></textarea>
+                                </div>
+                                <input type="hidden" id="conv_ms" name="conversation" />
+                                <div class="btn_submit_ms_blk">
+                                    <button class="btn_submit_ms" disabled><i class="fa fa-paper-plane"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+    <main class="content-messages-mobile">
+        <div class="container">
+            <h1 class="title_messagerie_mobile">Mes conversations</h1>
+            <div class="liste_mbs_">
+                <div class="box_ms_conv_mbs_">
+                    <div class="mss_conv_dtl_mbs_"></div>
+                    <form class="send_ms_conversation_mbs_" method="post" action="{{ path('message_tchat_admin') }}">
+                        <div class="txt_area_conv_mbs">
+                            <textarea class="text_area_blk_mbs_" id="content_sd_mbs_" name="content"></textarea>
+                        </div>
+                        <input type="hidden" id="conv_ms_mbs_" name="conversation" />
+                        <div class="btn_submit_ms_blk_mbs_">
+                            <button class="btn_submit__mbs_"><i class="fa fa-paper-plane-o"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <div id="list_ms_conv_mbs">
+                    {% for conversation in conversations %}
+                        <a data-role="convmbs" class="info_ms_convmbs" data-id="{{ conversation.id }}">
+                            <span class="img_ms_conv_oc_mbs_">
+                                {% if conversation.annonce.picture %}
+                                    <img src="{{ vich_uploader_asset(conversation.annonce.picture, 'imageFile') }}" alt="{{ conversation.annonce.title }}" />
+                                {% else %}
+                                    <img src="{{ '/images/empty/empty.jpg' }}"  alt="{{ conversation.annonce.title }}">
+                                {% endif %}
+                            </span>
+                            <div class="message_annonce_user_mbs_">
+                                    <span class="names_conv_mbs_">
+                                        {% set deliveryUser = '' %}
+                                        {% set deliveryUser2 = '' %}
+                                        {% for ms in conversation.messages %}
+                                            {% set deliveryUser = ms.sender %}
+                                            {% set deliveryUser2 = ms.receiver %}
+                                        {% endfor %}
+                                        {% if deliveryUser != app.user and deliveryUser2 == app.user %}
+                                            {% if deliveryUser.name or deliveryUser.firstname %}
+                                                {% if deliveryUser.name %}
+                                                    {{ deliveryUser.name }}
+                                                {% endif %}
+                                                {% if deliveryUser.firstname %}
+                                                    {{ deliveryUser.firstname }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ deliveryUser.email }}
+                                            {% endif %}
+                                        {% else %}
+                                            {% if deliveryUser2.name or deliveryUser2.firstname %}
+                                                {% if deliveryUser2.name %}
+                                                    {{ deliveryUser2.name }}
+                                                {% endif %}
+                                                {% if deliveryUser2.firstname %}
+                                                    {{ deliveryUser2.firstname }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ deliveryUser2.email }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
+                                <span class="message_annonce_title_mbs">{{ conversation.annonce.title }}</span>
+                                <span class="hour_conv_mbs">
+                                        {% if conversation.updatedAt %}
+                                            {{ conversation.updatedAt|date('d-m-Y H:i:s') }}
+                                        {% else %}
+                                            {{ conversation.createdAt|date('d-m-Y H:i:s') }}
+                                        {% endif %}
+                                    </span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="back_mbs">
+                    <a  data-role="back_mbs_role">
+                        <i class="fa fa-undo"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function(){
+            function loadMs() {
+                const $id_conv = $('#conv_ms').val();
+                $.ajax({
+                    url: Routing.generate('all_messages_users'),
+                    method: 'POST',
+                    data: {conv: $id_conv}
+                }).done(function(data){
+                    $('.mss_conv_dtl').html(data);
+                    console.log('ok response');
+                })
+            }
+            function loadMs_mbs() {
+                const $id_conv_mbs = $('#conv_ms_mbs_').val();
+                $.ajax({
+                    url: Routing.generate('all_messages_users'),
+                    method: 'POST',
+                    data: {conv: $id_conv_mbs}
+                }).done(function(data){
+                    $('.mss_conv_dtl_mbs_').html(data);
+                    console.log('ok response');
+                })
+            }
+
+            $('.back_mbs').on('click', '[data-role="back_mbs_role"]', function(e) {
+                e.preventDefault();
+                // on cache ce block
+                $('#list_ms_conv_mbs').css('display', 'block');
+                $('.box_ms_conv_mbs_').css('display', 'none');
+                $('.back_mbs').css('display', 'none');
+            });
+
+                $('#list_ms_conv_mbs').on('click', 'a[data-role="convmbs"]', function(e){
+                e.preventDefault();
+                // on cache ce block
+                $('#list_ms_conv_mbs').css('display', 'none');
+                $('.back_mbs').css('display', 'block');
+                $('.box_ms_conv_mbs_').css('display', 'block');
+
+                // on  affiche la liste de traitement de message
+                const $id_conv_mbs = $(this).data('id');
+                $('#conv_ms_mbs_').val($id_conv_mbs);
+                $.ajax({
+                    url: Routing.generate('all_messages_users'),
+                    method: 'POST',
+                    data: {conv: $id_conv_mbs}
+                }).done((data) => {
+                    $('.mss_conv_dtl_mbs_').html(data);
+                }).fail((jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 404:
+                            console.log(jqXHR.responseJSON.error);
+                            break;
+                        default:
+                            console.log('erreur serveur');
+                    }
+                });
+                setInterval(loadMs_mbs, 15000);
+            });
+            // Récupérer la liste des messages liée à une conversation
+            $('#list_ms_conv').on('click', 'a[data-role="conv"]', function (e) {
+                e.preventDefault();
+                $('.text_area_blk_ms').removeAttr('disabled');
+                $('.btn_submit_ms').removeAttr('disabled' );
+                const $id_conv = $(this).data('id');
+                $('#conv_ms').val($id_conv);
+
+                $.ajax({
+                    url: Routing.generate('all_messages_users'),
+                    method: 'POST',
+                    data: {conv: $id_conv}
+                }).done((data) => {
+                    $('.mss_conv_dtl').html(data);
+                }).fail((jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 404:
+                            console.log(jqXHR.responseJSON.error);
+                            break;
+                        default:
+                            console.log('erreur serveur');
+                    }
+                });
+                setInterval(loadMs, 15000);
+            });
+
+
+            //envoyer un message
+            $('.send_ms_conversation').on('submit', function (e) {
+                e.preventDefault();
+                const $content = $('#content_ms_sd').val();
+                const $id_conv = $('#conv_ms').val();
+                if($content === "")
+                {
+                    console.log('veuillez saisir un message');
+                    return false;
+                }
+                let data= {};
+                data['content'] = $content;
+                data['conversation'] = $id_conv;
+                $.ajax({
+                    url: Routing.generate('message_tchat_admin'),
+                    method: 'POST',
+                    data: data
+                }).done(function () {
+                    $('#content_ms_sd').val('');
+                    loadMs();
+                }).fail((jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 404:
+                            console.log(jqXHR.responseJSON.error);
+                            break;
+                        default:
+                            console.log('erreur serveur');
+                    }
+                });
+            });
+
+            $('.send_ms_conversation_mbs_').on('submit', function (e) {
+                e.preventDefault();
+                const $content_mbs_ = $('#content_sd_mbs_').val();
+                const $id_conv_mbs_ = $('#conv_ms_mbs_').val();
+                if($content_mbs_ === "")
+                {
+                    console.log('veuillez saisir un message');
+                    return false;
+                }
+                let data = {};
+                data['content'] = $content_mbs_;
+                data['conversation'] = $id_conv_mbs_;
+                $.ajax({
+                    url: Routing.generate('message_tchat_admin'),
+                    method: 'POST',
+                    data: data
+                }).done(function () {
+                    $('#content_sd_mbs_').val('');
+                    loadMs_mbs();
+                }).fail((jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 404:
+                            console.log(jqXHR.responseJSON.error);
+                            break;
+                        default:
+                            console.log('erreur serveur');
+                    }
+                });
+            });
+        })
+    </script>
+
+{% endblock %}
+
+

@@ -1,0 +1,56 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} FAQ {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_homepage">
+        <div class="container">
+            <h1 class="title_h_big">Faq</h1>
+            {% if cat.etiquettes is not null %}
+                {% for etiquette in cat.etiquettes %}
+                    <span class="title_faq">{{ etiquette.title }}</span>
+                    <div class="accordion" id="accordion{{ etiquette.id }}">
+                    {% for post in etiquette.posttypes %}
+                        {% if loop.index0 %}
+                            <div class="card">
+                                <div class="card-header" id="heading{{ post.id }}">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ post.id }}" aria-expanded="true" aria-controls="collapse{{ post.id }}">
+                                            {{ post.title }} <span class="arrow_dwn"><i class="fas fa-chevron-circle-down"></i></span> <span class="arrow_up"><i class="fas fa-chevron-circle-up"></i></span>
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapse{{ post.id }}" class="collapse show" aria-labelledby="heading{{ post.id }}" data-parent="#accordion{{ etiquette.id }}">
+                                    <div class="card-body">
+                                        {{ post.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="card">
+                                <div class="card-header" id="heading{{ post.id }}">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ post.id }}" aria-expanded="true" aria-controls="collapse{{ post.id }}">
+                                            {{ post.title }} <span class="arrow_dwn"><i class="fas fa-chevron-circle-down"></i></span> <span class="arrow_up"><i class="fas fa-chevron-circle-up"></i></span>
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapse{{ post.id }}" class="collapse" aria-labelledby="heading{{ post.id }}" data-parent="#accordion{{ etiquette.id }}">
+                                    <div class="card-body">
+                                        {{ post.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

@@ -1,0 +1,29 @@
+<div class="modal fade" id="addVilleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        {{ form_start(form) }}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajout ville</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="form-group">
+                        {{ form_row(form.title) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.region) }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Fermer</button>
+                {{ form_widget(form.save)}}
+            </div>
+        </div>
+            {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+</div>

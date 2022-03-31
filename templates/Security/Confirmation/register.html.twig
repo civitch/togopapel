@@ -1,0 +1,29 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Compte créé {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_register">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 class="register_success_title">Votre compte a créé avec succès.</h1>
+                    <p class="text_register_success"><strong>À votre Attention:</strong> 
+                    <br/>Vous avez reçu un message dans <strong>votre boîte mail </strong> contenant un lien pour confirmer votre compte. <br/>
+                    Cliquez dessus pour compléter votre inscription avant de pourvoir vous connecter.<br/>
+
+Si vous n'avez toujours pas encore reçu de mail, consultez la boîte de messages indésirables (spams) ou patientez quelques minutes. </p>
+                    <a href="{{path('home_project')}}" class="link_back_homepage">
+                        Retour à l'accueil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

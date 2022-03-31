@@ -1,0 +1,20 @@
+<div class="col-md-3 mapp_v  kvill d-none d-md-block">
+    <div class="map__list_godo" id="map_list">
+        <ul>
+            {% for ville in villes %}
+                <li><a href="{{path('liste_annonce_ville_front', {slug: ville.slug})}}" data-target="list-{{ ville.firstRegion }}" data-id="{{ loop.index }}">{{ ville.title }}</a> </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="col-md-12 d-md-none">
+    <div class="mb_ville_home">
+        <select id="dropdwn_city_home" class="js-select-single">
+            <option value="">Sélectionner une ville</option>
+            {% for ville in villes %}
+                <option value="{{path('liste_annonce_ville_front', {slug: ville.slug})}}">{{ ville.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+

@@ -1,0 +1,102 @@
+{% extends 'Core/layout.html.twig' %}
+{% block title %} Liste des administrateurs {% endblock %}
+{% block content %}
+
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Basic Example
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="{{ path('register_corporate') }}" class="btn btn-accent m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
+												<span>
+													<i class="la la-plus"></i>
+													<span>Nouvel Utilisateur</span>
+												</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div id="m_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped- table-bordered table-hover table-checkable" id="users_admins">
+                            <thead>
+                            <tr>
+                                <th>Nom et prénom</th>
+                                <th>Ajouté le</th>
+                                <th>Email</th>
+                                <th>Département</th>
+                                <th>Status</th>
+                                <th>Dernière connexion</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for admin in admins %}
+                                    <tr>
+                                        <td>
+                                            {% if admin.name is null and admin.firstname is null %}
+                                                Non référencé
+                                            {% else %}
+                                                {% if admin.name %}
+                                                    {{ admin.name }}
+                                                {% endif %}
+                                                {% if admin.firstname %}
+                                                    {{ admin.firstname }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ admin.createdAt|date('d-m-Y') }}</td>
+                                        <td>{{ admin.email }}</td>
+                                        <td>{{ admin.department.title }}</td>
+                                        <td>{% if admin.enabled %} Actif {% else %} Non actif {% endif %}</td>
+                                        <td>
+                                            {% if admin.lastLogin is not null %}
+                                                {{ admin.lastLogin|date('d-m-Y') }} à {{ admin.lastLogin|date('H:i:s') }}
+                                            {% else %}
+                                                Pas encore
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="dropdown">
+                                                <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" aria-expanded="false">
+                                                  <i class="la la-ellipsis-h"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-32px, 27px, 0px);">
+                                                    <a class="dropdown-item" href="{{ path('forget_password_corporate', {id: admin.id}) }}"><i class="la la-edit"></i>Mot de passe oublié ?</a>
+                                                    <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Update Status</a>
+                                                    <a class="dropdown-item" href="#"><i class="la la-print"></i> Generate Report</a>
+                                                </div>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

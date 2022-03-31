@@ -1,0 +1,258 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Annonces {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <section class="bxhsL"></section>
+    <section class="content_annonces_liste">
+        <div class="container">
+            <!-- Formulaire de recherche -->
+            <div class="box-search-main">
+                {{ form_start(form, {'action': path('liste_annonce_front'), 'method': 'GET'}) }}
+                {{ form_row(form.type)}}
+                <div class="boxes-searches">
+                    {{ form_row(form.title)}}
+                    {{ form_row(form.ville)}}
+                    {{ form_row(form.categorie)}}
+                </div>
+                <div class="boxes-prices-search">
+                    {{ form_row(form.priceMin)}}
+                    {{ form_row(form.priceMax)}}
+                </div>
+                <button type="submit" class="search-button-main">
+                    Rechercher {% if taille  %} {{ taille}}{% else %} {% if annonces|length  == 1 %} (1 résultat) {% elseif annonces|length <= 0 %} (0 résultat){% else %} ({{ annonces|length }} résultats){% endif %} {% endif %} 
+                    <!--span></span-->
+                </button>
+            </div>
+
+            <div class="filter_bl_checkpoint">
+                <div class="lst__bl_checkpoint">
+                    <span>Annonces disponible sur le site:</span>
+                    <span>{% if taille  %} {{ taille}}{% else %} {% if annonces|length  == 1 %} 1 {% elseif annonces|length <= 0 %} 0 {% else %} {{ annonces|length }}{% endif %}  {% endif %}</span>
+                    <!--span></span-->
+                </div>
+                <div class="fit__bl_checkpoint">
+                    <span>{{ form_row(form.particulier) }}</span>
+                </div>
+                <div class="fit__bl_checkpoint">
+                    <span>{{ form_row(form.profesional) }}</span>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+            <div class="bx_button_dr">
+                <a class="button_dra" href="{{ path('announce_new') }}">
+                    <i class="fa fa-plus-square"></i>
+                    Déposer une annonce
+                </a>
+            </div>
+            <!-- fin formulaire de recherche-->
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    {% for annonce in annonces %}
+                        {% if annonce.packVip %}
+                            <div class="block_annonce_vip">
+                                <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="blk_ann_img">
+                                    {% if annonce.picture %}
+                                        <img src="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}" alt="{{ annonce.title }}" />
+                                    {% else %}
+                                        <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ annonce.title }}">
+                                    {% endif %}
+                                </a>
+                                <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="content_blk_ann">
+                                    <span class="title_blk_ann">{{ annonce.title|capitalize|slice(0, 30) }}</span>
+                                    {% if annonce.price %}
+                                        <span class="price_blk_ann">{{ annonce.priceFormat }}</span>
+                                    {% endif %}
+                                    <div class="infos_annonce_frt">
+                                        <p class="adresse_blk_ann_vip"><i class="fa fa-map-marker-alt"></i> {{ annonce.adresse|slice(0, 60) }}</p>
+                                        <p class="date_blk_ann_vip"><i class="fa fa-clock"></i>
+                                            {% set differenceVip = date(annonce.createdAt).diff(date()) %}
+                                            {% set leftDaysVip = differenceVip.days %}
+                                            {% if leftDaysVip <= 1 %}
+                                                Aujourd'hui
+                                            {% elseif leftDaysVip > 1 and leftDaysVip <= 2 %}
+                                                Hier
+                                            {% elseif leftDaysVip >= 3 and leftDaysVip <= 7 %}
+                                                Il y a {{ leftDaysVip }}  jours
+                                            {% else %}
+                                                {{ annonce.createdAt|date('d-m-Y') }}
+                                            {% endif %}
+                                        </p>
+                                        <p class="cat_blk_ann">{{ annonce.categorie.title }}</p>
+                                        <span class="bnd_vip">Vip</span>
+                                    </div>
+                                </a>
+                                <div class="fav_blk_ann">
+                                    {% if app.user %}
+                                        {% if annonce in app.user.favoris %}
+                                            <a href="#" data-role="delete-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                            <a href="#" data-role="add-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ path('admin_auth')}}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% for annonce in annonces %}
+                        {% if annonce.packStar  %}
+                            <div class="block_annonce_star">
+                                <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="blk_ann_img">
+                                    {% if annonce.picture %}
+                                        <img src="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}" alt="{{ annonce.title }}"/>
+                                    {% else %}
+                                        <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ annonce.title }}">
+                                    {% endif %}
+                                </a>
+                                <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="content_blk_ann">
+                                    <span class="title_blk_ann_star">{{ annonce.title|capitalize|slice(0, 30) }}</span>
+                                    {% if annonce.price %}
+                                        <span class="price_blk_ann_star">{{ annonce.priceFormat }}</span>
+                                    {% endif %}
+                                    <div class="infos_annonce_frt">
+                                        <p class="adresse_blk_ann_star"><i class="fa fa-map-marker-alt"></i> {{ annonce.adresse|slice(0, 60) }}</p>
+                                        <p class="date_blk_ann_star"><i class="fa fa-clock"></i>
+                                            {% set differenceStar = date(annonce.createdAt).diff(date()) %}
+                                            {% set leftDaysStar = differenceStar.days %}
+                                            {% if leftDaysStar <= 1 %}
+                                                Aujourd'hui
+                                            {% elseif leftDaysStar > 1 and leftDaysStar <= 2 %}
+                                                Hier
+                                            {% elseif leftDaysStar >= 3 and leftDaysStar <= 7 %}
+                                                Il y a {{ leftDaysStar }}  jours
+                                            {% else %}
+                                                {{ annonce.createdAt|date('d-m-Y') }}
+                                            {% endif %}
+                                        </p>
+                                        <p class="cat_blk_ann_star">{{ annonce.categorie.title }}</p>
+                                        <span class="bnd_star">Star</span>
+                                    </div>
+                                </a>
+                                <div class="fav_blk_ann">
+                                    {% if app.user %}
+                                        {% if annonce in app.user.favoris %}
+                                            <a href="#" data-role="delete-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                            <a href="#" data-role="add-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ path('admin_auth')}}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            {% if not annonce.packPremium and not annonce.packStar and not annonce.packVip %}
+                                <div class="block_annonce">
+                                    <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="blk_ann_img">
+                                        {% if annonce.picture %}
+                                            <img src="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}" alt="{{ annonce.title }}"/>
+                                        {% else %}
+                                            <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ annonce.title }}">
+                                        {% endif %}
+                                    </a>
+                                    <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="content_blk_ann">
+                                        <span class="title_blk_ann">{{ annonce.title|capitalize|slice(0, 30) }}</span>
+                                        {% if annonce.price %}
+                                            <span class="price_blk_ann">{{ annonce.priceFormat }}</span>
+                                        {% endif %}
+                                        <div class="infos_annonce_frt">
+                                            <p class="adresse_blk_ann"><i class="fa fa-map-marker-alt"></i> {{ annonce.adresse|slice(0, 60) }} </p>
+                                            <p class="date_blk_ann"><i class="fa fa-clock"></i>
+                                                {% set difference = date(annonce.createdAt).diff(date()) %}
+                                                {% set leftDays = difference.days %}
+                                                {% if leftDays  <= 1  %}
+                                                    Aujourd'hui
+                                                {% elseif leftDays > 1 and leftDays <= 2 %}
+                                                    Hier
+                                                {% elseif leftDays >= 3 and leftDays <= 7 %}
+                                                    Il y a {{ leftDays }}  jours
+                                                {% else %}
+                                                    {{ annonce.createdAt|date('d-m-Y') }}
+                                                {% endif %}
+                                            </p>
+                                            <p class="cat_blk_ann">{{ annonce.categorie.title }}</p>
+                                        </div>
+                                    </a>
+                                    <div class="fav_blk_ann">
+                                        {% if app.user %}
+                                            {% if annonce in app.user.favoris %}
+                                                <a href="#" data-role="delete-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart"></i></a>
+                                            {% else %}
+                                                <a href="#" data-role="add-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                            {% endif %}
+                                        {% else %}
+                                            <a href="{{ path('admin_auth')}}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    {% for annonce in annonces %}
+                        {% if annonce.packPremium %}
+                            <div class="blk_premium_annonce">
+                                <span class="bdn_premium_ann">Premium</span>
+                                <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="blk_ann_img_premium">
+                                    {% if annonce.picture %}
+                                        <img src="{{ vich_uploader_asset(annonce.picture, 'imageFile') }}" alt="{{ annonce.title }}"/>
+                                    {% else %}
+                                        <img src="{{ '/images/empty/empty.jpg' }}" class="img_premium_annonce_frt" alt="{{ annonce.title }}" />
+                                    {% endif %}
+                                </a>
+                                <a href="{{ path('annonce_info', {slug: annonce.slug}) }}" class="blk_ctn_premium">
+                                    <span class="blk_ctn_pr_title">{{ annonce.title|capitalize|slice(0, 20) }}</span>
+                                    {% if annonce.price %}
+                                        <span class="price_blk_ann_premium">{{ annonce.priceFormat }}</span>
+                                    {% endif %}
+                                    <div class="inf_blk_ann_prm">
+                                        <span class="blk_ctn_pr_address"><i class="fa fa-map-marker-alt"></i> {{ annonce.adresse|slice(0, 50) }}</span>
+                                        <span class="blk_ctn_pr_date"><i class="fa fa-clock"></i>
+                                            {% set differencePremium = date(annonce.createdAt).diff(date()) %}
+                                            {% set leftDaysPremium = differencePremium.days %}
+                                            {% if leftDaysPremium <= 1 %}
+                                                Aujourd'hui
+                                            {% elseif leftDaysPremium > 1 and leftDaysPremium <= 2 %}
+                                                Hier
+                                            {% elseif leftDaysPremium >= 3 and leftDaysPremium <= 7 %}
+                                                Il y a {{ leftDaysPremium }}  jours
+                                            {% else %}
+                                                {{ annonce.createdAt|date('d-m-Y') }}
+                                            {% endif %}
+                                        </span>
+                                        <span class="blk_ctn_pr_cat">{{ annonce.categorie.title }}</span>
+                                    </div>
+                                </a>
+                                <div class="fav_blk_ann_premium">
+                                    {% if app.user %}
+                                        {% if annonce in app.user.favoris %}
+                                            <a href="#" data-role="delete-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                            <a href="#" data-role="add-favoris"  data-id="{{ annonce.id }}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ path('admin_auth')}}" class="favoris-premium-like"><i class="fa fa-heart-o"></i></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="navigation">
+                {{ knp_pagination_render(annonces) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}
+

@@ -1,0 +1,47 @@
+{% extends 'Front/layout.html.twig' %}
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block title %}Conversation{% endblock %}
+{% block body %}
+    <main class="content-messages_">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="ctn_mess_annonce_cv">
+                        <span class="resume_annonce">Détail de l'annonce</span>
+                        <span class="title_rs_">{{ annonce.title|capitalize }}</span>
+                        {% if annonce.price %}
+                            <span class="price_rs_">{{ annonce.priceFormat }} F cfa</span>
+                        {% endif %}
+                        <span class="date_rs_">Ajouté le {{ annonce.createdAt|date('d-m-Y') }}</span>
+                        <hr>
+                        <div class="ctn_rs_">
+                            {{ annonce.description }}
+                        </div>
+                        <span class="adresse_rs_">{{ annonce.adresse }}</span>
+                        <span class="ville_rs_">{{ annonce.ville.title }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="content_form_message">
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_row(form.content) }}
+                        </div>
+                        <div>
+                            {{ form_widget(form.save) }}
+                        </div>
+                            {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}
+
+

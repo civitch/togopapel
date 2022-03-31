@@ -1,0 +1,44 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Forfait {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="forfait">
+        <div class="container">
+            <h1 class="titile-forfait">Liste des demandes de GDC </h1>
+            <table class="table table-striped table-bordered table-hover table-gdo" id="demande_credit_list">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Montant</th>
+                    <th>GDC</th>
+                    <th>Etat</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for demande in demandes %}
+                    <tr>
+                        <td>{{ demande.createdAt|date('d-m-Y') }}</td>
+                        <td>{{ demande.credit.montant|number_format(0, ',', ' ') }}</td>
+                        <td>{{ demande.credit.gdc }}</td>
+                        <td>
+                            {% if demande.enabled == 1 %}
+                                <span class="badge badge-success">Validé</span>
+                            {% elseif demande.enabled == 2 %}
+                                <span class="badge badge-danger">Refusé</span>
+                            {% else %}
+                                <span class="badge badge-info">En attente de validation</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

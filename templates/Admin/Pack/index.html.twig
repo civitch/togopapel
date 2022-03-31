@@ -1,0 +1,51 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Liste des packs  {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content-pack">
+        <div class="container">
+            <h1 class="title-ctn-pack">
+                Découvrez nos différents packs
+            </h1>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="content-block-packs">
+                {% for pack in packs %}
+                    <div class="block-pack">
+                        <div class="infos-pack">
+                            <span class="title-pack">
+                                {{ pack.title }}
+                            </span>
+                            <span class="price-duration-pack">
+                                {{ pack.price }} GDC / {{ pack.duration }} jours
+                            </span>
+                        </div>
+                        <div class="text-pack">
+                            {{ pack.description }}
+                        </div>
+                        {% if not app.user.pack(pack) %}
+                            <a href="{{ path('pack_admin_show', {id: pack.id, slug: pack.slug}) }}" class="button-pack">
+                                Acheter
+                            </a>
+                        {% else %}
+                            <span class="button-pack">
+                                Activé
+                            </span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

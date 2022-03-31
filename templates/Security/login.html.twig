@@ -1,0 +1,61 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Authentification {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+<main class="authentication">
+    <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }} </div>
+        {% endfor %}
+        <div class="box-autentication">
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <h1 class="auth-title-welcome">Bienvenue sur Togopapel</h1>
+                <span class="auth-texte-welcome">Connectez-vous pour profiter des opportunités</span>
+                {% for message in app.flashes('authenticationFailure') %}
+                    <div class="auth-fail-alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('admin_register_succes') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" placeholder="Saisir votre identifiant" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+                </div>
+                <div class="form-group passwd_auth">
+                    <label for="inputPassword">Mot de passe</label>
+                    <input  type="password" placeholder="Saisir votre mot de passe" name="password" id="inputPassword" class="form-control" required>
+                    <span class="i_passwd_auth"><i class="fa fa-eye"></i></span>
+                </div>
+                <input type="hidden" name="_csrf_token"  value="{{ csrf_token('authenticate') }}">
+                <div class="checkbox-auth">
+                    <a class="link_forget_password" href="{{ path('password_forget') }}">
+                        Mot de passe oublié ?
+                    </a>
+                    <label class="label_remember_me">
+                        <input type="checkbox" name="_remember_me" class="_remember_me"> Se souvenir de moi
+                    </label>
+                </div>
+
+                <button class="btn-authentication" type="submit">
+                    Se connecter
+                </button>
+                <p class="join_us_account">
+                    <span class="invite_join_us">Vous êtes un nouvel utilisateur ?</span>
+                    <a data-toggle="modal" data-target="#signupModal" class="create-account">Créer un compte</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</main>
+    {% include ('Security/Register/modal_advantages.html.twig') %}
+{% endblock %}

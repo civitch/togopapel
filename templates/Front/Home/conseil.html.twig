@@ -1,0 +1,28 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Conseil de sécurité {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_homepage">
+        <div class="container">
+            <h1 class="title_h_big">Conseil de sécurité</h1>
+            <div class="page_scenar">
+                {% if cat.etiquettes is not null %}
+                    {% for etiquette in cat.etiquettes %}
+                        {% for post in etiquette.posttypes %}
+                            <span class="title_faq">{{ post.title }}</span>
+                            <div class="text-justify">
+                                {{ post.content }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Annonce {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <section class="single-annonce-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <h1 class="sshow_post">{{ annonce.title }}</h1>
+                    <div class="box-carousel-anno_show">
+                        {% if annonce.pictures is not empty %}
+                            <ul class="imgs_lightslider">
+                                {% for picture in annonce.pictures %}
+                                    <li data-thumb="{{ vich_uploader_asset(picture, 'imageFile') }}" >
+                                        <img src="{{ vich_uploader_asset(picture, 'imageFile') }}"  alt="{{ annonce.title }}"/>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="bx_show_enmpty">
+                                <img src="{{ '/images/empty/empty.jpg' }}" class="show_empty_img" alt="{{ annonce.title }}">
+                            </div>
+                        {% endif %}
+                        <div class="content_lightslider">
+                            <span class="title_lightslider">
+                                {{ annonce.title }}
+                            </span>
+                            {% if annonce.price %}
+                                <span class="price_lightslider">
+                                {{ annonce.priceFormat }}
+                            </span>
+                            {% endif %}
+                            <span class="date_lightslider">
+                                {{ annonce.createdAt|date('d/m/Y')}}
+                            </span>
+                            <span class="element_lightslider">
+                                {{ annonce.state }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="content-annonce-show">
+                        {% if annonce.description %}
+                            <span class="title-element-annonce">
+                                Description
+                            </span>
+                            <p class="description-annonce-show">
+                                {{ annonce.description }}
+                            </p>
+                        {% endif %}
+                        <span class="title-element-annonce">
+                            <i class="fas fa-map-marker-alt"></i> {{ annonce.adresse }}
+                        </span>
+                        <div id="adresse-map-annonce" data-lat="{{ annonce.lat }}" data-lng="{{ annonce.lng }}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}
+

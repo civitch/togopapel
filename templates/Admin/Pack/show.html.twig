@@ -1,0 +1,40 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Mes annonces {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content-pack-show">
+        <div class="container">
+            <h1 class="title-ctn-pack">
+                Pack {{ pack.title }}
+            </h1>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <h5 class="card-header">{{pack.title}}</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                {{ pack.description }}
+                            </p>
+                            {% if not app.user.pack(pack) %}
+                                <form method="post" action="{{ url('pack_admin_add', {id: pack.id}) }}">
+                                    <input type="hidden" name="token-pack" value="{{ csrf_token('add-pack-user') }}"/>
+                                    <div class="btn-div-submit">
+                                        <button type="submit" class="button-pack-show">
+                                            Obtenir
+                                        </button>
+                                    </div>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

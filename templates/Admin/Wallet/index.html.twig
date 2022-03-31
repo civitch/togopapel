@@ -1,0 +1,70 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Mon portefeuille {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content-wallet">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-4">
+                    <div class="portefeuille_menu">
+                        <h5 class="title_wallet"><i class="fa fa-money"></i> Portefeuille</h5>
+                        <p class="text_wallet">
+                            Vous possédez actuellement
+                            {% if wallet is not null and wallet >= 0 %}
+                                <strong>{{ wallet }} TPC</strong>
+                            {% else %}
+                                <strong>Aucun TPC</strong>
+                            {% endif %}
+                        </p>
+                        <a href="{{ path('credit_list_admin') }}" class="btn-gdo">
+                            Obtenir des GDC
+                        </a>   <br/>
+
+  <br/>
+   <br/>
+                           <p>TPC (TogoPapel Crédit), est une monnaie virtuelle du site. Les crédits papels servent à rendre l'expérience encore plus intéressante sur Togopapel.com. </p>
+                           <br/>
+                             <a href="https://togopapel.com/faq" class="btn-gdo">
+                           Lire la suite
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-8">
+                    <span class="text_list_wallet">Liste de vos packs actifs</span>
+                    {% if packs is not empty %}
+                        <div class="table-responsive">
+                            <table  class="table table-bordered table-striped table-hover table-gdo">
+                                <thead>
+                                <tr>
+                                    <th>Pack</th>
+                                    <th>GDC</th>
+                                    <th>Durée</th>
+                                    <th>Date de début</th>
+                                    <th>Date de fin</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for pack in packs %}
+                                    <tr>
+                                        <td>{{ pack.pack.title }}</td>
+                                        <td>{{ pack.pack.price }}</td>
+                                        <td>{{ pack.pack.duration }}</td>
+                                        <td>{{ pack.createdAt|date('d-m-Y') }}</td>
+                                        <td>{{ pack.endAt|date('d-m-Y') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+{% endblock %}

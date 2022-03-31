@@ -1,0 +1,68 @@
+{% extends 'Front/layout.html.twig' %}
+{% block title %} Site de petites annonces du Togo {% endblock %}
+
+{% block header %}
+    {% include ('Front/Includes/header-main_inc.html.twig') %}
+{% endblock %}
+{% block body %}
+    <main class="content_homepage">
+         <div class="container">
+            <div class="bx_button_dr_o">
+                <a class="button_dra" href="https://togopapel.com/annonces">
+                    <i class="fa fa-exclamation-circle></i>"></i>
+                    Consulter les dernieres annonces
+                </a>
+            </div>
+
+ <br/>  <h1>
+          Vendez et Achetez au Togo avec les petites annonces</h1>
+           <h2>
+          Togopapel est un site d'annonces totalement 100% gratuit</h2>
+           Peu importe le produit que vous voulez vendre, Togopapel est un carrefour idéal pour trouver rapidement un client.  
+<h3>Tout acheter, Tout Vendre, Tout simplement</h3>
+
+            <div class="container">
+           
+            <div class="row">
+                <div class="col-md-6">
+                    {{ render(controller('App\\Controller\\Front\\HomeController::lastListAnnonce')) }}
+                </div>
+                <div class="col-md-3 mapp_v">
+                    <div class="map-godo" id="map-godo">
+                         <div class="map__image__godo">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  viewBox="0 0 800 2091">
+                                <a id="region-S" xlink:href="{{ path('liste_annonce_region_front', {slug: 'savanes'}) }}" xlink:title="Savanes">
+                                    <path id="TG-S" d="M0.19,0L75.01,30.28L32.19,209.58L231.12,355.75L230.29,459L295.84,525.26L347.04,524.52L370.79,403.01L477.54,383.57L380.54,314.48L388.98,184.71L438.31,59.48L268.48,84.35L268.06,55.1L0.19,0z"/>
+                                </a>
+                                <a id="region-C" xlink:href="{{ path('liste_annonce_region_front', {slug: 'centre'}) }}" xlink:title="Centre">
+                                    <path id="TG-C"  d="M726.59,1152.51L723.25,858L651.17,768.41L479.05,804.39L458.92,880.84L368.43,869.72L266.83,958.47L221.3,979.74L222.02,1004.24L321.29,1102.19L360.86,1181.34L303.86,1220.33L315.69,1349.15L564.9,1313.63L587.31,1237L575.78,1150.63L726.59,1152.51z"/>
+                                </a>
+                                <a id="region-K" xlink:href="{{ path('liste_annonce_region_front', {slug: 'kara'}) }}" xlink:title="Kara">
+                                    <path id="TG-K" d="M651.17,768.41L611.36,664.42L614.59,475.29L477.54,383.57L370.79,403.01L347.04,524.52L295.84,525.26L230.29,459L211.9,461.81L210.8,614.12L175.46,616.61L223.38,644.81L162.83,650.5L192.26,678.92L161.44,710.17L237.3,685.25L286.42,723.17L245.35,878.46L266.83,958.47L368.43,869.72L458.92,880.84L479.05,804.39L651.17,768.41z"/>
+                                </a>
+                                <a id="region-M" xlink:href="{{ path('liste_annonce_region_front', {slug: 'maritime'}) }}" xlink:title="Maritime">
+                                    <path id="TG-M"  d="M554.83,2090.37L799.81,2017.4L711.04,1851.83L710.29,1758.86L577.62,1833.82L528.21,1798.32L447.41,1797.43L430.53,1865.88L360.99,1911.41L383.04,1958.73L471.99,1997.86L554.83,2090.37z"/>
+                                </a>
+                                <a id="region-P" xlink:href="{{ path('liste_annonce_region_front', {slug: 'plateaux'}) }}" xlink:title="Plateaux">
+                                    <path id="TG-P" d="M726.59,1152.51L575.78,1150.63L587.31,1237L564.9,1313.63L315.69,1349.15L319.64,1429.38L271.75,1510.17L332.83,1593.92L313.78,1705.9L271.33,1729.91L360.99,1911.41L430.53,1865.88L447.41,1797.43L528.21,1798.32L577.62,1833.82L710.29,1758.86L697.04,1722.14L735.51,1720.13L726.59,1152.51z"/>
+                                </a>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                {{ render(controller('App\\Controller\\Front\\HomeController::carteListe')) }}
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content-info-homepage">
+                        {{ render(controller('App\\Controller\\Front\\HomeController::mainInfoHome')) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    {% include ('Front/Includes/footer-main_inc.html.twig') %}
+    {% include ('Front/Includes/footer-copyright_inc.html.twig') %}
+{% endblock %}

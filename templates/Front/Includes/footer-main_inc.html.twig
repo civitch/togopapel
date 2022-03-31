@@ -1,0 +1,23 @@
+<section class="categories-footer">
+    {{ render(controller('App\\Controller\\Front\\HomeController::listeRubrique')) }}
+</section>
+<section class="content-bx-foot">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <span class="title_foote_first">A propos de nous</span>
+                <ul class="onord_menu_foote">
+                    <li class="list_menu_footer"><a href="{{ path('qui_sommes_nous_project') }}" class="link_menu_footer" title="Qui sommes-nous ?">Qui sommes-nous ?</a></li>
+                    <li class="list_menu_footer"><a href="{{ path('comment_ca_marche') }}" class="link_menu_footer" title="Comment ça marche">Comment ça marche</a></li>
+                    <li class="list_menu_footer">
+                        <a href="{{ path('conseil_security_project') }}" class="link_menu_footer" title="Conseil de sécurité">Conseil de sécurité</a> / <a href="{{ path('cgu_project') }}" class="link_menu_footer" title="Infos légales et CGU">Infos légales et CGU</a></li>
+                    <li class="list_menu_footer"><a href="{{ path('faq_project') }}" class="link_menu_footer" title="Faq">Faq</a> / <a href="https://togopapel.com/blog/" class="link_menu_footer" title="Blog">Blog</a></li>
+                    <li class="list_menu_footer"><a href="https://doingbuzz.com/" target="_blank" class="link_menu_footer" title="Actualités">Actualités</a></li>
+                    <li class="list_menu_footer"><a href="{{ path('contact_project') }}" class="link_menu_footer" title="Nous contacter">Nous contacter</a></li>
+                </ul>
+            </div>
+            {{ render(controller('App\\Controller\\Front\\HomeController::listeOptionsHome')) }}
+        </div>
+    </div>
+</section>
+
