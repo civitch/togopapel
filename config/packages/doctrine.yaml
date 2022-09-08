@@ -15,7 +15,6 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
-<<<<<<< ours
         dql:
             numeric_functions:
                 ASIN: DoctrineExtensions\Query\Mysql\Asin
@@ -24,7 +23,6 @@ doctrine:
                 PI: DoctrineExtensions\Query\Mysql\Pi
                 COS: DoctrineExtensions\Query\Mysql\Cos
 
-=======
 
 when@test:
     doctrine:
@@ -50,4 +48,3 @@ when@prod:
                     adapter: cache.app
                 doctrine.system_cache_pool:
                     adapter: cache.system
->>>>>>> theirs
