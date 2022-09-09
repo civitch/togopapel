@@ -35,14 +35,14 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
 
     public function supports(Request $request): ?bool
     {
-        return ($request->getPathInfo() === '/login' && $request->isMethod('POST'));
+        return ($request->getPathInfo() === '/auth' && $request->isMethod('POST'));
     }
     
 
     public function authenticate(Request $request): Passport
     {
-        $username   = $request->request->get('email');
-        $password   = $request->request->get('password');
+        $username   = $request->request->get('_username');
+        $password   = $request->request->get('_password');
 
         return new Passport(
             new UserBadge($username),

@@ -71,7 +71,7 @@ class RegisterController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user
-                ->setPassword($this->passwordEncoder->encodePassword($user, $form->getData()->getPassword()))
+                ->setPassword($this->passwordEncoder->hashPassword($user, $form->getData()->getPassword()))
                 ->setConfirmationToken(null)
                 ->setConfirmationAt(new \DateTime())
                 ->setEnabled(true)
