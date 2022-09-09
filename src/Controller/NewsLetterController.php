@@ -103,7 +103,7 @@ use Symfony\Component\Routing\Annotation\Route;
                     $email1="togopapel@gmail.com";
                     $email="liye.yangala@galimatech.com";
                     #$this->createAnnonceMail([$user->getEmail()],$template->getLibelle(),$template->getContent());
-                    #["libelle"=>$template->getLibelle(),"content"=>$template->getContent()];
+                    // #["libelle"=>$template->getLibelle(),"content"=>$template->getContent()];
                 }
             }
             else

@@ -1672,7 +1672,7 @@ main, .single-annonce-main{
 
 
 .submit_newletter{
-    background: url(/build/img/email.svg) no-repeat center;
+    background: url(../img/email.svg) no-repeat center;
     background-size: 50px;
 }
 
@@ -3330,7 +3330,7 @@ header#mobile .icon_responsive img {
     height: 150px;
     border: 1px solid #ef233c;
     border-radius: 5px;
-    background: url(/build/img/ar-camera.svg) no-repeat center center;
+    background: url(../img/ar-camera.svg) no-repeat center center;
     background-size: 50px 50px;
     -webkit-background-size: 50px 50px;
     -moz-background-size: 50px 50px;
@@ -3413,7 +3413,7 @@ header#mobile .icon_responsive img {
 .rmv_file_one, .rmv_file_two, .rmv_file_three, .rmv_file_pack, .rmv_file_four{
     width: 20px;
     height: 20px;
-    background: #fff url(/build/img/img-close.svg) no-repeat center center;
+    background: #fff url(../img/img-close.svg) no-repeat center center;
     background-size: 10px;
     border-radius: 50%;
     position: absolute;
@@ -3480,7 +3480,7 @@ header#mobile .icon_responsive img {
 }
 
 .bg-profile-front{
-    background: #000 url(/build/img/bgoff3.jpg) no-repeat bottom left;
+    background: #000 url(../img/bgoff3.jpg) no-repeat bottom left;
     height: 200px;
     width: 100%;
     background-size: 100% auto;
@@ -3491,7 +3491,7 @@ header#mobile .icon_responsive img {
 }
 
 .bg-profile{
-    background:  #000 url(/build/img/bgoff4.jpg) no-repeat bottom left;
+    background:  #000 url(../img/bgoff4.jpg) no-repeat bottom left;
     height: 200px;
     width: 100%;
     background-size: 100% auto;

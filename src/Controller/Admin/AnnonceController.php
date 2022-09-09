@@ -28,13 +28,12 @@ use Symfony\Component\Mime\Address;
  */
 class AnnonceController extends AbstractController
 {
-    private $mailer;
-    private $senderEmail;
 
-    public function __construct(MailerInterface $mailer, $senderEmail)
+    public function __construct(
+        private MailerInterface $mailer
+    )
     {
         $this->mailer = $mailer;
-        $this->senderEmail = $senderEmail;
     }
     /**
      * @param Request $request
