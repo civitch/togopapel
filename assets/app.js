@@ -13,3 +13,5 @@ import './bootstrap';
 
 // bb -> import old assert
 import './js/app';
+
+console.log(process.env.DB_HOST);

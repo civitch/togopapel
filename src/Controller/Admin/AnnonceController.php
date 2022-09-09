@@ -30,10 +30,10 @@ class AnnonceController extends AbstractController
 {
 
     public function __construct(
-        private MailerInterface $mailer
+        private MailerInterface $mailer, $senderEmail
     )
     {
-        $this->mailer = $mailer;
+        $this->senderEmail = $senderEmail;
     }
     /**
      * @param Request $request

@@ -419,10 +419,12 @@ class AnnonceRepository extends ServiceEntityRepository
 
 
     private function hydratePicture($annonces){
-        // dd($annonces);
-        if(method_exists($annonces, 'getItems'))
+        if( ! is_array($annonces) )
         {
-            $annonces = $annonces->getItems();
+            if(method_exists($annonces, 'getItems'))
+            {
+                $annonces = $annonces->getItems();
+            }
         }
         $pictures = $this->getEntityManager()->getRepository(Picture::class)->findForProperties($annonces);
         foreach ($annonces as $annonce){
