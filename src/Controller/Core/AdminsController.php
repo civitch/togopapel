@@ -12,8 +12,8 @@ use App\Services\App\AppSecurity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
@@ -25,7 +25,7 @@ class AdminsController extends AbstractController
 {
     private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
@@ -68,7 +68,7 @@ class AdminsController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $user
-                ->setPassword($this->passwordEncoder->encodePassword($user, $form->getData()->getPassword()));
+                ->setPassword($this->passwordEncoder->hashPassword($user, $form->getData()->getPassword()));
             $this->addFlash('success', 'Le mot de passe de '.$user->getEmail().' a été modifié avec succès!');
             $em->flush();
             return $this->redirectToRoute('admin_liste_corporate');

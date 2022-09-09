@@ -19,8 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
@@ -44,13 +44,13 @@ class EditProfileController extends AbstractController
     /**
      * @Route("/edit/mot-de-passe", name="edit_profile_password", methods={"GET", "POST"})
      * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param UserPasswordHasherInterface $passwordEncoder
      * @param UserNotification $notification
      * @return RedirectResponse|Response
      */
     public function editPassword(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         UserNotification $notification
     ): Response
     {
@@ -59,7 +59,7 @@ class EditProfileController extends AbstractController
         $form = $this->createForm(ChangePasswordType::class, $changePassword);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($passwordEncoder->encodePassword($user, $changePassword->getNewPassword()));
+            $user->setPassword($passwordEncoder->hashPassword($user, $changePassword->getNewPassword()));
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $notification->accountEdit(

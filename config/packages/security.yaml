@@ -19,9 +19,9 @@ security:
             lazy: true
             # anonymous: lazy
             provider: app_user_provider
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
+            # guard:
+            #     authenticators:
+            #         - App\Security\LoginFormAuthenticator
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 86400
@@ -30,6 +30,7 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 target: admin_auth
+            entry_point: App\Security\LoginFormAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

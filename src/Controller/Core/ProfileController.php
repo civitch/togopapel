@@ -13,8 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class ProfileController
@@ -27,7 +26,7 @@ class ProfileController extends AbstractController
 
     private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
@@ -74,7 +73,7 @@ class ProfileController extends AbstractController
 
         if($formEditPassword->isSubmitted() && $formEditPassword->isValid())
         {
-            $currentUser->setPassword($this->passwordEncoder->encodePassword($currentUser, $changePassword->getNewPassword()));
+            $currentUser->setPassword($this->passwordEncoder->hashPassword($currentUser, $changePassword->getNewPassword()));
             $em->flush();
             $this->addFlash('success', 'Votre mot de passe a été modifié avec succès!');
             return $this->redirectToRoute('profile_corporate_user');

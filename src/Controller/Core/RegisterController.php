@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 /**
@@ -27,7 +27,7 @@ class RegisterController extends AbstractController
 
     private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
@@ -46,7 +46,7 @@ class RegisterController extends AbstractController
         {
             /** @var User $user */
             $user->addRole($form->get('department')->getData()->getRole());
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $appSecurity->randomToken(50)));
+            $user->setPassword($this->passwordEncoder->hashPassword($user, $appSecurity->randomToken(50)));
             $user->setConfirmationToken($appSecurity->randomToken(200));
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

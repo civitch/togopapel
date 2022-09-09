@@ -3,144 +3,93 @@
 namespace App\Security;
 
 use App\Entity\User;
-use App\Services\App\AppSecurity;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
-use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
-use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 
-class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+class LoginFormAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
+
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'admin_auth';
 
-    private $entityManager;
-    private $urlGenerator;
-    private $csrfTokenManager;
-    private $passwordEncoder;
-    private $userRepository;
-    private $flashBag;
-    private $appSecurity;
+    private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        UrlGeneratorInterface $urlGenerator,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder,
-        FlashBagInterface $flashBag,
-        AppSecurity $appSecurity
-    )
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->passwordEncoder = $passwordEncoder;
-        $this->flashBag = $flashBag;
-        $this->appSecurity = $appSecurity;
     }
 
-    public function supports(Request $request)
-    {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route') && $request->isMethod('POST');
-    }
 
-    public function getCredentials(Request $request)
+    public function supports(Request $request): ?bool
     {
-        $credentials = [
-            'email' => $request->request->get('email'),
-            'password' => $request->request->get('password'),
-            'csrf_token' => $request->request->get('_csrf_token'),
-        ];
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['email']
+        return ($request->getPathInfo() === '/login' && $request->isMethod('POST'));
+    }
+    
+
+    public function authenticate(Request $request): Passport
+    {
+        $username   = $request->request->get('email');
+        $password   = $request->request->get('password');
+
+        return new Passport(
+            new UserBadge($username),
+            new PasswordCredentials($password),
+            [
+                //(new RememberMeBadge())->enable(),
+                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+                new RememberMeBadge(),
+            ]
         );
 
-        return $credentials;
+        
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
-        }
-        $user = $this->entityManager->getRepository(User::class)->findEnableUser($credentials['email']);
-        if (!$user) {
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
-        }
-        return $user;
-    }
-
-    public function checkCredentials($credentials, UserInterface $user)
-    {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-    }
-
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function getPassword($credentials): ?string
-    {
-        return $credentials['password'];
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        $user = $token->getUser();
-        $user->setLastLogin(new \DateTime());
-        $this->entityManager->flush();
-        if($user->hasRole($this->appSecurity->getRole('super_admin')) ||
-            $user->hasRole($this->appSecurity->getRole('admin')) ||
-            $user->hasRole($this->appSecurity->getRole('maintenance')) ||
-            $user->hasRole($this->appSecurity->getRole('moderateur'))
-        ){
-            return new RedirectResponse($this->urlGenerator->generate('dashboard_corporate'));
-        }
-        else{
-            return new RedirectResponse($this->urlGenerator->generate('main_dashboard'));
-        }
+        // For example:
+        //return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        return new RedirectResponse($this->urlGenerator->generate('main_dashboard'));
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $ips = $request->getClientIps();
-        $ip = $request->getClientIp();
-        $email = $exception->getToken()->getCredentials()['email'];
-        $password = $exception->getToken()->getCredentials()['password'];
-
-        // envoyer un email
-        return $this->flashBag->add('authenticationFailure', 'Email ou mot de passe incorrecte!');
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
     }
 
-    public function supportsRememberMe()
+    public function start(Request $request, AuthenticationException $authException = null)
     {
-        return true;
+        //$request->getSession()->getFlashBag()->add('note', 'You have to login in order to access this page.');
+        
+        $url = $this->urlGenerator->generate('admin_auth');
+        return new RedirectResponse($url);
     }
 
-
-    protected function getLoginUrl()
-    {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
-    }
+//    public function start(Request $request, AuthenticationException $authException = null): Response
+//    {
+//        /*
+//         * If you would like this class to control what happens when an anonymous user accesses a
+//         * protected page (e.g. redirect to /login), uncomment this method and make this class
+//         * implement Symfony\Component\Security\Http\EntryPoint\AuthenticationEntrypointInterface.
+//         *
+//         * For more details, see https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
+//         */
+//    }
 }
