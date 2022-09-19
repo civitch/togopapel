@@ -64,9 +64,23 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
             return new RedirectResponse($targetPath);
         }
 
+        $user = $token->getUser();
+        $user->setLastLogin(new \DateTime());
+        $this->entityManager->flush();
+        if($user->hasRole($this->appSecurity->getRole('super_admin')) ||
+            $user->hasRole($this->appSecurity->getRole('admin')) ||
+            $user->hasRole($this->appSecurity->getRole('maintenance')) ||
+            $user->hasRole($this->appSecurity->getRole('moderateur'))
+        ){
+            return new RedirectResponse($this->urlGenerator->generate('dashboard_corporate'));
+        }
+        else{
+            // return new RedirectResponse($this->urlGenerator->generate('main_dashboard'));
+        }
+
         // For example:
         //return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse($this->urlGenerator->generate('main_dashboard'));
+        // return new RedirectResponse($this->urlGenerator->generate('main_dashboard'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response

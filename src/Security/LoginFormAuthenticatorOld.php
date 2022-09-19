@@ -109,6 +109,8 @@ class LoginFormAuthenticatorOld extends AbstractFormLoginAuthenticator implement
 
         $user = $token->getUser();
         $user->setLastLogin(new \DateTime());
+
+        dd($user);
         $this->entityManager->flush();
         if($user->hasRole($this->appSecurity->getRole('super_admin')) ||
             $user->hasRole($this->appSecurity->getRole('admin')) ||
