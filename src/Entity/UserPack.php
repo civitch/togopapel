@@ -2,40 +2,29 @@
 
 namespace App\Entity;
 
+use App\Repository\UserPackRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserPackRepository")
- */
+#[ORM\Entity(repositoryClass: UserPackRepository::class)]
 class UserPack
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $endAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userPacks")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\User::class, inversedBy: 'userPacks')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pack", inversedBy="userPacks")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Pack::class, inversedBy: 'userPacks')]
+    #[ORM\JoinColumn(nullable: false)]
     private $pack;
 
     public function __construct()

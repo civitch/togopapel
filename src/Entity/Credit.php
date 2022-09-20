@@ -2,35 +2,26 @@
 
 namespace App\Entity;
 
+use App\Repository\CreditRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CreditRepository")
- */
+#[ORM\Entity(repositoryClass: CreditRepository::class)]
 class Credit
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $montant;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $gdc;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DemandeCredit", mappedBy="credit", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\DemandeCredit::class, mappedBy: 'credit', orphanRemoval: true)]
     private $demandeCredits;
 
     public function __construct()

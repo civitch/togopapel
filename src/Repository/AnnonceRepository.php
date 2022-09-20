@@ -176,7 +176,7 @@ class AnnonceRepository extends ServiceEntityRepository
                 ;
             }
 
-            if($search->getVille())
+            if($search->getVille() !== null)
             {
                 $qb
                     ->innerJoin('a.ville', 'vil')
@@ -194,7 +194,7 @@ class AnnonceRepository extends ServiceEntityRepository
                 ;
             }
 
-            if($search->getCategorie()){
+            if($search->getCategorie() !== null){
                 $qb
                     ->innerJoin('a.categorie', 'cat')
                     ->addSelect('cat')
@@ -419,7 +419,7 @@ class AnnonceRepository extends ServiceEntityRepository
 
 
     private function hydratePicture($annonces){
-        if(method_exists($annonces, 'getItems'))
+        if( ! is_array($annonces) && method_exists($annonces, 'getItems') )
         {
             $annonces = $annonces->getItems();
         }

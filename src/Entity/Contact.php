@@ -8,38 +8,33 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Contact
 {
     /**
-     * @var string
      * @Assert\NotBlank(message="Veuillez saisir votre nom!")
      * @Assert\Length(min=2, max=100)
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
      * @Assert\NotBlank(message="Veuillez saisir votre adresse mail!")
      * @Assert\Email(message="Veuillez saisir une adresse mail valide")
-     * @var string
      */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @Assert\Regex(
      *  pattern="/[0-9]{8,14}/"
      * )
-     * @var string
      */
-    private $tel;
+    private ?string $tel = null;
 
     /**
      * @Assert\NotBlank(message="Veuillez choisir une option!")
-     * @var string
      */
-    private $option;
+    private ?string $option = null;
 
     /**
      * @Assert\NotBlank(message="Veuillez décrire un contenu!")
-     * @var string
      */
-    private $message;
+    private ?string $message = null;
 
     /**
      * @return string

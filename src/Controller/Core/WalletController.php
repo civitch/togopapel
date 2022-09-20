@@ -16,15 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class WalletController
  * @package App\Controller\Core
- * @Route("/corporate/wallet")
  */
+#[Route(path: '/corporate/wallet')]
 class WalletController extends AbstractController
 {
     /**
-     * @Route("/users", name="users_wallet_corporate", methods={"GET", "POST"})
      * @param UserRepository $userRepository
      * @return Response
      */
+    #[Route(path: '/users', name: 'users_wallet_corporate', methods: ['GET', 'POST'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('Core/Wallet/index.html.twig', ['users' => $userRepository->getWalletNotNull()]);
@@ -35,8 +35,8 @@ class WalletController extends AbstractController
      * @param Request $request
      * @param User $user
      * @return RedirectResponse
-     * @Route("/disable/{id}", name="disable_wallet_corporate", methods={"POST"}, requirements={"id" = "\d+"})
      */
+    #[Route(path: '/disable/{id}', name: 'disable_wallet_corporate', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function disable(Request $request, User $user, PackNotification $packNotification): RedirectResponse
     {
         if(!$this->isCsrfTokenValid('disable-wallet'.$user->getId(), $request->request->get('token-wallet-disable')))

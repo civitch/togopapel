@@ -14,10 +14,10 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 /**
- * Class NewsLetterController
- * @package App\Controller
- * @Route("/corporate/news-letter")
- */
+     * Class NewsLetterController
+     * @package App\Controller
+     */
+    #[Route(path: '/corporate/news-letter')]
     class NewsLetterController extends AbstractController
 {
     private $mailer;
@@ -27,9 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
         $this->mailer = $mailer;
         $this->senderEmail = $senderEmail;
     }
-    /**
-     * @Route("/", name="news_letter")
-     */
+    #[Route(path: '/', name: 'news_letter')]
     public function index()
     {
         $em = $this->getDoctrine()->getManager();
@@ -38,9 +36,7 @@ use Symfony\Component\Routing\Annotation\Route;
             'templates' => $templates,
         ]);
     }
-    /**
-     * @Route("/new-template", name="create_new_template", methods={"POST"})
-     */
+    #[Route(path: '/new-template', name: 'create_new_template', methods: ['POST'])]
     public function createNewTemplate(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -54,27 +50,23 @@ use Symfony\Component\Routing\Annotation\Route;
         $em->flush();
         return new JsonResponse(["id"=>$template->getId()]);
     }
-    /**
-     * @Route("/get-template/{id}", name="get_template", methods={"get"})
-     */
+    #[Route(path: '/get-template/{id}', name: 'get_template', methods: ['get'])]
     public function getTemplate($id)
     {
         $em = $this->getDoctrine()->getManager();
         $template=$em->getRepository(NewsLetterTemplate::class)->find((int)$id);
-        if($template)
+        if($template !== null)
         {
             return new JsonResponse(["libelle"=>$template->getLibelle(),"content"=>$template->getContent()]);
         }
         return new JsonResponse(["error"=>"template not found"]);
     }
-    /**
-     * @Route("/delete-template/{id}", name="delete_template", methods={"get"})
-     */
+    #[Route(path: '/delete-template/{id}', name: 'delete_template', methods: ['get'])]
     public function deleteTemplate($id)
     {
         $em = $this->getDoctrine()->getManager();
         $template=$em->getRepository(NewsLetterTemplate::class)->find((int)$id);
-        if($template)
+        if($template !== null)
         {
             $em->remove($template);
             $em->flush();
@@ -82,28 +74,26 @@ use Symfony\Component\Routing\Annotation\Route;
         }
         return new JsonResponse(["error"=>"template not found"]);
     }
-    /**
-     * @Route("/envoyer-new/{id}", name="envoyer_new", methods={"post"})
-     */
+    #[Route(path: '/envoyer-new/{id}', name: 'envoyer_new', methods: ['post'])]
     public function envoyerNew($id,Request $request)
     {
         #set_time_limit(500);        
         $em = $this->getDoctrine()->getManager();
         $type=(int)$request->get('type');
         $template=$em->getRepository(NewsLetterTemplate::class)->find((int)$id);
-        if($template)
+        if($template !== null)
         {
             //envoyer à une personne
             if($type==4)
             {
                 $userId=(int)$request->get('userId');
                 $user=$em->getRepository(User::class)->find($userId);
-                if($user)
+                if($user !== null)
                 {
                     $email1="togopapel@gmail.com";
                     $email="liye.yangala@galimatech.com";
                     #$this->createAnnonceMail([$user->getEmail()],$template->getLibelle(),$template->getContent());
-                    #["libelle"=>$template->getLibelle(),"content"=>$template->getContent()];
+                    // #["libelle"=>$template->getLibelle(),"content"=>$template->getContent()];
                 }
             }
             else
@@ -119,47 +109,37 @@ use Symfony\Component\Routing\Annotation\Route;
                     $role=$user->getRoles();
                     //envoyer au professionnels
 
-                        if($type==2)
-                        {
-                            if(in_array("ROLE_PROFESSIONNEL",$role))
+                        if ($type==2 && in_array("ROLE_PROFESSIONNEL",$role)) {
+                            if($cpt<10)
                             {
-                                if($cpt<10)
-                                {
-                                    $array_email[] =$user->getEmail();
-                                    $cpt++;
-                                }
-                                else
-                                {
-                                    #$this->createAnnonceMail($array_email,$template->getLibelle(),$template->getContent());
-                                    $cpt=0;
-                                    $array_email=[];
-
-                                }
-                                #$array_email[] =$user->getEmail();
-                                # array_push($array_email,$user->getEmail());
-                            }
-                        }
-                        //envoyer au particulier
-                        if($type==3)
-                        {
-                            if(in_array("ROLE_PARTICULIER",$role))
-                            {
-                                
                                 $array_email[] =$user->getEmail();
-                                if($cpt==20)
-                                {
-                                    #var_dump($array_email);
-                                    $cpt=0;
-                                    $this->createAnnonceMail($array_email,$template->getLibelle(),$template->getContent());
-                                    
-                                    #return new JsonResponse(["error"=>"template not found4"]);
-                                
-                                    
-                                    $array_email=[];
-                                }
                                 $cpt++;
                             }
+                            else
+                            {
+                                #$this->createAnnonceMail($array_email,$template->getLibelle(),$template->getContent());
+                                $cpt=0;
+                                $array_email=[];
 
+                            }
+                            #$array_email[] =$user->getEmail();
+                            # array_push($array_email,$user->getEmail());
+                        }
+                        //envoyer au particulier
+                        if ($type==3 && in_array("ROLE_PARTICULIER",$role)) {
+                            $array_email[] =$user->getEmail();
+                            if($cpt==20)
+                            {
+                                #var_dump($array_email);
+                                $cpt=0;
+                                $this->createAnnonceMail($array_email,$template->getLibelle(),$template->getContent());
+                                
+                                #return new JsonResponse(["error"=>"template not found4"]);
+                            
+                                
+                                $array_email=[];
+                            }
+                            $cpt++;
                         }
 
                 }
@@ -173,9 +153,7 @@ use Symfony\Component\Routing\Annotation\Route;
         return new JsonResponse(["error"=>"template not found"]);
     }
 
-    /**
-     * @Route("/get-user", name="search_user_for_mail")
-     */
+    #[Route(path: '/get-user', name: 'search_user_for_mail')]
     public function getUserForMail(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -188,7 +166,7 @@ use Symfony\Component\Routing\Annotation\Route;
             {
                 if($user->getFirstname())
                 {
-                    array_push($tabUser,["user"=>$user->getName()." ".$user->getFirstname(),"id"=>$user->getId()]);
+                    $tabUser[] = ["user"=>$user->getName()." ".$user->getFirstname(),"id"=>$user->getId()];
                 }
             }
         }
@@ -200,14 +178,12 @@ use Symfony\Component\Routing\Annotation\Route;
             $result = $statement->fetchAll();
             foreach ($result as $res)
             {
-                array_push($tabUser,["user"=>$res["name"]." ".$res["firstname"],"id"=>$res["id"]]);
+                $tabUser[] = ["user"=>$res["name"]." ".$res["firstname"],"id"=>$res["id"]];
             }
         }
         return new JsonResponse($tabUser);
     }
-    /**
-     * @Route("/edit-template", name="edit_template", methods={"post"})
-     */
+    #[Route(path: '/edit-template', name: 'edit_template', methods: ['post'])]
     public function editTemplate(Request $request)
     {
         $libelle=$request->get('libelle');
@@ -215,7 +191,7 @@ use Symfony\Component\Routing\Annotation\Route;
         $id=$request->get('id');
         $em = $this->getDoctrine()->getManager();
         $template=$em->getRepository(NewsLetterTemplate::class)->find((int)$id);
-        if($template)
+        if($template !== null)
         {
             $template->setContent($content);
             $template->setLibelle($libelle);
@@ -247,9 +223,10 @@ use Symfony\Component\Routing\Annotation\Route;
             ->subject($subject)
             ->html($content)
         ;
-        if (count($destEmail)!=0)
+        if (count($destEmail) != 0)
         {
-            for($i=1;$i<count($destEmail);$i++)
+            $destEmailCount = count($destEmail);
+            for($i=1;$i<$destEmailCount;$i++)
             {
                 $email->addTo($destEmail[$i]);
             }

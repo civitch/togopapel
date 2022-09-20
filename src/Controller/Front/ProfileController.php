@@ -11,13 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
 {
-    /**
-     * @Route("/profile/user/{slug}", name="profile_gdo_user", methods={"GET"})
-     */
+    #[Route(path: '/profile/user/{slug}', name: 'profile_gdo_user', methods: ['GET'])]
     public function index(string $slug, AnnonceRepository $annonceRepository, Request $request)
     {
         $annonce = $annonceRepository->findOneBy(['slug' => $slug]);
-        if(!$annonce){
+        if(!$annonce instanceof \App\Entity\Annonce){
             return $this->redirectToRoute('home_project');
         }
         $options = [

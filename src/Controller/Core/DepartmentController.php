@@ -15,14 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class DepartmentController
  * @package App\Controller\Core
- * @Route("/corporate")
  */
+#[Route(path: '/corporate')]
 class DepartmentController extends AbstractController
 {
     /**
      * @IsGranted("ROLE_MAINTENANCE")
-     * @Route("/department", name="department_corporate", methods={"GET", "POST"})
      */
+    #[Route(path: '/department', name: 'department_corporate', methods: ['GET', 'POST'])]
     public function index(Request $request, DepartmentRepository $departmentRepository, DepartmentEntity $departmentEntity)
     {
         $department = new Department();

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CategorieRepository;
 use App\Services\App\AppTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,45 +11,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategorieRepository")
- * @UniqueEntity(
- *     fields={"title"},
- *     message="Le titre de la catégorie doit être unique, car déjà utilisé!"
- * )
- */
+#[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[UniqueEntity(fields: ['title'], message: 'Le titre de la catégorie doit être unique, car déjà utilisé!')]
 class Categorie
 {
     use AppTrait;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank(message="Le titre de la caégorie ne doit pas être vide!")
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
+    #[Assert\NotBlank(message: 'Le titre de la caégorie ne doit pas être vide!')]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $title;
 
-    /**
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="App\Entity\Rubrique", inversedBy="categories")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[Assert\Valid]
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Rubrique::class, inversedBy: 'categories')]
+    #[ORM\JoinColumn(nullable: false)]
     private $rubrique;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Annonce", mappedBy="categorie")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Annonce::class, mappedBy: 'categorie')]
     private $annonces;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
     public function __construct()

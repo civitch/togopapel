@@ -17,8 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * Class PostTypeController
  * @package App\Controller\Core
- * @Route("/corporate/postype")
  */
+#[Route(path: '/corporate/postype')]
 class PostTypeController extends AbstractController
 {
     private $em;
@@ -31,8 +31,8 @@ class PostTypeController extends AbstractController
     /**
      * @param Request $request
      * @return Response|RedirectResponse
-     * @Route("/ajout", name="corporate_postype_new", methods={"GET", "POST"})
      */
+    #[Route(path: '/ajout', name: 'corporate_postype_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $postType = new PostType();
@@ -52,8 +52,8 @@ class PostTypeController extends AbstractController
      * @param Request $request
      * @param PostType $postType
      * @return Response|RedirectResponse
-     * @Route("/edit/{id}", name="corporate_postype_edit", requirements={"id"= "\d+"}, methods={"GET", "POST"})
      */
+    #[Route(path: '/edit/{id}', name: 'corporate_postype_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(PostType $postType, Request $request): Response
     {
         $form = $this->createForm(PostEditType::class, $postType);
@@ -68,9 +68,7 @@ class PostTypeController extends AbstractController
     }
 
 
-    /**
-     * @Route("/liste", name="corporate_postype_list", methods={"GET"})
-     */
+    #[Route(path: '/liste', name: 'corporate_postype_list', methods: ['GET'])]
     public function liste(PostTypeRepository $postTypeRepository): Response
     {
         return $this->render('Core/PostType/list.html.twig', ['postTypes' => $postTypeRepository->findAll()]);

@@ -29,9 +29,9 @@ use Knp\Component\Pager\PaginatorInterface;
 /**
  * Class ConversationController
  * @package App\Controller\Admin
- * @Route("/conversation")
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
+#[Route(path: '/conversation')]
 class ConversationController extends AbstractController
 {
     private $notification;
@@ -50,8 +50,8 @@ class ConversationController extends AbstractController
      * @param ConversationNotification $notification
      * @param ConversationRepository $conversationRepository
      * @return RedirectResponse|Response
-     * @Route("/new/{slug}", name="new_conversation_admin", methods={"GET", "POST"})
      */
+    #[Route(path: '/new/{slug}', name: 'new_conversation_admin', methods: ['GET', 'POST'])]
     public function new(string $slug, Request $request, ConversationNotification $notification, ConversationRepository $conversationRepository)
     {
         $em = $this->getDoctrine()->getManager();
@@ -118,8 +118,8 @@ class ConversationController extends AbstractController
      *
      * @param ConversationRepository $conversationRepository
      * @return Response
-     * @Route("/liste", name="liste_conversation_admin", methods={"GET"})
      */
+    #[Route(path: '/liste', name: 'liste_conversation_admin', methods: ['GET'])]
     public function liste(ConversationRepository $conversationRepository): Response
     {
         return $this->render('Admin/Conversation/list.html.twig', [
@@ -129,16 +129,15 @@ class ConversationController extends AbstractController
 
     /**
      * Permet l'envoi de message
-     *
-     * @Route("/tchat", name="message_tchat_admin", options={"expose" = true},  methods={"POST"})
      */
+    #[Route(path: '/tchat', name: 'message_tchat_admin', options: ['expose' => true], methods: ['POST'])]
     public function tchat(Request $request, ConversationNotification $notification)
     {
         if($request->isXmlHttpRequest())
         {
             $em = $this->getDoctrine()->getManager();
             $conservation = $em->getRepository(Conversation::class)->find($request->request->get('conversation'));
-            if(!$conservation)
+            if(!$conservation instanceof \App\Entity\Conversation)
             {
                 return new JsonResponse(
                     ['error' => 'Aucune conversation de cet type'],
@@ -191,15 +190,15 @@ class ConversationController extends AbstractController
      * @param Request $request
      * @param MessageRepository $messageRepository
      * @return JsonResponse|Response|RedirectResponse
-     * @Route("/all", name="all_messages_users", options={"expose" = true}, methods={"POST"})
      */
+    #[Route(path: '/all', name: 'all_messages_users', options: ['expose' => true], methods: ['POST'])]
     public function allMessages(Request $request, MessageRepository $messageRepository)
     {
         if($request->isXmlHttpRequest())
         {
             $em = $this->getDoctrine()->getManager();
             $conversation = $em->getRepository(Conversation::class)->find($request->request->get('conv'));
-            if(!$conversation)
+            if(!$conversation instanceof \App\Entity\Conversation)
             {
                 return new JsonResponse(
                     ['error' => 'Aucune conversation de cet type'],

@@ -9,13 +9,13 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="btn-annonce">
                         <a class="nav-link" href="{{ path('announce_new') }}">
-                            <img src="{{ asset('build/plus.svg') }}" alt="déposer une annonce"/>
+                            <img src="{{ asset('build/img/plus.svg') }}" alt="déposer une annonce"/>
                             Déposer une annonce
                         </a>
                     </li>
                     <li class="search-link">
                         <a class="nav-link" href="{{ path('liste_annonce_front') }}">
-                            <img src="{{ asset('build/search.svg') }}" alt="Toutes les recherches"/>
+                            <img src="{{ asset('build/img/search.svg') }}" alt="Toutes les recherches"/>
                             Toutes les recherches
                         </a>
                     </li>
@@ -24,7 +24,7 @@
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <div class="dropdown vyuj">
                             <a class="nav-link connectedDropdown btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="icon-rgt" src="{{ asset('build/bell.svg') }}" alt="utilisateur"/>
+                                <img class="icon-rgt" src="{{ asset('build/img/bell.svg') }}" alt="utilisateur"/>
                                 Notifications
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="notificationFront">
@@ -36,12 +36,12 @@
                     <li class="nav-item">
                         {% if app.user %}
                             <a class="nav-link" href="{{ path('favoris_owner_liste') }}">
-                                <img class="icon-rgt" src="{{ asset('build/favoris.svg') }}" alt="Favoris"/>
+                                <img class="icon-rgt" src="{{ asset('build/img/favoris.svg') }}" alt="Favoris"/>
                                 Favoris
                             </a>
                         {% else %}
                             <a class="nav-link" href="{{ path('admin_auth') }}">
-                                <img class="icon-rgt" src="{{ asset('build/favoris.svg') }}" alt="Favoris"/>
+                                <img class="icon-rgt" src="{{ asset('build/img/favoris.svg') }}" alt="Favoris"/>
                                 Favoris
                             </a>
                         {% endif %}
@@ -49,12 +49,12 @@
                     <li class="nav-item">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <a class="nav-link" href="{{ path('liste_conversation_admin') }}">
-                                <img class="icon-rgt" src="{{ asset('build/message.svg') }}" alt="messages"/>
+                                <img class="icon-rgt" src="{{ asset('build/img/message.svg') }}" alt="messages"/>
                                 Messages
                             </a>
                         {% else %}
                             <a class="nav-link" href="{{ path('admin_auth') }}">
-                                <img class="icon-rgt" src="{{ asset('build/message.svg') }}" alt="messages"/>
+                                <img class="icon-rgt" src="{{ asset('build/img/message.svg') }}" alt="messages"/>
                                 Messages
                             </a>
                         {% endif %}
@@ -62,7 +62,7 @@
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <div class="dropdown">
                             <a class="nav-link connectedDropdown btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="icon-rgt" src="{{ asset('build/user.svg') }}" alt="utilisateur"/>
+                                <img class="icon-rgt" src="{{ asset('build/img/user.svg') }}" alt="utilisateur"/>
                                 {% if app.user.name is null and app.user.firstname is null %}
                                     {{ app.user.email }}
                                 {% else %}
@@ -88,7 +88,7 @@
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('admin_auth') }}">
-                                <img class="icon-rgt" src="{{ asset('build/user.svg') }}" alt="se connecter"/>
+                                <img class="icon-rgt" src="{{ asset('build/img/user.svg') }}" alt="se connecter"/>
                                 Se connecter
                             </a>
                         </li>
@@ -100,7 +100,7 @@
 </header>
 <header id="mobile" {% if app.request.attributes.get('_route') == 'announce_new' or app.request.attributes.get('_route') == 'annonce_info' or app.request.attributes.get('_route') == 'annonce_show' or app.request.attributes.get('_route') == 'annonce_edit' %} class="bh_ann_du" {% endif %}>
     <div class="icon_responsive">
-        <img src="{{ asset('build/burger.png') }}" alt="icone mobile">
+        <img src="{{ asset('build/img/burger.png') }}" alt="icone mobile">
     </div>
     <a class="lg_text_mbs" href="{{ path('home_project') }}">TogoPapel</a>
 </header>
@@ -108,7 +108,7 @@
 </div>
 <section class="menu_responsive_nego {% if app.request.attributes.get('_route') == 'announce_new' or app.request.attributes.get('_route') == 'annonce_info' or app.request.attributes.get('_route') == 'annonce_show' or app.request.attributes.get('_route') == 'annonce_edit' %} bh_ann_sui{% endif %}">
     <a href="{{ path('home_project') }}" title="Accueil" id="logo_bx_mobile">
-        <img src="{{ asset('build/logogdo.png') }}" alt="logo mobile">
+        <img src="{{ asset('build/img/logogdo.png') }}" alt="logo mobile">
     </a>
     <nav id="nav_mobile_gdo">
         <ul class="list_menu_mob_gdo">

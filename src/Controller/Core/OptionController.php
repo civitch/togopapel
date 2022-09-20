@@ -18,16 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class OptionController
  * @package App\Controller\Core
- * @Route("/corporate")
  */
+#[Route(path: '/corporate')]
 class OptionController extends AbstractController
 {
     /**
-     * @Route("/option/new", name="corporate_option_new", methods={"GET", "POST"})
      * @param Request $request
      * @return Response|RedirectResponse
      * @IsGranted("ROLE_MAINTENANCE")
      */
+    #[Route(path: '/option/new', name: 'corporate_option_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $option = new Option();
@@ -47,9 +47,9 @@ class OptionController extends AbstractController
     /**
      * @param OptionRepository $optionRepository
      * @return Response
-     * @Route("/option/liste", name="corporate_option_list", methods={"GET"})
      * @IsGranted("ROLE_MAINTENANCE")
      */
+    #[Route(path: '/option/liste', name: 'corporate_option_list', methods: ['GET'])]
     public function liste(OptionRepository $optionRepository): Response
     {
         return $this->render('Core/Option/list.html.twig', ['options' => $optionRepository->findAll()]);
@@ -60,9 +60,9 @@ class OptionController extends AbstractController
     /**
      * @param Option $option
      * @param Request $request
-     * @Route("/option/home/edit/{id}", name="corporate_option_home_edit", methods={"GET", "POST"}, requirements={"id" = "\d+"})
      * @return RedirectResponse|Response
      */
+    #[Route(path: '/option/home/edit/{id}', name: 'corporate_option_home_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function editHome(Option $option, Request $request): Response
     {
         $form = $this->createForm(HomeOptionType::class, $option);

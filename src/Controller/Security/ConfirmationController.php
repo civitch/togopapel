@@ -17,16 +17,16 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class ConfirmationController
  * @package App\Controller\Security
- * @Route("/confirmation")
  */
+#[Route(path: '/confirmation')]
 class ConfirmationController extends AbstractController
 {
     /**
      * Message de confirmation après la création d'un compte particulier et professionnel
      * @return RedirectResponse|Response
      * @throws \Exception
-     * @Route("/creation/compte", name="confirm_message_account_create", methods={"GET"})
      */
+    #[Route(path: '/creation/compte', name: 'confirm_message_account_create', methods: ['GET'])]
     public function confirmRegisterMessage(AppSecurity $appSecurity)
     {
         $user = $appSecurity->confirmRegister();
@@ -45,12 +45,8 @@ class ConfirmationController extends AbstractController
 
     /**
      * Message de confirmation après la demande de modification du mot de passe par mail
-     * @Route(
-     *     "/reset/lost-password",
-     *     name="confirm_message_reset_password",
-     *     methods={"GET"}
-     * )
      */
+    #[Route(path: '/reset/lost-password', name: 'confirm_message_reset_password', methods: ['GET'])]
     public function confirmResetPasswordMessage()
     {
         if(!isset($_GET['id']) && !isset($_GET['token'])) {
@@ -77,8 +73,8 @@ class ConfirmationController extends AbstractController
 
     /**
      * Lorsque l'utilisateur confirme son compte après l'avoir créé
-     * @Route("/account/{id}", name="confirm_account",  requirements={"id" = "\d+"})
      */
+    #[Route(path: '/account/{id}', name: 'confirm_account', requirements: ['id' => '\d+'])]
     public function confirmAccount($id, UserNotification $userNotification, AppMail $appMail)
     {
         if(!isset($_GET['confirm_token'])){

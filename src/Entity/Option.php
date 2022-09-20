@@ -2,52 +2,39 @@
 
 namespace App\Entity;
 
+use App\Repository\OptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\OptionRepository")
- * @ORM\Table(name="`option`")
- */
+#[ORM\Table(name: '`option`')]
+#[ORM\Entity(repositoryClass: OptionRepository::class)]
 class Option
 {
 
-    const LABEL = [
+    final const LABEL = [
         'pays'   => 'country',
         'social' => 'socialNetwork',
         'app'    => 'mobileApp',
         'mainhome'   => 'mainhome'
     ];
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $status;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $content;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $label;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $link;
 
     public function getId(): ?int

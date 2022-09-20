@@ -6,10 +6,7 @@ namespace App\Entity;
 
 class ResetPassword
 {
-    /**
-     * @var string
-     */
-    private $password;
+    private ?string $password = null;
 
     /**
      * @return string

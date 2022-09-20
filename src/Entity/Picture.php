@@ -2,42 +2,31 @@
 
 namespace App\Entity;
 
+use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Vich\Uploadable
- * @ORM\Entity(repositoryClass="App\Repository\PictureRepository")
- */
+#[ORM\Entity(repositoryClass: PictureRepository::class)]
+#[Vich\Uploadable()]
 class Picture
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $filename;
 
-    /**
-     * @Vich\UploadableField(mapping="gdo_image", fileNameProperty="filename")
-     *
-     * @var File|null
-     */
-    private $imageFile;
+    #[Vich\UploadableField(mapping: "gdo_image", fileNameProperty: 'filename')]
+    private ?\Symfony\Component\HttpFoundation\File\File $imageFile = null;
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Annonce", inversedBy="pictures")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Annonce::class, inversedBy: 'pictures')]
+    #[ORM\JoinColumn(nullable: true)]
     private $annonce;
 
     public function getId(): ?int
@@ -69,10 +58,6 @@ class Picture
         return $this;
     }
 
-    /**
-     * @param null|File $imageFile
-     * @return self
-     */
     public function setImageFile(?File $imageFile): self
     {
         $this->imageFile = $imageFile;

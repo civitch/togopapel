@@ -15,28 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class FavorisController
  * @package App\Controller\Admin
- * @Route("/favoris")
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
+#[Route(path: '/favoris')]
 class FavorisController extends AbstractController
 {
 
-    /**
-     * @Route("/liste", name="favoris_owner_liste", methods={"POST", "GET"})
-     */
+    #[Route(path: '/liste', name: 'favoris_owner_liste', methods: ['POST', 'GET'])]
     public function index(AnnonceRepository $annonceRepository)
     {
         $favoris = $annonceRepository->getFavorisByUser($this->getUser());
-        return $this->render('Admin/Favoris/index.html.twig', compact('favoris'));
+        return $this->render('Admin/Favoris/index.html.twig', ['favoris' => $favoris]);
     }
 
-    /**
-     * @Route("/new", name="favoris_new", methods={"POST"}, options={"expose"=true})
-     */
+    #[Route(path: '/new', name: 'favoris_new', methods: ['POST'], options: ['expose' => true])]
     public function add(Request $request)
     {
         $user = $this->getUser();
-        if(!$user){
+        if(!$user instanceof \Symfony\Component\Security\Core\User\UserInterface){
             return $this->redirectToRoute('liste_annonce_front');
         }
         if($request->isXmlHttpRequest())
@@ -44,7 +40,7 @@ class FavorisController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $annonce = $em->getRepository(Annonce::class)->find($request->request->getInt('id'));
             /** @var $annonce Annonce */
-            if($annonce) {
+            if($annonce !== null) {
                 $user->addFavori($annonce);
                 $em->flush();
                 return new JsonResponse(['annonce' => $annonce->getId()], 200, ['content-type' => 'application/json']);
@@ -58,13 +54,11 @@ class FavorisController extends AbstractController
         return $this->redirectToRoute('home_project');
     }
 
-    /**
-     * @Route("/delete", name="favoris_delete", methods={"POST"}, options={"expose"=true})
-     */
+    #[Route(path: '/delete', name: 'favoris_delete', methods: ['POST'], options: ['expose' => true])]
     public function delete(Request $request)
     {
         $user = $this->getUser();
-        if(!$user){
+        if(!$user instanceof \Symfony\Component\Security\Core\User\UserInterface){
             return $this->redirectToRoute('liste_annonce_front');
         }
         if($request->isXmlHttpRequest())
@@ -72,7 +66,7 @@ class FavorisController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $annonce = $em->getRepository(Annonce::class)->find($request->request->getInt('id'));
             /** @var $annonce Annonce */
-            if($annonce) {
+            if($annonce !== null) {
                 $user->removeFavori($annonce);
                 $em->flush();
                 return new JsonResponse(['annonce' => $annonce->getId()], 200, ['content-type' => 'application/json']);

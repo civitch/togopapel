@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CreditController
  * @package App\Controller\Admin
- * @Route("/admin/forfait")
  */
+#[Route(path: '/admin/forfait')]
 class CreditController extends AbstractController
 {
     /**
@@ -28,8 +28,8 @@ class CreditController extends AbstractController
      *
      * @param CreditRepository $creditRepository
      * @return Response
-     * @Route("/liste",  name="credit_list_admin", methods={"POST", "GET"})
      */
+    #[Route(path: '/liste', name: 'credit_list_admin', methods: ['POST', 'GET'])]
     public function index(Request $request, CreditRepository $creditRepository, AppSecurity $appSecurity, DemandeCreditNotification $notification)
     {
         $user = $this->getUser();
@@ -49,7 +49,7 @@ class CreditController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $credit = $em->getRepository(Credit::class)->find($form->get('card')->getData());
-            if(!$credit){
+            if(!$credit instanceof \App\Entity\Credit){
                 $this->addFlash('danger', 'Erreur lors de demande de crédit!');
                 return $this->render('Admin/Credit/list.html.twig',
                     ['form' => $form->createView(), 'credits' => $creditRepository->findAll()]
@@ -75,8 +75,8 @@ class CreditController extends AbstractController
      *
      * @param DemandeCreditRepository $demandeCreditRepository
      * @return Response
-     * @Route("/owner", name="credit_list_owner", methods={"GET"})
      */
+    #[Route(path: '/owner', name: 'credit_list_owner', methods: ['GET'])]
     public function liste(DemandeCreditRepository $demandeCreditRepository)
     {
         return $this->render('Admin/DemandeCredit/list.html.twig', [

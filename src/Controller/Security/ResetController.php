@@ -15,30 +15,28 @@ use App\Services\Mail\AppMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class ResetController
  * @package App\Controller\Security
- * @Route("/reset")
  */
+#[Route(path: '/reset')]
 class ResetController extends AbstractController
 {
 
     private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    /**
-     * @Route("/lost-password", name="password_forget", methods={"GET", "POST"})
-     */
+    #[Route(path: '/lost-password', name: 'password_forget', methods: ['GET', 'POST'])]
     public function forgetPassword(Request $request, AppSecurity $appSecurity, AppMail $appMail)
     {
-        if ($this->getUser()) {
+        if ($this->getUser() !== null) {
             return $this->redirectToRoute('main_dashboard');
         }
         $errors = [];
@@ -77,12 +75,10 @@ class ResetController extends AbstractController
     }
 
 
-    /**
-     * @Route("/password/{id}", name="password_reset", methods={"GET", "POST"}, requirements={"id" = "\d+"})
-     */
+    #[Route(path: '/password/{id}', name: 'password_reset', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function confirmResetPassword($id, Request $request, UserRepository $userRepository)
     {
-        if ($this->getUser()) {
+        if ($this->getUser() !== null) {
             return $this->redirectToRoute('main_dashboard');
         }
         if(!isset($_GET['reset_token']))
@@ -98,7 +94,7 @@ class ResetController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user
-                ->setPassword($this->passwordEncoder->encodePassword($user, $form->getData()->getPassword()))
+                ->setPassword($this->passwordEncoder->hashPassword($user, $form->getData()->getPassword()))
                 ->setResetToken(null)
                 ->setResetAt(null)
             ;

@@ -10,8 +10,8 @@ use App\Repository\DepartmentRepository;
 use App\Services\Mail\AppMail;
 use App\Services\Notification\UserNotification;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 
@@ -27,13 +27,10 @@ abstract class App
      */
     private $roles;
 
-    /**
-     * @var DepartmentRepository
-     */
-    private $departments;
+    private \App\Repository\DepartmentRepository $departments;
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
     protected $passwordEncoder;
 
@@ -65,7 +62,7 @@ abstract class App
     public function __construct(
         EntityManagerInterface $em,
         DepartmentRepository $departmentRepository,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         AppMail $appMail,
         Security $security,
         UrlGeneratorInterface $urlGenerator,

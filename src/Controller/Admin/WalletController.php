@@ -12,14 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class WalletController
  * @package App\Controller\Admin
- * @Route("/admin")
  */
+#[Route(path: '/admin')]
 class WalletController extends AbstractController
 {
     /**
      * @return Response
-     * @Route("/portefeuille", name="admin_wallet_user", methods={"GET"})
      */
+    #[Route(path: '/portefeuille', name: 'admin_wallet_user', methods: ['GET'])]
     public function index(): Response
     {
         $user = $this->getUser();

@@ -2,35 +2,26 @@
 
 namespace App\Entity;
 
+use App\Repository\IndicatifPaysRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\IndicatifPaysRepository")
- */
+#[ORM\Entity(repositoryClass: IndicatifPaysRepository::class)]
 class IndicatifPays
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $code;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="indicatifPays")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\User::class, mappedBy: 'indicatifPays')]
     private $users;
 
     public function __construct()
