@@ -2,50 +2,35 @@
 
 namespace App\Entity;
 
+use App\Repository\VilleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(
- *     fields={"title"},
- *     errorPath="title",
- *     message="Le titre de la ville doit être unique!"
- * )
- * @ORM\Entity(repositoryClass="App\Repository\VilleRepository")
- */
+#[ORM\Entity(repositoryClass: VilleRepository::class)]
+#[UniqueEntity(fields: ['title'], errorPath: 'title', message: 'Le titre de la ville doit être unique!')]
 class Ville
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\Length(max=100, maxMessage="La ville ne doit pas dépasser {{ limit }} caractères!")
-     * @Assert\NotBlank(message="Le titre de la ville ne doit pas être vide!")
-     * @ORM\Column(type="string", length=100, unique=true)
-     */
+    #[Assert\Length(max: 100, maxMessage: 'La ville ne doit pas dépasser {{ limit }} caractères!')]
+    #[Assert\NotBlank(message: 'Le titre de la ville ne doit pas être vide!')]
+    #[ORM\Column(type: 'string', length: 100, unique: true)]
     private $title;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="villes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Region::class, inversedBy: 'villes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $region;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Annonce", mappedBy="ville")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Annonce::class, mappedBy: 'ville')]
     private $annonces;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
     public function __construct()

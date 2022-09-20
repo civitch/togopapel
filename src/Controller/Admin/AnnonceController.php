@@ -23,12 +23,13 @@ use Symfony\Component\Mime\Address;
 /**
  * Class AnnonceController
  * @package App\Controller\Admin
- * @Route("/admin/annonce")
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
+#[Route(path: '/admin/annonce')]
 class AnnonceController extends AbstractController
 {
 
+    public $senderEmail;
     public function __construct(
         private MailerInterface $mailer, $senderEmail
     )
@@ -38,8 +39,8 @@ class AnnonceController extends AbstractController
     /**
      * @param Request $request
      * @return RedirectResponse|Response
-     * @Route("/ajout", name="announce_new", methods={"GET", "POST"})
      */
+    #[Route(path: '/ajout', name: 'announce_new', methods: ['GET', 'POST'])]
     public function new(Request $request)
     {
         $annonce = new Annonce();
@@ -64,12 +65,12 @@ class AnnonceController extends AbstractController
                 $title=$annonce->getTitle();
                 #$title="3Vision-Group , Agence SEO";
                 $slugAnnonce=$slug->slugify($title);
-                if($cpt!=0)
+                if($cpt != 0)
                 {
                     $slugAnnonce=$slug->slugify($title.'-'.($cpt+1));
                 }
                 $annonceTest = $em->getRepository(Annonce::class)->findOneBy(['slug' =>$slugAnnonce]);
-                if(!$annonceTest)
+                if(!$annonceTest instanceof \App\Entity\Annonce)
                 {
                     $exitSlug=false;
                 }
@@ -124,18 +125,14 @@ class AnnonceController extends AbstractController
             echo $e->getMessage();
         }
     }
-    /**
-     * @Route("/liste", name="announce_list_user", methods={"GET"})
-     */
+    #[Route(path: '/liste', name: 'announce_list_user', methods: ['GET'])]
     public function liste(AnnonceRepository $annonceRepository)
     {
         $annonces = $annonceRepository->getAnnoncesByOwner($this->getUser());
         return $this->render('Admin/Annonce/list.html.twig', ['annonces' => $annonces]);
     }
 
-    /**
-     * @Route("/edit/{id}", name="annonce_edit", methods={"GET", "POST"}, requirements={"id" = "\d+"})
-     */
+    #[Route(path: '/edit/{id}', name: 'annonce_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Annonce $annonce, Request $request, AnnonceNotification $notification)
     {
         $this->denyAccessUnlessGranted('edit', $annonce);
@@ -160,14 +157,12 @@ class AnnonceController extends AbstractController
         return $this->render('Admin/Annonce/edit.html.twig', ['annonce' => $annonce, 'form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/voir/{slug}", name="annonce_show", methods={"GET"})
-     */
+    #[Route(path: '/voir/{slug}', name: 'annonce_show', methods: ['GET'])]
     public function show($slug)
     {
         $em = $this->getDoctrine()->getManager();
         $annonce = $em->getRepository(Annonce::class)->findOneBy(["slug" => $slug]);
-        if(!$annonce)
+        if(!$annonce instanceof \App\Entity\Annonce)
         {
             return $this->redirectToRoute('announce_list_user');
         }
@@ -175,16 +170,14 @@ class AnnonceController extends AbstractController
         return $this->render('Admin/Annonce/show.html.twig', ['annonce' => $annonce]);
     }
 
-    /**
-     * @Route("/delete", name="annonce_delete", methods={"DELETE"}, options={"expose"=true})
-     */
+    #[Route(path: '/delete', name: 'annonce_delete', methods: ['DELETE'], options: ['expose' => true])]
     public function delete(Request $request)
     {
         if($request->isXmlHttpRequest())
         {
             $em = $this->getDoctrine()->getManager();
             $annonce = $em->getRepository(Annonce::class)->find($request->request->getInt('id'));
-            if($annonce){
+            if($annonce !== null){
                 $this->denyAccessUnlessGranted('delete', $annonce);
                 if($this->isCsrfTokenValid('delete-annonce' . $annonce->getId(), $request->request->get('token')))
                 {

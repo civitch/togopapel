@@ -27,9 +27,9 @@ use Symfony\Component\Routing\Annotation\Route;
  * Permet de modifier les informations d'un compte user
  * Class EditProfileController
  * @package App\Controller\Security
- * @Route("/profile")
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
+#[Route(path: '/profile')]
 class EditProfileController extends AbstractController
 {
     private $em;
@@ -42,12 +42,12 @@ class EditProfileController extends AbstractController
     }
 
     /**
-     * @Route("/edit/mot-de-passe", name="edit_profile_password", methods={"GET", "POST"})
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordEncoder
      * @param UserNotification $notification
      * @return RedirectResponse|Response
      */
+    #[Route(path: '/edit/mot-de-passe', name: 'edit_profile_password', methods: ['GET', 'POST'])]
     public function editPassword(
         Request $request,
         UserPasswordHasherInterface $passwordEncoder,
@@ -77,12 +77,12 @@ class EditProfileController extends AbstractController
     /**
      * Mise à jour du profil
      *
-     * @Route("/edit", name="edit_profile", methods={"GET", "POST"})
      * @param UserRepository $userRepository
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws NonUniqueResultException
      */
+    #[Route(path: '/edit', name: 'edit_profile', methods: ['GET', 'POST'])]
     public function editProfile(UserRepository $userRepository, Request $request): Response
     {
         $profile = new Profile();
@@ -92,7 +92,7 @@ class EditProfileController extends AbstractController
         $telIndicatif = $form->get('telIndicatif')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $userRepository->findUserEditProfile($this->getUser()->getUsername(), $form->get('email')->getData());
-            if ($user) {
+            if ($user !== null) {
                 $errors['email'] = 'Cette adresse existe déjà ';
                 return $this->render('Security/Profile/index.html.twig', ['errors' => $errors, 'form' => $form->createView()]);
             }
@@ -107,8 +107,8 @@ class EditProfileController extends AbstractController
      * @param AnnonceRepository $annonceRepository
      * @param Request $request
      * @return Response
-     * @Route("/compte", name="account_profile", methods={"GET"})
      */
+    #[Route(path: '/compte', name: 'account_profile', methods: ['GET'])]
     public function getProfile(AnnonceRepository $annonceRepository, Request $request): Response
     {
         $options = [

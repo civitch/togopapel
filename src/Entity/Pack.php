@@ -2,77 +2,49 @@
 
 namespace App\Entity;
 
+use App\Repository\PackRepository;
 use App\Services\App\AppTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\PackRepository")
- */
+#[ORM\Entity(repositoryClass: PackRepository::class)]
 class Pack
 {
+    public \Doctrine\Common\Collections\ArrayCollection $users;
     use AppTrait;
 
-    const ROLES_PACK = [1 => 'star', 2 => 'vip', 3 => 'premium'];
+    final const ROLES_PACK = [1 => 'star', 2 => 'vip', 3 => 'premium'];
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\Length(
-     *      min=3,
-     *     max=50,
-     *     minMessage="Le titre ne doit pas être inférieur à {{ limit }} caractères",
-     *     maxMessage="Le titre ne doit pas être supérieur à {{ limit }} caractères"
-     * )
-     * @Assert\NotBlank(message="Le titre ne doit pas être vide !")
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Assert\Length(min: 3, max: 50, minMessage: 'Le titre ne doit pas être inférieur à {{ limit }} caractères', maxMessage: 'Le titre ne doit pas être supérieur à {{ limit }} caractères')]
+    #[Assert\NotBlank(message: 'Le titre ne doit pas être vide !')]
+    #[ORM\Column(type: 'string', length: 50)]
     private $title;
 
-    /**
-     * @Assert\Length(
-     *     max=50,
-     *     maxMessage="Le titre ne doit pas être supérieur à {{ limit }} caractères"
-     * )
-     * @Assert\NotBlank(message="Le description ne doit pas être vide !")
-     * @ORM\Column(type="string", length=255)
-     */
+    #[Assert\Length(max: 50, maxMessage: 'Le titre ne doit pas être supérieur à {{ limit }} caractères')]
+    #[Assert\NotBlank(message: 'Le description ne doit pas être vide !')]
+    #[ORM\Column(type: 'string', length: 255)]
     private $description;
 
-    /**
-     * @Assert\NotBlank(message="Le prix ne doit pas être vide !")
-     * @ORM\Column(type="integer")
-     */
+    #[Assert\NotBlank(message: 'Le prix ne doit pas être vide !')]
+    #[ORM\Column(type: 'integer')]
     private $price;
 
-    /**
-     * @Assert\NotBlank(message="La durée ne doit pas être vide !")
-     * @ORM\Column(type="integer")
-     */
+    #[Assert\NotBlank(message: 'La durée ne doit pas être vide !')]
+    #[ORM\Column(type: 'integer')]
     private $duration;
 
-    /**
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 3,
-     *      minMessage = "You must be at least {{ limit }} cm tall to enter",
-     *      maxMessage = "You cannot be taller than {{ limit }} cm to enter"
-     * )
-     * @ORM\Column(type="integer", length=1)
-     */
+    #[Assert\Range(min: 1, max: 3, minMessage: 'You must be at least {{ limit }} cm tall to enter', maxMessage: 'You cannot be taller than {{ limit }} cm to enter')]
+    #[ORM\Column(type: 'integer', length: 1)]
     private $role;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserPack", mappedBy="pack")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\UserPack::class, mappedBy: 'pack')]
     private $userPacks;
 
     public function __construct()

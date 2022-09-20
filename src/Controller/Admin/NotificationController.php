@@ -69,8 +69,8 @@ class NotificationController extends AbstractController
      * @param NotificationUser $notificationUser
      * @return RedirectResponse
      * @throws \Exception
-     * @Route("/admin/notification/show/{id}", name="notification_user_show", methods={"GET"}, requirements={"id" = "\d+"})
      */
+    #[Route(path: '/admin/notification/show/{id}', name: 'notification_user_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(NotificationUser $notificationUser): RedirectResponse
     {
         if(is_null($notificationUser->getReadAt()))
@@ -104,10 +104,10 @@ class NotificationController extends AbstractController
     /**
      * Liste de toutes les notifications par utilisateur
      *
-     * @Route("/admin/notification/liste", name="notification_all_liste", methods={"GET"})
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/admin/notification/liste', name: 'notification_all_liste', methods: ['GET'])]
     public function allNotifications(Request $request): Response
     {
         $options = [

@@ -37,11 +37,7 @@ class AnnonceVoter extends Voter
         if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
             return false;
         }
-
-        if (!$subject instanceof Annonce) {
-            return false;
-        }
-        return true;
+        return $subject instanceof Annonce;
     }
 
     /**

@@ -22,9 +22,9 @@ use Symfony\Component\Routing\Annotation\Route;
  class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home_project", methods={"GET"})
      * @return Response
      */
+    #[Route(path: '/', name: 'home_project', methods: ['GET'])]
     public function index() :Response
     {
         return $this->render('Front/Home/index.html.twig');
@@ -49,9 +49,7 @@ use Symfony\Component\Routing\Annotation\Route;
         return $this->render('Front/Home/rubrique.html.twig', ['rubriques' => $rubriqueRepository->getAllRubrique()]);
     }
 
-    /**
-     * @Route("/contact", name="contact_project", methods={"GET", "POST"})
-     */
+    #[Route(path: '/contact', name: 'contact_project', methods: ['GET', 'POST'])]
     public function contact(Request $request, AppMail $appMail)
     {
         $contact = new Contact();
@@ -69,8 +67,8 @@ use Symfony\Component\Routing\Annotation\Route;
     /**
      * @param CatRepository $catRepository
      * @return Response
-     * @Route("/faq", name="faq_project", methods={"GET"})
      */
+    #[Route(path: '/faq', name: 'faq_project', methods: ['GET'])]
     public function faq(CatRepository $catRepository): Response
     {
         return $this->render('Front/Home/faq.html.twig', ['cat' => $catRepository->getCatFaq('faq')]);
@@ -79,8 +77,8 @@ use Symfony\Component\Routing\Annotation\Route;
     /**
      * @param CatRepository $catRepository
      * @return Response
-     * @Route("/conseil_de_securite", name="conseil_security_project", methods={"GET"})
      */
+    #[Route(path: '/conseil_de_securite', name: 'conseil_security_project', methods: ['GET'])]
     public function conseilSecurity(CatRepository $catRepository): Response
     {
         return $this->render('Front/Home/conseil.html.twig', ['cat' => $catRepository->getCatFaq('conseil')]);
@@ -89,8 +87,8 @@ use Symfony\Component\Routing\Annotation\Route;
     /**
      * @param CatRepository $catRepository
      * @return Response
-     * @Route("/cgu", name="cgu_project", methods={"GET"})
      */
+    #[Route(path: '/cgu', name: 'cgu_project', methods: ['GET'])]
     public function cgu(CatRepository $catRepository): Response
     {
         return $this->render('Front/Home/cgu.html.twig', ['cat' => $catRepository->getCatFaq('cgu')]);
@@ -98,9 +96,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
     /**
      * @return Response
-     * @Route("/qui_sommes_nous", name="qui_sommes_nous_project", methods={"GET"})
      * @throws NonUniqueResultException
      */
+    #[Route(path: '/qui_sommes_nous', name: 'qui_sommes_nous_project', methods: ['GET'])]
     public function qui_sommes_nous(PostTypeRepository $postTypeRepository): Response
     {
         return $this->render('Front/Home/who.html.twig', ['content' => $postTypeRepository->postTypeByPage()]);
@@ -108,8 +106,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
     /**
      * @return Response
-     * @Route("/comment_ca_marche", name="comment_ca_marche", methods={"GET"})
      */
+    #[Route(path: '/comment_ca_marche', name: 'comment_ca_marche', methods: ['GET'])]
     public function howItWorks(): Response
     {
         return $this->render('Front/Home/howItWorks.html.twig');

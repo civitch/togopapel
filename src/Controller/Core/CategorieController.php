@@ -16,13 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CategorieController
  * @package App\Controller\Core
- * @Route("/corporate")
  */
+#[Route(path: '/corporate')]
 class CategorieController extends AbstractController
 {
-    /**
-     * @Route("/categorie", name="categorie_corporate", methods={"GET", "POST"})
-     */
+    #[Route(path: '/categorie', name: 'categorie_corporate', methods: ['GET', 'POST'])]
     public function index(Request $request, CategorieEntity $categorieEntity, CategorieRepository $categorieRepository)
     {
         $categorie = new Categorie();

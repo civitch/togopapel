@@ -10,49 +10,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AnnonceSearch
 {
-    /**
-     * @var string|null
-     */
-    private $title;
+    private ?string $title = null;
+
+    private ?bool $type = null;
 
     /**
-     * @var boolean|null
-     */
-    private $type;
-
-    /**
-     * @var int|null
      * @Assert\LessThanOrEqual(propertyPath="priceMax")
      */
-    private $priceMin;
+    private ?int $priceMin = null;
 
     /**
      * @Assert\GreaterThanOrEqual(propertyPath="priceMin")
-     * @var int|null
      */
-    private $priceMax;
+    private ?int $priceMax = null;
 
 
-    /**
-     * @var Categorie|null
-     */
-    private $categorie;
+    private ?\App\Entity\Categorie $categorie = null;
 
 
-    /**
-     * @var Ville|null
-     */
-    private $ville;
+    private ?\App\Entity\Ville $ville = null;
 
-    /**
-     * @var bool $particulier
-     */
-    private $particulier;
+    private ?bool $particulier = null;
 
-    /**
-     * @var bool $profesional
-     */
-    private $profesional;
+    private ?bool $profesional = null;
 
 
 

@@ -18,8 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class RegistrationController
  * @package App\Controller\Security
- * @Route("/creation")
  */
+#[Route(path: '/creation')]
 class RegistrationController extends AbstractController
 {
     const CONFIRM_ACCOUNT_CREATE = 'confirm_message_account_create';
@@ -35,11 +35,11 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @param AppSecurity $appSecurity
      * @return Response|RedirectResponse
-     * @Route("/compte/particulier", name="register_account_particular", methods={"GET", "POST"})
      */
+    #[Route(path: '/compte/particulier', name: 'register_account_particular', methods: ['GET', 'POST'])]
     public function registerParticular(Request $request, AppSecurity $appSecurity): Response
     {
-        if($this->getUser()){
+        if($this->getUser() !== null){
             return $appSecurity->redirectDashboard();
         }
         $user = new User();
@@ -61,11 +61,11 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @param AppSecurity $appSecurity
      * @return Response|RedirectResponse
-     * @Route("/compte/pro", name="register_account_pro", methods={"GET", "POST"})
      */
+    #[Route(path: '/compte/pro', name: 'register_account_pro', methods: ['GET', 'POST'])]
     public function registerPro(Request $request, AppSecurity $appSecurity): Response
     {
-        if($this->getUser())
+        if($this->getUser() !== null)
         {
             return $appSecurity->redirectDashboard();
         }

@@ -22,6 +22,8 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 class LoginFormAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
 
+    public $entityManager;
+    public $appSecurity;
     use TargetPathTrait;
 
 

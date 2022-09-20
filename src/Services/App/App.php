@@ -27,10 +27,7 @@ abstract class App
      */
     private $roles;
 
-    /**
-     * @var DepartmentRepository
-     */
-    private $departments;
+    private \App\Repository\DepartmentRepository $departments;
 
     /**
      * @var UserPasswordHasherInterface

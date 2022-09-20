@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AdminsController
  * @package App\Controller\Security\Core
- * @Route("/corporate/admin")
  */
+#[Route(path: '/corporate/admin')]
 class AdminsController extends AbstractController
 {
     private $passwordEncoder;
@@ -31,9 +31,9 @@ class AdminsController extends AbstractController
     }
 
     /**
-     * @Route("/liste", name="admin_liste_corporate", methods={"GET", "POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
+    #[Route(path: '/liste', name: 'admin_liste_corporate', methods: ['GET', 'POST'])]
     public function listeAdmins(UserRepository $userRepository)
     {
         $admins = $userRepository->listeAdmins();
@@ -42,18 +42,16 @@ class AdminsController extends AbstractController
 
 
     /**
-     * @Route("/users", name="users_liste_corporate", methods={"GET", "POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
+    #[Route(path: '/users', name: 'users_liste_corporate', methods: ['GET', 'POST'])]
     public function listeUsers(UserRepository $userRepository)
     {
         $admins = $userRepository->listeAdmins(true);
         return $this->render('Core/Users/list.html.twig', ['admins' => $admins]);
     }
 
-    /**
-     * @Route("/forgetPassword/{id}", name="forget_password_corporate", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     */
+    #[Route(path: '/forgetPassword/{id}', name: 'forget_password_corporate', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editPassword(User $user, Request $request, AppSecurity $appSecurity)
     {
         if($user->hasRole($appSecurity->getRole('pro')) || $user->hasRole($appSecurity->getRole('particular')))

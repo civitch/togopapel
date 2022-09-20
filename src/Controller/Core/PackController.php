@@ -21,8 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class PackController
  * @package App\Controller\Core
- * @Route("/corporate/pack")
  */
+#[Route(path: '/corporate/pack')]
 class PackController extends AbstractController
 {
     /**
@@ -30,9 +30,9 @@ class PackController extends AbstractController
      *
      * @param Request $request
      * @return RedirectResponse|Response
-     * @Route("/ajout", name="pack_corporate_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_MAINTENANCE")
      */
+    #[Route(path: '/ajout', name: 'pack_corporate_new', methods: ['GET', 'POST'])]
     public function new(Request $request)
     {
         $pack = new Pack();
@@ -56,9 +56,9 @@ class PackController extends AbstractController
      * @param Pack $pack
      * @param Request $request
      * @return RedirectResponse|Response
-     * @Route("/edit/{id}", name="pack_corporate_edit", methods={"GET", "POST"}, requirements={"id" = "\d+"})
      * @IsGranted("ROLE_MAINTENANCE")
      */
+    #[Route(path: '/edit/{id}', name: 'pack_corporate_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Pack $pack, Request $request)
     {
         $form = $this->createForm(PackType::class, $pack);
@@ -77,9 +77,9 @@ class PackController extends AbstractController
      *
      * @param PackRepository $packRepository
      * @return Response
-     * @Route("/liste", name="pack_list_corporate", methods={"GET"})
      * @IsGranted("ROLE_MAINTENANCE")
      */
+    #[Route(path: '/liste', name: 'pack_list_corporate', methods: ['GET'])]
     public function liste(PackRepository $packRepository): Response
     {
         return $this->render('Core/Pack/list.html.twig', ['packs' => $packRepository->findAll()]);
@@ -89,9 +89,9 @@ class PackController extends AbstractController
     /**
      * Liste les utilisateurs ayant des packs
      *
-     * @Route("/users", name="pack_users_corporate")
      * @IsGranted("ROLE_ADMIN")
      */
+    #[Route(path: '/users', name: 'pack_users_corporate')]
     public function getPacks(UserPackRepository $userPackRepository)
     {
         return $this->render('Core/Pack/users.html.twig', ['userPacks' => $userPackRepository->findAll()]);
@@ -102,8 +102,8 @@ class PackController extends AbstractController
      * Supprime la liaison d'un pack avec un utilisateur
      *
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/delete/{id}", name="pack_delete_corporate", methods={"GET", "POST"}, requirements={"id" = "\d+"})
      */
+    #[Route(path: '/delete/{id}', name: 'pack_delete_corporate', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function delete(UserPack $userPack, UserPackEntity $userPackEntity, PackNotification $packNotification)
     {
         $em = $this->getDoctrine()->getManager();

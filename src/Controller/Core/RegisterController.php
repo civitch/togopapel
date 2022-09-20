@@ -20,8 +20,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 /**
  * Class RegisterController
  * @package App\Controller\Security\Core
- * @Route("/corporate")
  */
+#[Route(path: '/corporate')]
 class RegisterController extends AbstractController
 {
 
@@ -35,8 +35,8 @@ class RegisterController extends AbstractController
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
-     * @Route("/register", name="register_corporate", methods={"GET", "POST"})
      */
+    #[Route(path: '/register', name: 'register_corporate', methods: ['GET', 'POST'])]
     public function register(Request $request, AppSecurity $appSecurity, AppMail $appMail)
     {
         $user = new User();
@@ -60,8 +60,8 @@ class RegisterController extends AbstractController
 
     /**
      * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
-     * @Route("/confirm/account/{token}", name="confirm_account_corporate", methods={"GET", "POST"}, requirements={"token" = ".+"})
      */
+    #[Route(path: '/confirm/account/{token}', name: 'confirm_account_corporate', methods: ['GET', 'POST'], requirements: ['token' => '.+'])]
     public function confirmAccount(string $token, Request $request, UserRepository $userRepository)
     {
         $em = $this->getDoctrine()->getManager();

@@ -20,16 +20,15 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CreditController
  * @package App\Controller\Core
- * @Route("/corporate/forfait")
  * @IsGranted("ROLE_ADMIN")
  */
+#[Route(path: '/corporate/forfait')]
 class CreditController extends AbstractController
 {
     /**
      * Affiche la liste des forfaits définis dans le projet et aussi fait l'ajout
-     *
-     * @Route("/liste", name="credit_liste_corporate", methods={"GET", "POST"})
      */
+    #[Route(path: '/liste', name: 'credit_liste_corporate', methods: ['GET', 'POST'])]
     public function index(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -49,9 +48,8 @@ class CreditController extends AbstractController
 
     /**
      * Modifie le crédit
-     *
-     * @Route("/edit/{id}", name="credit_edit_corporate", methods={"GET", "POST"}, requirements={"id" = "\d+"})
      */
+    #[Route(path: '/edit/{id}', name: 'credit_edit_corporate', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Credit $credit, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -70,9 +68,9 @@ class CreditController extends AbstractController
     /**
      * Supprime un crédit de la liste
      *
-     * @Route("/delete/{id}", name="credit_delete_corporate", methods={"POST"}, requirements={"id" = "\d+"})
      * @IsGranted("ROLE_MAINTENANCE")
      */
+    #[Route(path: '/delete/{id}', name: 'credit_delete_corporate', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function delete(Credit $credit, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -92,8 +90,8 @@ class CreditController extends AbstractController
      *
      * @param DemandeCreditRepository $demandeCreditRepository
      * @return Response
-     * @Route("/demande", name="credit_demande_corporate", methods={"GET", "POST"})
      */
+    #[Route(path: '/demande', name: 'credit_demande_corporate', methods: ['GET', 'POST'])]
     public function listeDemande(DemandeCreditRepository $demandeCreditRepository)
     {
         $demandes = $demandeCreditRepository->findBy(['enabled' => DemandeCredit::STATUS['waiting']], ['createdAt' => 'DESC']);
@@ -105,8 +103,8 @@ class CreditController extends AbstractController
      *
      * @param DemandeCreditRepository $demandeCreditRepository
      * @return Response
-     * @Route("/actives", name="credit_demande_enabled_corporate", methods={"GET"})
      */
+    #[Route(path: '/actives', name: 'credit_demande_enabled_corporate', methods: ['GET'])]
     public function listeDemandeEnabled(DemandeCreditRepository $demandeCreditRepository): Response
     {
         $demandes = $demandeCreditRepository->findBy(['enabled' => DemandeCredit::STATUS['enabled']], ['createdAt' => 'DESC']);
@@ -119,8 +117,8 @@ class CreditController extends AbstractController
      *
      * @param DemandeCreditRepository $demandeCreditRepository
      * @return Response
-     * @Route("/refus", name="credit_demande_refuse_corporate", methods={"GET"})
      */
+    #[Route(path: '/refus', name: 'credit_demande_refuse_corporate', methods: ['GET'])]
     public function listeRefuseDemande(DemandeCreditRepository $demandeCreditRepository): Response
     {
         $demandes = $demandeCreditRepository->findBy(['enabled' => DemandeCredit::STATUS['disabled']], ['createdAt' => 'DESC']);
@@ -132,8 +130,8 @@ class CreditController extends AbstractController
      *
      * @param Request $request
      * @return RedirectResponse
-     * @Route("/enabled/{id}", name="credit_enabled_corporate", methods={"POST"}, requirements={"id" = "\d+"})
      */
+    #[Route(path: '/enabled/{id}', name: 'credit_enabled_corporate', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function activateDemande(Request $request, DemandeCredit $demandeCredit, AppSecurity $appSecurity, DemandeCreditNotification $notification)
     {
         $em = $this->getDoctrine()->getManager();
@@ -177,8 +175,8 @@ class CreditController extends AbstractController
      *
      * @param Request $request
      * @return RedirectResponse
-     * @Route("/refus/{id}", name="credit_refuse_corporate", methods={"POST"}, requirements={"id" = "\d+"})
      */
+    #[Route(path: '/refus/{id}', name: 'credit_refuse_corporate', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function refuseDemande(Request $request, DemandeCredit $demandeCredit, DemandeCreditNotification $notification)
     {
         $em = $this->getDoctrine()->getManager();

@@ -16,14 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class RubriqueController
  * @package App\Controller\Core
- * @Route("/corporate")
  */
+#[Route(path: '/corporate')]
 class RubriqueController extends AbstractController
 {
     /**
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/rubrique", name="rubrique_corporate", methods={"POST", "GET"})
      */
+    #[Route(path: '/rubrique', name: 'rubrique_corporate', methods: ['POST', 'GET'])]
     public function index(Request $request, RubriqueEntity $rubriqueEntity, RubriqueRepository $rubriqueRepository)
     {
         $rubrique = new Rubrique();

@@ -17,8 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class EtiquetteController
  * @package App\Controller\Core
- * @Route("/corporate/etiquette")
  */
+#[Route(path: '/corporate/etiquette')]
 class EtiquetteController extends AbstractController
 {
     private $em;
@@ -29,10 +29,10 @@ class EtiquetteController extends AbstractController
     }
 
     /**
-     * @Route("/ajout", name="corporate_etiquette_new", methods={"GET", "POST"})
      * @param Request $request
      * @return RedirectResponse|Response
      */
+    #[Route(path: '/ajout', name: 'corporate_etiquette_new', methods: ['GET', 'POST'])]
     public function new(Request $request)
     {
         $etiquette = new Etiquette();
@@ -52,8 +52,8 @@ class EtiquetteController extends AbstractController
      * @param Etiquette $etiquette
      * @param Request $request
      * @return RedirectResponse|Response
-     * @Route("/edit/{id}", name="corporate_etiquette_edit", requirements={"id" = "\d+"}, methods={"POST", "GET"})
      */
+    #[Route(path: '/edit/{id}', name: 'corporate_etiquette_edit', requirements: ['id' => '\d+'], methods: ['POST', 'GET'])]
     public function edit(Etiquette $etiquette, Request $request)
     {
         $form = $this->createForm(EtiquetteType::class, $etiquette);
@@ -70,8 +70,8 @@ class EtiquetteController extends AbstractController
     /**
      * @param EtiquetteRepository $etiquetteRepository
      * @return Response
-     * @Route("/liste", name="corporate_etiquette_liste", methods={"GET"})
      */
+    #[Route(path: '/liste', name: 'corporate_etiquette_liste', methods: ['GET'])]
     public function liste(EtiquetteRepository $etiquetteRepository): Response
     {
         return $this->render('Core/Etiquette/list.html.twig', ['etiquettes' => $etiquetteRepository->findAll()]);

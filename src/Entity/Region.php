@@ -2,47 +2,31 @@
 
 namespace App\Entity;
 
+use App\Repository\RegionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * * @UniqueEntity(
- *     fields={"title"},
- *     errorPath="title",
- *     message="Le nom de la région doit être unique!"
- * )
- * @ORM\Entity(repositoryClass="App\Repository\RegionRepository")
- */
+#[UniqueEntity(fields: ['title'], errorPath: 'title', message: 'Le nom de la région doit être unique!')]
+#[ORM\Entity(repositoryClass: RegionRepository::class)]
 class Region
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(
-     *     max=20,
-     *     maxMessage="Ne doit pas dépasser {{ limit }} caractères!"
-     * )
-     * @ORM\Column(type="string", length=20, unique=true)
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 20, maxMessage: 'Ne doit pas dépasser {{ limit }} caractères!')]
+    #[ORM\Column(type: 'string', length: 20, unique: true)]
     private $title;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ville", mappedBy="region", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Ville::class, mappedBy: 'region', orphanRemoval: true)]
     private $villes;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private $slug;
 
 

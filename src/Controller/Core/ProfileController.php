@@ -19,8 +19,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  * Class ProfileController
  * @package App\Controller\Core
  * @IsGranted("IS_AUTHENTICATED_FULLY")
- * @Route("/corporate")
  */
+#[Route(path: '/corporate')]
 class ProfileController extends AbstractController
 {
 
@@ -31,9 +31,7 @@ class ProfileController extends AbstractController
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    /**
-     * @Route("/profile", name="profile_corporate_user", methods={"GET", "POST"})
-     */
+    #[Route(path: '/profile', name: 'profile_corporate_user', methods: ['GET', 'POST'])]
     public function displayProfile(Request $request, UserRepository $userRepository)
     {
         $em = $this->getDoctrine()->getManager();
@@ -50,7 +48,7 @@ class ProfileController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $user = $userRepository->findUserEditProfile($this->getUser()->getUsername(), $form->get('email')->getData());
-            if ($user) {
+            if ($user !== null) {
                 $errors['email'] = 'Cette adresse existe déjà ';
                 return $this->render('Core/Profile/index.html.twig', ['errors' => $errors, 'form' => $form->createView()]);
             }

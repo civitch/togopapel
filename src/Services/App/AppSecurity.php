@@ -78,8 +78,7 @@ class AppSecurity extends App
         }
         $id = (int) $_GET['id'];
         $token = $_GET['token'];
-        $user = $this->em->getRepository(User::class)->findByIdAndToken($id, $token);
-        return $user;
+        return $this->em->getRepository(User::class)->findByIdAndToken($id, $token);
     }
 
 

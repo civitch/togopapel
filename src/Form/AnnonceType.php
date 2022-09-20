@@ -73,7 +73,7 @@ class AnnonceType extends AbstractType
                     /** @var Categorie $choice */
                     /** @var Rubrique $info */
                     $tab = $this->est($info);
-                    if(in_array($choice->getRubrique()->getId(), array_keys($tab)))
+                    if(array_key_exists($choice->getRubrique()->getId(), $tab))
                     {
                         return $tab[$choice->getRubrique()->getId()];
                     }
@@ -145,7 +145,7 @@ class AnnonceType extends AbstractType
             else{
                 $this->getAccountInformation($form, $user->getFirstname(), false, 'firstname');
             }
-            if($user->getIndicatifPays() && $user->getIndicatifPays()->getId()!=0){
+            if($user->getIndicatifPays() && $user->getIndicatifPays()->getId() != 0){
                 dump($user->getIndicatifPays()->getTitle());
                 $this->getAccountInformation($form, $user->getIndicatifPays(), true, 'indicatifPays');
             }
@@ -228,7 +228,7 @@ class AnnonceType extends AbstractType
 
     private function getAccountInformation(FormInterface $form, $data, $disable = false, string  $field = 'tel')
     {
-        if($field === 'tel'){
+        if ($field === 'tel') {
             if($disable){
                 $form
                     ->add('tel', TextType::class, [
@@ -243,8 +243,7 @@ class AnnonceType extends AbstractType
                         'disabled' => $disable
                     ]);
             }
-        }else if($field === 'indicatifPays'){
-
+        } elseif ($field === 'indicatifPays') {
             $form->add('indicatifPays', EntityType::class, [
                 'class' => IndicatifPays::class,
                 'label' => 'Indicatif du pays:',
@@ -254,21 +253,17 @@ class AnnonceType extends AbstractType
                 'data' => $data,
                 'placeholder' => 'Sélectionner un indicatif pour votre numéro',
             ]);
-
+        } elseif ($disable) {
+            $form->add($field, TextType::class, [
+                'mapped'   => false,
+                'disabled' => $disable,
+                'data'     => $data
+            ]);
         } else{
-            if($disable){
-                $form->add($field, TextType::class, [
-                    'mapped'   => false,
-                    'disabled' => $disable,
-                    'data'     => $data
-                ]);
-            }else{
-                $form->add($field, TextType::class, [
-                    'mapped'   => false,
-                    'disabled' => false
-                ]);
-            }
-
+            $form->add($field, TextType::class, [
+                'mapped'   => false,
+                'disabled' => false
+            ]);
         }
     }
 

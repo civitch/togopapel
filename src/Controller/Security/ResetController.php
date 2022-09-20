@@ -21,8 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class ResetController
  * @package App\Controller\Security
- * @Route("/reset")
  */
+#[Route(path: '/reset')]
 class ResetController extends AbstractController
 {
 
@@ -33,12 +33,10 @@ class ResetController extends AbstractController
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    /**
-     * @Route("/lost-password", name="password_forget", methods={"GET", "POST"})
-     */
+    #[Route(path: '/lost-password', name: 'password_forget', methods: ['GET', 'POST'])]
     public function forgetPassword(Request $request, AppSecurity $appSecurity, AppMail $appMail)
     {
-        if ($this->getUser()) {
+        if ($this->getUser() !== null) {
             return $this->redirectToRoute('main_dashboard');
         }
         $errors = [];
@@ -77,12 +75,10 @@ class ResetController extends AbstractController
     }
 
 
-    /**
-     * @Route("/password/{id}", name="password_reset", methods={"GET", "POST"}, requirements={"id" = "\d+"})
-     */
+    #[Route(path: '/password/{id}', name: 'password_reset', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function confirmResetPassword($id, Request $request, UserRepository $userRepository)
     {
-        if ($this->getUser()) {
+        if ($this->getUser() !== null) {
             return $this->redirectToRoute('main_dashboard');
         }
         if(!isset($_GET['reset_token']))

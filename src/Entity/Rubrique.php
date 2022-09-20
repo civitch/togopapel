@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\RubriqueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,44 +10,28 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\RubriqueRepository")
- * @UniqueEntity(
- *     fields={"title"},
- *     errorPath="title",
- *     message="Le titre de la rubrique doit être unique car déjà utilisé !"
- * )
- */
+#[ORM\Entity(repositoryClass: RubriqueRepository::class)]
+#[UniqueEntity(fields: ['title'], errorPath: 'title', message: 'Le titre de la rubrique doit être unique car déjà utilisé !')]
 class Rubrique
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\Length(max=100, maxMessage="La rubrique ne doit pas dépasser {{ limit }} caractères!")
-     * @Assert\NotBlank(message="Le titre de la rubrique ne doit pas être vide!")
-     * @ORM\Column(type="string", length=100, unique=true)
-     */
+    #[Assert\Length(max: 100, maxMessage: 'La rubrique ne doit pas dépasser {{ limit }} caractères!')]
+    #[Assert\NotBlank(message: 'Le titre de la rubrique ne doit pas être vide!')]
+    #[ORM\Column(type: 'string', length: 100, unique: true)]
     private $title;
 
-    /**
-     * @Assert\Valid
-     * @ORM\OneToMany(targetEntity="App\Entity\Categorie", mappedBy="rubrique")
-     */
+    #[Assert\Valid]
+    #[ORM\OneToMany(targetEntity: \App\Entity\Categorie::class, mappedBy: 'rubrique')]
     private $categories;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="rubrique")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\User::class, mappedBy: 'rubrique')]
     private $users;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private $slug;
 
     public function __construct()

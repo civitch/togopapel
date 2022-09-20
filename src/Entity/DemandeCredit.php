@@ -2,85 +2,57 @@
 
 namespace App\Entity;
 
-
+use App\Repository\DemandeCreditRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DemandeCreditRepository")
- */
+#[ORM\Entity(repositoryClass: DemandeCreditRepository::class)]
 class DemandeCredit
 {
-    const STATUS = [
+    final const STATUS = [
         'waiting' => 0,
         'enabled' => 1,
         'disabled'=> 2
     ];
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @Assert\NotBlank(message="Veillez saisir une description")
-     * @ORM\Column(type="text")
-     */
+    #[Assert\NotBlank(message: 'Veillez saisir une description')]
+    #[ORM\Column(type: 'text')]
     private $description;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Picture", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\OneToOne(targetEntity: \App\Entity\Picture::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private $image;
 
-    /**
-     * @Assert\Image(
-     *     maxSize = "1024k",
-     *     maxSizeMessage="La taille maximum autorisée est de {{ limit }} {{ suffix }}.",
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     mimeTypesMessage="Téléverser soit des images png ou jpeg"
-     * )
-     */
+    #[Assert\Image(maxSize: '1024k', maxSizeMessage: 'La taille maximum autorisée est de {{ limit }} {{ suffix }}.', mimeTypes: ['image/jpeg', 'image/png'], mimeTypesMessage: 'Téléverser soit des images png ou jpeg')]
     private $pictureFile;
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Credit", inversedBy="demandeCredits")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Credit::class, inversedBy: 'demandeCredits')]
+    #[ORM\JoinColumn(nullable: false)]
     private $credit;
 
-    /**
-     * @Assert\Type(type="integer", message="Doit être défint et de type int")
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 2,
-     *      notInRangeMessage = "La valeur doit être comprise entre {{ min }} et {{ max }}",
-     * )
-     * @ORM\Column(type="integer")
-     */
-    private $enabled;
+    #[Assert\Type(type: 'integer', message: 'Doit être défint et de type int')]
+    #[Assert\Range(min: 0, max: 2, notInRangeMessage: 'La valeur doit être comprise entre {{ min }} et {{ max }}')]
+    #[ORM\Column(type: 'integer')]
+    private ?int $enabled = 0;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->enabled = 0;
     }
 
     public function getPictureFile()
