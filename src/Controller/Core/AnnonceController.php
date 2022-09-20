@@ -21,8 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AnnonceController
  * @package App\Controller\Core
- * @Route("/corporate/annonce")
  */
+#[Route(path: '/corporate/annonce')]
 class AnnonceController extends AbstractController
 {
     private $notification;
@@ -41,8 +41,8 @@ class AnnonceController extends AbstractController
      * Lister Toutes les annonces des utilisateurs
      * @param AnnonceRepository $annonceRepository
      * @return Response
-     * @Route("/liste", name="annonce_corp_liste", methods={"GET"})
      */
+    #[Route(path: '/liste', name: 'annonce_corp_liste', methods: ['GET'])]
     public function liste(AnnonceRepository $annonceRepository): Response
     {
         $annonces = $annonceRepository->findAll();
@@ -52,8 +52,8 @@ class AnnonceController extends AbstractController
      * Lister Toutes les annonces des utilisateurs
      * @param AnnonceRepository $annonceRepository
      * @return Response
-     * @Route("/phpinfo", name="phpinfo", methods={"GET"})
      */
+    #[Route(path: '/phpinfo', name: 'phpinfo', methods: ['GET'])]
     public function phpinfo(AnnonceRepository $annonceRepository): Response
     {
         phpinfo();
@@ -63,8 +63,8 @@ class AnnonceController extends AbstractController
     /**
      * @param AnnonceRepository $annonceRepository
      * @return Response
-     * @Route("/attente", name="annonce_corp_waiting", methods={"GET"})
      */
+    #[Route(path: '/attente', name: 'annonce_corp_waiting', methods: ['GET'])]
     public function listeWaiting(AnnonceRepository $annonceRepository): Response
     {
         $annonces = $annonceRepository->findBy(['enabled' => Annonce::STATUS['waiting']], ['createdAt' => 'DESC']);
@@ -74,8 +74,8 @@ class AnnonceController extends AbstractController
     /**
      * @param AnnonceRepository $annonceRepository
      * @return Response
-     * @Route("/active", name="annonce_corp_active", methods={"GET", "POST"}, options={"expose"=true})
      */
+    #[Route(path: '/active', name: 'annonce_corp_active', methods: ['GET', 'POST'], options: ['expose' => true])]
     public function listeEnabled(AnnonceRepository $annonceRepository): Response
     {
         $annonces = $annonceRepository->findBy(['enabled' => Annonce::STATUS['enabled']], ['createdAt' => 'DESC']);
@@ -85,8 +85,8 @@ class AnnonceController extends AbstractController
     /**
      * @param AnnonceRepository $annonceRepository
      * @return Response
-     * @Route("/desactive", name="annonce_corp_desactive", methods={"GET"})
      */
+    #[Route(path: '/desactive', name: 'annonce_corp_desactive', methods: ['GET'])]
     public function listeDesactivate(AnnonceRepository $annonceRepository): Response
     {
         $annonces = $annonceRepository->findBy(['enabled' => Annonce::STATUS['disabled']], ['createdAt' => 'DESC']);
@@ -97,8 +97,8 @@ class AnnonceController extends AbstractController
     /**
      * @param Annonce $annonce
      * @return Response
-     * @Route("/voir/{id}", name="annonce_corp_show", methods={"GET"}, requirements={"id" = "\d+"})
      */
+    #[Route(path: '/voir/{id}', name: 'annonce_corp_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Annonce $annonce): Response
     {
         return $this->render('Core/Annonce/show.html.twig', ['annonce' => $annonce]);
@@ -107,16 +107,15 @@ class AnnonceController extends AbstractController
 
     /**
      * Permet de d'approuver une annonce
-     *
-     * @Route("/enabled", name="annonce_corporate_enabled", options={"expose" = true}, methods={"POST"})
      */
+    #[Route(path: '/enabled', name: 'annonce_corporate_enabled', options: ['expose' => true], methods: ['POST'])]
     public function enabledAnnonce(Request $request)
     {
         if($request->isXmlHttpRequest())
         {
             $em = $this->getDoctrine()->getManager();
             $annonce = $em->getRepository(Annonce::class)->find($request->request->get('id'));
-            if($annonce){
+            if($annonce !== null){
                 $this->denyAccessUnlessGranted('edit', $annonce);
                 if($this->isCsrfTokenValid('enabled-annonce' . $annonce->getId(), $request->request->get('token')))
                 {
@@ -197,16 +196,15 @@ class AnnonceController extends AbstractController
     }
     /**
      * Permet de désapprouver une annonce
-     *
-     * @Route("/disabled", name="annonce_corporate_disabled", options={"expose" = true}, methods={"POST"})
      */
+    #[Route(path: '/disabled', name: 'annonce_corporate_disabled', options: ['expose' => true], methods: ['POST'])]
     public function disabledAnnonce(Request $request)
     {
         if($request->isXmlHttpRequest())
         {
             $em = $this->getDoctrine()->getManager();
             $annonce = $em->getRepository(Annonce::class)->find($request->request->get('id'));
-            if($annonce){
+            if($annonce !== null){
                 $this->denyAccessUnlessGranted('edit', $annonce);
                 if($this->isCsrfTokenValid('disabled-annonce' . $annonce->getId(), $request->request->get('token')))
                 {

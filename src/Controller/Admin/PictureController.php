@@ -14,18 +14,16 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class PictureController
  * @package App\Controller\Admin
- * @Route("/admin")
  */
+#[Route(path: '/admin')]
 class PictureController extends AbstractController
 {
-    /**
-     * @Route("/delete", name="admin.picture.delete", methods={"DELETE"})
-     */
+    #[Route(path: '/delete', name: 'admin.picture.delete', methods: ['DELETE'])]
     public function delete(Request $request) {
         $data = json_decode($request->getContent(), true);
         $em = $this->getDoctrine()->getManager();
         $picture = $em->getRepository(Picture::class)->find($data['_id']);
-        if($picture)
+        if($picture !== null)
         {
             if ($this->isCsrfTokenValid('delete' . $picture->getId(), $data['_token'])) {
                 $em->remove($picture);

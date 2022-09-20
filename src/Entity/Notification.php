@@ -2,17 +2,16 @@
 
 namespace App\Entity;
 
+use App\Repository\NotificationRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
- */
+#[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
-    const ROLES = [
+    final const ROLES = [
         'annonce'             => 1,
         'validation_annonce'  => 2,
         'credit'              => 3,
@@ -27,32 +26,22 @@ class Notification
         'user_edit_account'   => 12,
     ];
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $message;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\NotificationUser", mappedBy="notification")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\NotificationUser::class, mappedBy: 'notification')]
     private $notificationUsers;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $role;
 
     public function __construct()

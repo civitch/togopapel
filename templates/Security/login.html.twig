@@ -29,11 +29,11 @@
                 {% endfor %}
                 <div class="form-group">
                     <label for="inputEmail">Email</label>
-                    <input type="email" placeholder="Saisir votre identifiant" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+                    <input type="email" placeholder="Saisir votre identifiant" value="{{ last_username }}" name="_username" id="inputEmail" class="form-control" required autofocus>
                 </div>
                 <div class="form-group passwd_auth">
                     <label for="inputPassword">Mot de passe</label>
-                    <input  type="password" placeholder="Saisir votre mot de passe" name="password" id="inputPassword" class="form-control" required>
+                    <input  type="password" placeholder="Saisir votre mot de passe" name="_password" id="inputPassword" class="form-control" required>
                     <span class="i_passwd_auth"><i class="fa fa-eye"></i></span>
                 </div>
                 <input type="hidden" name="_csrf_token"  value="{{ csrf_token('authenticate') }}">

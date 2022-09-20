@@ -17,14 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class VilleController
  * @package App\Controller\Core
- * @Route("/corporate")
  */
+#[Route(path: '/corporate')]
 class VilleController extends AbstractController
 {
     /**
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/ville", name="ville_corporate", methods={"GET", "POST"})
      */
+    #[Route(path: '/ville', name: 'ville_corporate', methods: ['GET', 'POST'])]
     public function index(Request $request, VilleEntity $villeEntity, VilleRepository $villeRepository)
     {
         $ville = new Ville();

@@ -1,3 +1,4 @@
+console.log("9595");
 import Places from 'places.js';
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css';

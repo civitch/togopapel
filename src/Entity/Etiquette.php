@@ -2,37 +2,28 @@
 
 namespace App\Entity;
 
+use App\Repository\EtiquetteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\EtiquetteRepository")
- */
+#[ORM\Entity(repositoryClass: EtiquetteRepository::class)]
 class Etiquette
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PostType", mappedBy="etiquette")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\PostType::class, mappedBy: 'etiquette')]
     private $postypes;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Cat", inversedBy="etiquettes")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Cat::class, inversedBy: 'etiquettes')]
+    #[ORM\JoinColumn(nullable: true)]
     private $cat;
 
     public function __construct()

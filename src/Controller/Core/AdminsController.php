@@ -12,28 +12,28 @@ use App\Services\App\AppSecurity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
  * Class AdminsController
  * @package App\Controller\Security\Core
- * @Route("/corporate/admin")
  */
+#[Route(path: '/corporate/admin')]
 class AdminsController extends AbstractController
 {
     private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
-     * @Route("/liste", name="admin_liste_corporate", methods={"GET", "POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
+    #[Route(path: '/liste', name: 'admin_liste_corporate', methods: ['GET', 'POST'])]
     public function listeAdmins(UserRepository $userRepository)
     {
         $admins = $userRepository->listeAdmins();
@@ -42,18 +42,16 @@ class AdminsController extends AbstractController
 
 
     /**
-     * @Route("/users", name="users_liste_corporate", methods={"GET", "POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
+    #[Route(path: '/users', name: 'users_liste_corporate', methods: ['GET', 'POST'])]
     public function listeUsers(UserRepository $userRepository)
     {
         $admins = $userRepository->listeAdmins(true);
         return $this->render('Core/Users/list.html.twig', ['admins' => $admins]);
     }
 
-    /**
-     * @Route("/forgetPassword/{id}", name="forget_password_corporate", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     */
+    #[Route(path: '/forgetPassword/{id}', name: 'forget_password_corporate', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editPassword(User $user, Request $request, AppSecurity $appSecurity)
     {
         if($user->hasRole($appSecurity->getRole('pro')) || $user->hasRole($appSecurity->getRole('particular')))
@@ -68,7 +66,7 @@ class AdminsController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $user
-                ->setPassword($this->passwordEncoder->encodePassword($user, $form->getData()->getPassword()));
+                ->setPassword($this->passwordEncoder->hashPassword($user, $form->getData()->getPassword()));
             $this->addFlash('success', 'Le mot de passe de '.$user->getEmail().' a été modifié avec succès!');
             $em->flush();
             return $this->redirectToRoute('admin_liste_corporate');

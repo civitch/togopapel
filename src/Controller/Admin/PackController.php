@@ -21,8 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class PackController
  * @package App\Controller\Admin
- * @Route("/admin/pack")
  */
+#[Route(path: '/admin/pack')]
 class PackController extends AbstractController
 {
     /**
@@ -30,8 +30,8 @@ class PackController extends AbstractController
      *
      * @param PackRepository $packRepository
      * @return Response
-     * @Route("/liste", name="pack_admin_liste", methods={"GET"})
      */
+    #[Route(path: '/liste', name: 'pack_admin_liste', methods: ['GET'])]
     public function index(PackRepository $packRepository)
     {
         return $this->render('Admin/Pack/index.html.twig',['packs' => $packRepository->findAll()]);
@@ -40,11 +40,11 @@ class PackController extends AbstractController
     /**
      * Affiche un pack précis
      *
-     * @Route("/{id}-{slug}", name="pack_admin_show", requirements={"slug": "[a-z0-9\-]*", "id" = "\d+"})
      * @param Pack $pack
      * @param $slug
      * @return Response
      */
+    #[Route(path: '/{id}-{slug}', name: 'pack_admin_show', requirements: ['slug' => '[a-z0-9\-]*', 'id' => '\d+'])]
     public function show(Pack $pack, $slug)
     {
         if ($pack->getSlug() !== $slug) {
@@ -53,15 +53,15 @@ class PackController extends AbstractController
                 'id'   => $pack->getId()
             ], 301);
         }
-        return $this->render('Admin/Pack/show.html.twig', compact('pack'));
+        return $this->render('Admin/Pack/show.html.twig', ['pack' => $pack]);
     }
 
     /**
      * Ajouter un pack à la liste
      *
-     * @Route("/add/{id}", name="pack_admin_add", methods={"POST"}, requirements={"id" = "\d+"})
      * @throws Exception
      */
+    #[Route(path: '/add/{id}', name: 'pack_admin_add', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function addPack(Pack $pack, Request $request, AppSecurity $appSecurity, UserPackEntity $userPackEntity)
     {
         $user = $this->getUser();
@@ -83,7 +83,7 @@ class PackController extends AbstractController
             return $this->redirectToRoute('pack_admin_liste');
         }
         $userPackEntity->addUserPack($pack, $user);
-        return $this->render('Admin/Pack/add.html.twig', compact('pack'));
+        return $this->render('Admin/Pack/add.html.twig', ['pack' => $pack]);
     }
 
 }

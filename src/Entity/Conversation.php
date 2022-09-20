@@ -2,47 +2,34 @@
 
 namespace App\Entity;
 
+use App\Repository\ConversationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ConversationRepository")
- */
+#[ORM\Entity(repositoryClass: ConversationRepository::class)]
 class Conversation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="conversation", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Message::class, mappedBy: 'conversation', orphanRemoval: true)]
     private $messages;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Annonce")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Annonce::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $annonce;
 
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $users = [];
+    #[ORM\Column(type: 'array')]
+    private array $users = [];
 
 
 

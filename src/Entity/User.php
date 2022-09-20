@@ -2,185 +2,127 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-
-/**
- * @UniqueEntity("email", errorPath="email", message="Cette adresse mail est déjà utilisé")
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- */
-class User implements UserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email', errorPath: 'email', message: 'Cette adresse mail est déjà utilisé')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank(message="L'email doit être saisi")
-     * @Assert\Email(message = "L'adresse mail {{ value }} n'est pas valide")
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[Assert\NotBlank(message: "L'email doit être saisi")]
+    #[Assert\Email(message: "L'adresse mail {{ value }} n'est pas valide")]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     /**
      * @var string The hashed password
-     * @Assert\Regex(
-     *     pattern="/^(?=.*\d{1,})(?=.*\w).{8,}$/",
-     *     message= "Le mot de passe ne correspond pas à la structure demandée"
-     * )
-     * @ORM\Column(type="string")
      */
-    private $password;
+    #[Assert\Regex(pattern: '/^(?=.*\d{1,})(?=.*\w).{8,}$/', message: 'Le mot de passe ne correspond pas à la structure demandée')]
+    #[ORM\Column(type: 'string')]
+    private ?string $password = null;
 
-    /**
-     * @Assert\NotBlank(message="La date de création du compte ne doit pas rester vide!")
-     * @ORM\Column(type="datetime")
-     */
+    #[Assert\NotBlank(message: 'La date de création du compte ne doit pas rester vide!')]
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastLogin;
 
-    /**
-     * @Assert\Type(type="bool", message="La valeur {{ value }} n'est pas un {{ type }}.")
-     * @ORM\Column(type="boolean")
-     */
-    private $enabled;
+    #[Assert\Type(type: 'bool', message: "La valeur {{ value }} n'est pas un {{ type }}.")]
+    #[ORM\Column(type: 'boolean')]
+    private bool $enabled = false;
 
-    /**
-     * @Assert\Choice({"madame", "monsieur"})
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
+    #[Assert\Choice(['madame', 'monsieur'])]
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private $civility;
 
-    /**
-     * @Assert\Length(max = 255, maxMessage="L'adresse ne doit pas excéder {{ limit }} caractères", allowEmptyString = false)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Assert\Length(max: 255, maxMessage: "L'adresse ne doit pas excéder {{ limit }} caractères", allowEmptyString: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $adresse;
 
-    /**
-     * @Assert\Length(max = 100, maxMessage="Le n° de tél doit pas excéder {{ limit }} caractères", allowEmptyString = false)
-     * @Assert\Regex(pattern="/^[0-9 -.]+$/", message="Le numéro de téléphone ne respecte pas les règles")
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[Assert\Length(max: 100, maxMessage: 'Le n° de tél doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Regex(pattern: '/^[0-9 -.]+$/', message: 'Le numéro de téléphone ne respecte pas les règles')]
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $tel;
 
-    /**
-     * @Assert\Length(max = 255, maxMessage="Ne doit pas excéder {{ limit }} caractères", allowEmptyString = false)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $confirmationToken;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $confirmationAt;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $resetToken;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $resetAt;
 
-    /**
-     * @Assert\Length(max=255, maxMessage="Le nom ne doit pas excéder {{ limit }} caractères", allowEmptyString = false)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Assert\Length(max: 255, maxMessage: 'Le nom ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    /**
-     * @Assert\Length(max=255, maxMessage="le prénom ne doit pas excéder {{ limit }} caractères", allowEmptyString = false)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Assert\Length(max: 255, maxMessage: 'le prénom ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $firstname;
 
-    /**
-     * @Assert\Length(max=255, maxMessage="Ne doit pas excéder {{ limit }} caractères", allowEmptyString = false)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $society;
 
-    /**
-     * @Assert\Length(max=255, maxMessage="Ne doit pas excéder {{ limit }} caractères", allowEmptyString = false)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $siren;
 
-    /**
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[Assert\Valid]
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Department::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
     private $department;
 
-    /**
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="App\Entity\Rubrique", inversedBy="users")
-     */
+    #[Assert\Valid]
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Rubrique::class, inversedBy: 'users')]
     private $rubrique;
 
-    /**
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="App\Entity\Ville")
-     */
+    #[Assert\Valid]
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Ville::class)]
     private $ville;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Annonce", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Annonce::class, mappedBy: 'user')]
     private $annonces;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Annonce", inversedBy="favoris")
-     * @ORM\JoinTable(name="user_favoris")
-     */
+    #[ORM\JoinTable(name: 'user_favoris')]
+    #[ORM\ManyToMany(targetEntity: \App\Entity\Annonce::class, inversedBy: 'favoris')]
     private $favoris;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserPack", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\UserPack::class, mappedBy: 'user')]
     private $userPacks;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $wallet;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\NotificationUser", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\NotificationUser::class, mappedBy: 'user')]
     private $notificationUsers;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\IndicatifPays", inversedBy="users")
-     * @ORM\JoinColumn(name="indicatif_pays_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\IndicatifPays::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(name: 'indicatif_pays_id', referencedColumnName: 'id')]
     private $indicatifPays;
 
 
@@ -189,7 +131,6 @@ class User implements UserInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->enabled = false;
         $this->annonces = new ArrayCollection();
         $this->favoris = new ArrayCollection();
         $this->userPacks = new ArrayCollection();
@@ -229,7 +170,7 @@ class User implements UserInterface
         if (!$role) {
             return $this;
         }
-        $role = strtoupper($role);
+        $role = strtoupper((string) $role);
         if (!in_array($role, $this->roles, true)) {
             $this->roles[] = $role;
         }
@@ -238,7 +179,7 @@ class User implements UserInterface
 
     public function removeRole($role)
     {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+        if (false !== $key = array_search(strtoupper((string) $role), $this->roles, true)) {
             unset($this->roles[$key]);
             $this->roles = array_values($this->roles);
         }
@@ -247,7 +188,7 @@ class User implements UserInterface
 
     public function hasRole($role)
     {
-        return in_array(strtoupper($role), $this->roles, true);
+        return in_array(strtoupper((string) $role), $this->roles, true);
     }
 
 

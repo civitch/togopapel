@@ -56,7 +56,7 @@ class AppSecurity extends App
         $user->setConfirmationToken($this->randomToken(100));
         $user->setDepartment($dep);
         $user->addRole($dep->getRole());
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
+        $user->setPassword($this->passwordEncoder->hashPassword($user, $user->getPassword()));
         $this->em->persist($user);
         $this->em->flush();
         $this->userNotification->accountCreated(
@@ -78,8 +78,7 @@ class AppSecurity extends App
         }
         $id = (int) $_GET['id'];
         $token = $_GET['token'];
-        $user = $this->em->getRepository(User::class)->findByIdAndToken($id, $token);
-        return $user;
+        return $this->em->getRepository(User::class)->findByIdAndToken($id, $token);
     }
 
 

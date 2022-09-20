@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-
+use App\Repository\AnnonceRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,232 +11,143 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AnnonceRepository")
- */
+#[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 class Annonce
 {
-    const TYPE = [
+    final const TYPE = [
         true  => 'offre',
         false => 'demande'
     ];
 
-    const STATE = [
+    final const STATE = [
         'new'     => 'neuf',
         'very'    => 'très bon état',
         'good'    => 'bon état',
         'satisfy' => 'satisfaisant'
     ];
 
-    const STATUS = [
+    final const STATUS = [
         'waiting' => 0,
         'enabled' => 1,
         'disabled'=> 2
     ];
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
 
-    /**
-     * @ORM\Column(type="integer", options={"default": 0})
-     */
-    private $nbrVue=0;
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $nbrVue=0;
 
-    /**
-     * @Assert\NotBlank(message="Le titre de l'anonce ne doit pas rester vide")
-     * @Assert\Length(
-     *      min = 3,
-     *      max = 150,
-     *      minMessage = "Le titre de votre annonce doit avoir au moins {{ limit }} caractères",
-     *      maxMessage = "Le titre de votre annonce doit pas accéder plus de {{ limit }} caractères",
-     *      allowEmptyString = false
-     * )
-     * @ORM\Column(type="string", length=150)
-     */
+    #[Assert\NotBlank(message: "Le titre de l'anonce ne doit pas rester vide")]
+    #[Assert\Length(min: 3, max: 150, minMessage: 'Le titre de votre annonce doit avoir au moins {{ limit }} caractères', maxMessage: 'Le titre de votre annonce doit pas accéder plus de {{ limit }} caractères', allowEmptyString: false)]
+    #[ORM\Column(type: 'string', length: 150)]
     private $title;
 
-    /**
-     * @Assert\Type("bool", message="La valeur {{ value }} n'est pas celle attendue.")
-     * @ORM\Column(type="boolean")
-     */
+    #[Assert\Type('bool', message: "La valeur {{ value }} n'est pas celle attendue.")]
+    #[ORM\Column(type: 'boolean')]
     private $type;
 
-    /**
-     * @Assert\Length(
-     *     min=3,
-     *     max=10,
-     *     minMessage="La valeur minimum doit être de {{ limit }} caractères",
-     *     maxMessage="La valeur maximum doit être de {{ limit }} caractères"
-     * )
-     * @Assert\Choice({"new", "very", "good", "satisfy"}, message="Choisir un état valide")
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
+    #[Assert\Length(min: 3, max: 10, minMessage: 'La valeur minimum doit être de {{ limit }} caractères', maxMessage: 'La valeur maximum doit être de {{ limit }} caractères')]
+    #[Assert\Choice(['new', 'very', 'good', 'satisfy'], message: 'Choisir un état valide')]
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
     private $state;
 
-    /**
-     * @Assert\Length(
-     *      min = 10,
-     *      minMessage = "La description de l'annonce doit avoir au moins {{ limit }} caractères",
-     *      allowEmptyString = false
-     * )
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[Assert\Length(min: 10, minMessage: "La description de l'annonce doit avoir au moins {{ limit }} caractères", allowEmptyString: false)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @Assert\Positive(message="Cette valeur doit etre positive")
-     * @Assert\Type(type="float", message="La valeur {{ value }} n'est pas valide!")
-     * @ORM\Column(type="float", scale=2, nullable=true)
-     */
+    #[Assert\Positive(message: 'Cette valeur doit etre positive')]
+    #[Assert\Type(type: 'float', message: "La valeur {{ value }} n'est pas valide!")]
+    #[ORM\Column(type: 'float', scale: 2, nullable: true)]
     private $price;
 
-    /**
-     * @Assert\NotBlank(message="La catégorie de l'annonce ne doit pas rester vide!")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Categorie", inversedBy="annonces")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[Assert\NotBlank(message: "La catégorie de l'annonce ne doit pas rester vide!")]
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Categorie::class, inversedBy: 'annonces')]
+    #[ORM\JoinColumn(nullable: false)]
     private $categorie;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annonces")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\User::class, inversedBy: 'annonces')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
 
-    /**
-     * @Assert\Image(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     mimeTypesMessage="Téléverser soit des images png ou jpeg"
-     * )
-     */
+    #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], mimeTypesMessage: 'Téléverser soit des images png ou jpeg')]
     private $pictureFileOne;
 
-    /**
-     * @Assert\Image(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     mimeTypesMessage="Téléverser soit des images png ou jpeg"
-     * )
-     */
+    #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], mimeTypesMessage: 'Téléverser soit des images png ou jpeg')]
     private $pictureFileTwo;
 
 
-    /**
-     * @Assert\Image(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     mimeTypesMessage="Téléverser soit des images png ou jpeg"
-     * )
-     */
+    #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], mimeTypesMessage: 'Téléverser soit des images png ou jpeg')]
     private $pictureFileThree;
 
 
-    /**
-     * @Assert\Image(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     mimeTypesMessage="Téléverser soit des images png ou jpeg"
-     * )
-     */
+    #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], mimeTypesMessage: 'Téléverser soit des images png ou jpeg')]
     private $pictureFileFour;
 
 
 
-    /**
-     * @Assert\NotBlank(message="La date de création de l'annocne doit être mentionnée")
-     * @ORM\Column(type="datetime")
-     */
+    #[Assert\NotBlank(message: "La date de création de l'annocne doit être mentionnée")]
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @Assert\Count(max=7, maxMessage="La limite de téléchargement de fichiers est de {{ limit }}")
-     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="annonce", orphanRemoval=true, cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[Assert\Count(max: 7, maxMessage: 'La limite de téléchargement de fichiers est de {{ limit }}')]
+    #[ORM\OneToMany(targetEntity: \App\Entity\Picture::class, mappedBy: 'annonce', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
     private $pictures;
 
 
-    /**
-     * @var Picture|null
-     */
-    private $picture;
+    private ?\App\Entity\Picture $picture = null;
 
-    /**
-     * @Assert\Type(type="integer", message="Doit être défint et de type int")
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 2,
-     *      notInRangeMessage = "La valeur doit être comprise entre {{ min }} et {{ max }}",
-     * )
-     * @ORM\Column(type="integer")
-     */
+    #[Assert\Type(type: 'integer', message: 'Doit être défint et de type int')]
+    #[Assert\Range(min: 0, max: 2, notInRangeMessage: 'La valeur doit être comprise entre {{ min }} et {{ max }}')]
+    #[ORM\Column(type: 'integer')]
     private $enabled;
 
-    /**
-     * @Assert\Type(type="float", message="doit être de type float")
-     * @Assert\NotBlank(message="Le lieu définit ne correspond pas à une région du Togo")
-     * @ORM\Column(type="float", scale=4, precision=6)
-     */
+    #[Assert\Type(type: 'float', message: 'doit être de type float')]
+    #[Assert\NotBlank(message: 'Le lieu définit ne correspond pas à une région du Togo')]
+    #[ORM\Column(type: 'float', scale: 4, precision: 6)]
     private $lat;
 
-    /**
-     * @Assert\Type(type="float", message="doit être de type float")
-     * @Assert\NotBlank(message="Le lieu définit ne correspond pas à une région du Togo")
-     * @ORM\Column(type="float", scale=4, precision=7)
-     */
+    #[Assert\Type(type: 'float', message: 'doit être de type float')]
+    #[Assert\NotBlank(message: 'Le lieu définit ne correspond pas à une région du Togo')]
+    #[ORM\Column(type: 'float', scale: 4, precision: 7)]
     private $lng;
 
-    /**
-     * @Assert\Length(max=255, maxMessage="L'adresse doit contenir au maximum {{ limit }} caractères")
-     * @Assert\NotBlank(message="Veuiller définir une adresse pour votre annonce")
-     * @ORM\Column(type="string", length=255)
-     */
+    #[Assert\Length(max: 255, maxMessage: "L'adresse doit contenir au maximum {{ limit }} caractères")]
+    #[Assert\NotBlank(message: 'Veuiller définir une adresse pour votre annonce')]
+    #[ORM\Column(type: 'string', length: 255)]
     private $adresse;
 
-    /**
-     * @Assert\NotBlank(message="Veuillez saisir les informations sur la ville")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Ville", inversedBy="annonces")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[Assert\NotBlank(message: 'Veuillez saisir les informations sur la ville')]
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Ville::class, inversedBy: 'annonces')]
+    #[ORM\JoinColumn(nullable: false)]
     private $ville;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="favoris")
-     */
+    #[ORM\ManyToMany(targetEntity: \App\Entity\User::class, mappedBy: 'favoris')]
     private $favoris;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $packStar;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $packVip;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $packPremium;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $hideTel;
+    #[ORM\Column(type: 'boolean')]
+    private bool $hideTel = false;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
 
     public function __construct()
     {
-        $this->hideTel = false;
         $this->enabled = self::STATUS['waiting'];
         $this->createdAt = new DateTime();
         $this->pictures = new ArrayCollection();
@@ -274,7 +185,7 @@ class Annonce
 
     public function getState(): ?string
     {
-        return isset(self::STATE[$this->state]) ? self::STATE[$this->state]: null;
+        return self::STATE[$this->state] ?? null;
     }
 
 
@@ -421,11 +332,7 @@ class Annonce
         return $this->pictureFileOne;
     }
 
-    /**
-     * @param mixed $pictureFile
-     * @return Annonce
-     */
-    public function setPictureFileOne($pictureFile): self
+    public function setPictureFileOne(mixed $pictureFile): self
     {
         $this->addPictureFile($pictureFile);
         $this->pictureFileOne = $pictureFile;
@@ -441,11 +348,7 @@ class Annonce
         return $this->pictureFileTwo;
     }
 
-    /**
-     * @param mixed $pictureFile
-     * @return Annonce
-     */
-    public function setPictureFileTwo($pictureFile): self
+    public function setPictureFileTwo(mixed $pictureFile): self
     {
         $this->addPictureFile($pictureFile);
         $this->pictureFileTwo = $pictureFile;
@@ -461,11 +364,7 @@ class Annonce
         return $this->pictureFileThree;
     }
 
-    /**
-     * @param mixed $pictureFile
-     * @return Annonce
-     */
-    public function setPictureFileThree($pictureFile): self
+    public function setPictureFileThree(mixed $pictureFile): self
     {
         $this->addPictureFile($pictureFile);
         $this->pictureFileThree = $pictureFile;
@@ -481,11 +380,7 @@ class Annonce
         return $this->pictureFileFour;
     }
 
-    /**
-     * @param mixed $pictureFile
-     * @return Annonce
-     */
-    public function setPictureFileFour($pictureFile): self
+    public function setPictureFileFour(mixed $pictureFile): self
     {
         $this->addPictureFile($pictureFile);
         $this->pictureFileFour = $pictureFile;
@@ -555,10 +450,9 @@ class Annonce
 
 
     /**
-     * @param ExecutionContextInterface $context
      * @param $payload
-     * @Assert\Callback
      */
+    #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, $payload)
     {
         if($this->getType() && empty($this->getPrice())){
@@ -661,17 +555,11 @@ class Annonce
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getNbrVue(): int
     {
         return $this->nbrVue;
     }
 
-    /**
-     * @param int $nbrVue
-     */
     public function setNbrVue(int $nbrVue): void
     {
         $this->nbrVue = $nbrVue;

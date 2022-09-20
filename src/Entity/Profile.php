@@ -41,10 +41,7 @@ class Profile
     private $rubrique;
     private $ville;
     private $telIndicatif;
-    /**
-     * @var string $description
-     */
-    private $description;
+    private ?string $description = null;
 
 
     public function getEmail(): ?string

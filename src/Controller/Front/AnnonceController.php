@@ -34,10 +34,7 @@ class AnnonceController extends AbstractController
     const PARAMETER_VALUE = 'page';
     const REDIRECT_ERROR_PAGE = 'home_project';
 
-    /**
-     * @var AnnonceEntity $annonceService
-     */
-    private $annonceService;
+    private \App\Services\Entity\AnnonceEntity $annonceService;
 
     public function __construct(AnnonceEntity $annonceService)
     {
@@ -50,8 +47,8 @@ class AnnonceController extends AbstractController
      * @param Request $request
      * @param AnnonceRepository $annonceRepository
      * @return Response
-     * @Route("/annonces", name="liste_annonce_front", methods={"GET", "POST"})
      */
+    #[Route(path: '/annonces', name: 'liste_annonce_front', methods: ['GET', 'POST'])]
     public function liste(Request $request, AnnonceRepository $annonceRepository): Response
     {
 
@@ -96,17 +93,17 @@ class AnnonceController extends AbstractController
     /**
      * Liste les annonces par catégorie
      *
-     * @Route("/annonces/categorie/{slug}", name="liste_annonce_categorie_front", methods={"GET"}, requirements={"slug" = "[a-z0-9\-]*"})
      * @param Request $request
      * @param AnnonceRepository $annonceRepository
      * @param string $slug
      * @return RedirectResponse|Response
      */
+    #[Route(path: '/annonces/categorie/{slug}', name: 'liste_annonce_categorie_front', methods: ['GET'], requirements: ['slug' => '[a-z0-9\-]*'])]
     public function listeByCategory(Request $request, AnnonceRepository $annonceRepository, string $slug): Response
     {
         $em = $this->getDoctrine()->getManager();
         $categorie = $em->getRepository(Categorie::class)->findOneBy(['slug' => $slug]);
-        if(!$categorie)
+        if(!$categorie instanceof \App\Entity\Categorie)
         {
            return $this->redirectToRoute(self::REDIRECT_ERROR_PAGE);
         }
@@ -123,17 +120,17 @@ class AnnonceController extends AbstractController
     /**
      * Liste des annonces par ville
      *
-     * @Route("/annonces/ville/{slug}", name="liste_annonce_ville_front", methods={"GET"}, requirements={"slug" = "[a-z0-9\-]*"})
      * @param Request $request
      * @param AnnonceRepository $annonceRepository
      * @param string $slug
      * @return Response
      */
+    #[Route(path: '/annonces/ville/{slug}', name: 'liste_annonce_ville_front', methods: ['GET'], requirements: ['slug' => '[a-z0-9\-]*'])]
     public function listeByVille(Request $request, AnnonceRepository $annonceRepository, string $slug): Response
     {
         $em = $this->getDoctrine()->getManager();
         $ville = $em->getRepository(Ville::class)->findOneBy(['slug' => $slug]);
-        if(!$ville)
+        if(!$ville instanceof \App\Entity\Ville)
         {
             return $this->redirectToRoute(self::REDIRECT_ERROR_PAGE);
         }
@@ -148,17 +145,17 @@ class AnnonceController extends AbstractController
     /**
      * Liste des annonces par région
      *
-     * @Route("/annonces/region/{slug}", name="liste_annonce_region_front", methods={"GET"}, requirements={"slug" = "[a-z0-9\-]*"})
      * @param Request $request
      * @param AnnonceRepository $annonceRepository
      * @param string $slug
      * @return Response
      */
+    #[Route(path: '/annonces/region/{slug}', name: 'liste_annonce_region_front', methods: ['GET'], requirements: ['slug' => '[a-z0-9\-]*'])]
     public function listeByRegion(Request $request, AnnonceRepository $annonceRepository, string $slug): Response
     {
         $em = $this->getDoctrine()->getManager();
         $region = $em->getRepository(Region::class)->findOneBy(['slug' => $slug]);
-        if(!$region)
+        if(!$region instanceof \App\Entity\Region)
         {
             return $this->redirectToRoute(self::REDIRECT_ERROR_PAGE);
         }
@@ -172,17 +169,17 @@ class AnnonceController extends AbstractController
     /**
      * Liste des annonces par rubriques
      *
-     * @Route("/annonces/rubrique/{slug}", name="liste_annonce_rubrique_front", methods={"GET"}, requirements={"slug" = "[a-z0-9\-]*"})
      * @param Request $request
      * @param AnnonceRepository $annonceRepository
      * @param string $slug
      * @return Response
      */
+    #[Route(path: '/annonces/rubrique/{slug}', name: 'liste_annonce_rubrique_front', methods: ['GET'], requirements: ['slug' => '[a-z0-9\-]*'])]
     public function listeByRubrique(Request $request, AnnonceRepository $annonceRepository, string $slug): Response
     {
         $em = $this->getDoctrine()->getManager();
         $rubrique = $em->getRepository(Rubrique::class)->findOneBy(['slug' => $slug]);
-        if(!$rubrique)
+        if(!$rubrique instanceof \App\Entity\Rubrique)
         {
             return $this->redirectToRoute(self::REDIRECT_ERROR_PAGE);
         }
@@ -199,8 +196,8 @@ class AnnonceController extends AbstractController
      *
      * @param string $slug
      * @return Response
-     * @Route("/annonce/{slug}", name="annonce_info")
      */
+    #[Route(path: '/annonce/{slug}', name: 'annonce_info')]
     public function show(string $slug, AnnonceRepository $annonceRepository): Response
     {
         $em = $this->getDoctrine()->getManager();
@@ -208,7 +205,7 @@ class AnnonceController extends AbstractController
         $annonce->setNbrVue($annonce->getNbrVue()+1);
         $em->persist($annonce);
         $em->flush();
-        if(!$annonce)
+        if(!$annonce instanceof \App\Entity\Annonce)
         {
             return $this->redirectToRoute('liste_annonce_front');
         }

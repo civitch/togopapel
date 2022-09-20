@@ -2,44 +2,32 @@
 
 namespace App\Entity;
 
+use App\Repository\PostTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\PostTypeRepository")
- */
+#[ORM\Entity(repositoryClass: PostTypeRepository::class)]
 class PostType
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Etiquette", inversedBy="postypes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Etiquette::class, inversedBy: 'postypes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $etiquette;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $label;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $label = false;
 
     public function __construct()
     {
-        $this->label = false;
     }
 
     public function getId(): ?int

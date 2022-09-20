@@ -6,10 +6,7 @@ namespace App\Entity;
 
 class ForgetPassword
 {
-    /**
-     * @var string
-     */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @return string

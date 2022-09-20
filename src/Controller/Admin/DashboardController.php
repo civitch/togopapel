@@ -11,13 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class DashboardController
  * @package App\Controller\Admin
- * @Route("/admin")
  */
+#[Route(path: '/admin')]
 class DashboardController extends AbstractController
 {
-    /**
-     * @Route("/tableau-de-bord", name="main_dashboard", methods={"GET"})
-     */
+    #[Route(path: '/tableau-de-bord', name: 'main_dashboard', methods: ['GET'])]
     public function index()
     {
         $em = $this->getDoctrine()->getManager();

@@ -9,14 +9,10 @@ class ChangePassword
 {
     /**
      * @SecurityAssert\UserPassword(message = "Ce n'est pas votre mot de passe actuel")
-     * @var string
      */
-    private $oldPassword;
+    private ?string $oldPassword = null;
 
-    /**
-     * @var string
-     */
-    private $newPassword;
+    private ?string $newPassword = null;
 
     /**
      * @return string
