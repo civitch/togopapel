@@ -102,8 +102,8 @@
                             {% for annonce in annonces %}
                                 <tr id="{{ annonce.id }}">
                                     <td>{{ annonce.title ?? "N/a"  }}</td>
-                                    <td>{{ annonce.createdat|date('d-m-Y') ?? "N/a" }}</td>
-                                    <td>{{ annonce.categorie.title ?? "N/a" }}</td>
+                                    <td>{{ annonce.createdAt|date('d-m-Y')  }}</td>
+                                    <td>{{ annonce.categorie.title  }}</td>
                                     <td>
                                         {% if annonce.type %}
                                             Offre

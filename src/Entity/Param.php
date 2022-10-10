@@ -10,8 +10,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ParamRepository::class)]
+#[UniqueEntity(fields : ['label'])]
 #[Gedmo\SoftDeleteable(fieldName : "deletedAt", timeAware :false, hardDelete : true)]
 #[Gedmo\Loggable]
 class Param
@@ -32,8 +34,8 @@ class Param
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Versioned]
-    #[Assert\NotBlank(groups: ['personnePhysique'])]
-    #[Assert\NotNull(groups: ['personnePhysique', 'identite'])]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private ?string $label = null;
 
     #[ORM\Column(length: 255, nullable: true)]
