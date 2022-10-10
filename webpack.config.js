@@ -23,6 +23,13 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('param', './assets/js/params/index.js')
+
+
+
+//Add Helper
+    .addEntry('datatable_file', './assets/js/utils/dataTable/fileUser.js')
+
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

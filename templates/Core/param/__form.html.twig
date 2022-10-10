@@ -1,9 +1,9 @@
-<div class="modal fade" id="addCreditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{# <div class="modal fade" id="addCreditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		{{ form_start(form) }}
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Ajout de crédit</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Ajout de paramètre</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -12,21 +12,79 @@
 				<div class="container">
 					<div class="row">
 						<div class="form-group col-md-6">
-							{{ form_row(form.montant) }}
+							{{ form_row(form.label) }}
 						</div>
 						<div class="form-group col-md-6">
-							{{ form_row(form.gdc) }}
+							{{ form_row(form.value) }}
+						</div>
+						<div class="form-group col-md-6">
+							{{ form_row(form.description) }}
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Fermer</button>
-				{{ form_widget(form.save)}}
+				{{ form_widget(form.submitButton)}}
 			</div>
 		</div>
 		{{ form_rest(form) }}
 		{{ form_end(form) }}
 	</div>
-</div>
 
+
+</div> #}
+
+<!--begin::Card-->
+<div class="col-md-12">
+	<div class="card card-custom gutter-b example example-compact">
+		<div class="card-header">
+			<h3 class="card-title">Ajouter un paramètre</h3>
+			<div class="card-toolbar">
+				<div class="example-tools justify-content-center">
+					<span class="example-toggle" data-toggle="tooltip" title="" data-original-title="View code"></span>
+					<span class="example-copy" data-toggle="tooltip" title="" data-original-title="Copy code"></span>
+				</div>
+			</div>
+		</div>
+		<!--begin::Form-->
+		{{ form_start(form) }}
+
+			<div class="card-body">
+
+				{# <div class="form-group">
+					<label>Left Addon</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">
+								<i class="la la-exclamation-triangle icon-lg"></i>
+							</span>
+						</div>
+						<input type="text" class="form-control" placeholder="Email">
+					</div>
+					<span class="form-text text-muted">Some help content goes here</span>
+				</div> #}
+
+				<div class="form-group">
+					{{ form_row(form.label) }}
+				</div>
+
+				<div class="form-group">
+					{{ form_row(form.value) }}
+				</div>
+
+				<div class="form-group">
+					{{ form_row(form.description) }}
+				</div>
+			</div>
+
+			<div class="card-footer">
+				{{ form_widget(form.submitButton)}}
+			</div>
+
+		{{ form_rest(form) }}
+		{{ form_end(form) }}
+		<!--end::Form-->
+	</div>
+	<!--end::Card-->
+</div>
