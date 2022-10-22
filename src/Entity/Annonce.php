@@ -42,7 +42,7 @@ class Annonce
     private int $nbrVue=0;
 
     #[Assert\NotBlank(message: "Le titre de l'anonce ne doit pas rester vide")]
-    #[Assert\Length(min: 3, max: 150, minMessage: 'Le titre de votre annonce doit avoir au moins {{ limit }} caractères', maxMessage: 'Le titre de votre annonce doit pas accéder plus de {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Length(min: 3, max: 150, minMessage: 'Le titre de votre annonce doit avoir au moins {{ limit }} caractères', maxMessage: 'Le titre de votre annonce doit pas accéder plus de {{ limit }} caractères')]
     #[ORM\Column(type: 'string', length: 150)]
     private $title;
 
@@ -55,7 +55,7 @@ class Annonce
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
     private $state;
 
-    #[Assert\Length(min: 10, minMessage: "La description de l'annonce doit avoir au moins {{ limit }} caractères", allowEmptyString: false)]
+    #[Assert\Length(min: 10, minMessage: "La description de l'annonce doit avoir au moins {{ limit }} caractères")]
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 

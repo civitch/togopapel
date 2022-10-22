@@ -50,16 +50,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private $civility;
 
-    #[Assert\Length(max: 255, maxMessage: "L'adresse ne doit pas excéder {{ limit }} caractères", allowEmptyString: false)]
+    #[Assert\Length(max: 255, maxMessage: "L'adresse ne doit pas excéder {{ limit }} caractères")]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $adresse;
 
-    #[Assert\Length(max: 100, maxMessage: 'Le n° de tél doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Length(max: 100, maxMessage: 'Le n° de tél doit pas excéder {{ limit }} caractères')]
     #[Assert\Regex(pattern: '/^[0-9 -.]+$/', message: 'Le numéro de téléphone ne respecte pas les règles')]
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $tel;
 
-    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $confirmationToken;
 
@@ -72,19 +72,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $resetAt;
 
-    #[Assert\Length(max: 255, maxMessage: 'Le nom ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Length(max: 255, maxMessage: 'Le nom ne doit pas excéder {{ limit }} caractères')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[Assert\Length(max: 255, maxMessage: 'le prénom ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Length(max: 255, maxMessage: 'le prénom ne doit pas excéder {{ limit }} caractères')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $firstname;
 
-    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $society;
 
-    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères', allowEmptyString: false)]
+    #[Assert\Length(max: 255, maxMessage: 'Ne doit pas excéder {{ limit }} caractères')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $siren;
 
